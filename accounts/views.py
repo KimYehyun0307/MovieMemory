@@ -45,8 +45,8 @@ def signup_view(request):
 @login_required
 def delete_account(request):
     if request.method == 'POST':
-        logout(request)
         request.user.delete()
+        logout(request)
         messages.success(request, "회원탈퇴가 완료되었습니다.")
         return redirect('accounts:login')
     return render(request, 'accounts/delete_account.html')
