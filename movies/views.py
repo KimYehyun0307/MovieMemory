@@ -166,7 +166,7 @@ def profile(request, user_name):
 
     # 프로필 공개 범위 확인
     is_self = request.user == user  # 자신이 프로필을 보고 있는지 확인
-    show_nickname = is_self or request.user.is_superuser or user.is_nickname_public
+    show_id = is_self or request.user.is_superuser # 프로필을 보는 사람이 자기 자신이거나 관리자일때만 id 공개
     show_birthdate = is_self or request.user.is_superuser or user.is_birthdate_public
     show_genre = is_self or request.user.is_superuser or user.is_genre_public
 
@@ -182,7 +182,7 @@ def profile(request, user_name):
         'has_kakao_account': has_kakao_account,
         'kakao_profile_image': kakao_profile_image,
         'user_reviews': user_reviews,
-        'show_nickname': show_nickname,
+        'show_id': show_id, 
         'show_birthdate': show_birthdate,
         'show_genre': show_genre,
         'show_reviews': show_reviews,  # 리뷰 공개 여부를 템플릿에서 사용할 수 있도록 추가
@@ -234,7 +234,6 @@ def profile_edit(request, user_name):
                 user.set_password(password)
 
         # 프로필 공개 범위 업데이트
-        user.is_nickname_public = 'nickname_visible' in request.POST
         user.is_birthdate_public = 'birthdate_visible' in request.POST
         user.is_genre_public = 'genres_visible' in request.POST
         user.is_reviews_public = 'reviews_visible' in request.POST

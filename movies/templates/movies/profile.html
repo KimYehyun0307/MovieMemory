@@ -4,7 +4,7 @@
 {% block content %}
 <div class="profile-container">
     <div class="profile-box">
-        <h2>{{ user.username }}님의 프로필</h2>
+        <h2>{{ user.nickname }}님의 프로필</h2>
 
         <!-- 카카오 계정일 경우 프로필 이미지 처리 -->
         {% if has_kakao_account %}
@@ -14,14 +14,12 @@
                 onerror="this.onerror=null;this.src='{% static 'movies/default.png' %}'">
         {% endif %}
 
-        <p><strong>아이디:</strong> {{ user.username }}</p>
+        {% if show_id %}
+            <p><strong>아이디:</strong> {{ user.username }}</p>
+        {% endif %}
 
         <!-- 닉네임 공개 여부 -->
-        {% if show_nickname %}
-            <p><strong>닉네임:</strong> {{ user.nickname }}</p>
-        {% else %}
-            <p><strong>닉네임:</strong> 비공개</p>
-        {% endif %}
+        <p><strong>닉네임:</strong> {{ user.nickname }}</p>
 
         <!-- 생년월일 공개 여부 -->
         <p><strong>생년월일:</strong>

@@ -75,7 +75,7 @@
                         <!-- 프로필 사진이 없으면 기본 이미지 -->
                         <img src="{% static 'movies/default.png' %}" alt="기본 프로필 사진" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
                     {% endif %}
-                    {{ request.user.username }}  <!-- 로그인한 유저의 이름 -->
+                    {{ request.user.nickname }}  <!-- 로그인한 유저의 이름 -->
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item text-dark" href="{% url 'movies:profile' user_name=request.user.username %}">프로필</a>
