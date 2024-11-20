@@ -24,8 +24,4 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)  # 작성 시간
 
     def __str__(self):
-<<<<<<< HEAD
         return f'{self.user.username}의 댓글'
-=======
-        return f'{self.user.username}의 댓글'
->>>>>>> 99218bdee1edf6bdcf424f14e2554764fda96ea7
