@@ -40,7 +40,8 @@
     {% if trailer %}
       <div class="mt-4">
         <h3 class="text-white">트레일러</h3>
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ trailer.key }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <!-- 트레일러 iframe의 너비를 100%로 설정 -->
+        <iframe width="100%" height="315" src="https://www.youtube.com/embed/{{ trailer.key }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       </div>
     {% else %}
 
@@ -53,7 +54,7 @@
     <div class="d-flex justify-content-between">
       <p class="text-white">리뷰</p>
       {% if user.is_authenticated %}
-        <a href="{% url 'reviews:create_review' movie_id=movie.id %}" >리뷰 작성하기</a>
+        <a href="{% url 'reviews:create_review' movie_id=movie.id %}">리뷰 작성하기</a>
       {% else %}
         <p class="text-muted">리뷰를 작성하려면 로그인하세요.</p>
       {% endif %}
@@ -71,7 +72,7 @@
               <span class="badge badge-info">평점: {{ review.rating }}점</span>
             </div>
             <small class="text-muted">작성일: {{ review.created_at|date:'Y-m-d H:i' }}</small>
-  
+
             {% if review.user == user %}
               <!-- 리뷰 수정 및 삭제 버튼 -->
               <div class="mt-2">
@@ -79,10 +80,66 @@
                 <a href="{% url 'reviews:delete_review' review_id=review.id %}" class="btn btn-sm btn-danger">삭제</a>
               </div>
             {% endif %}
+
+            <!-- 댓글 작성 버튼 -->
+            <button class="btn btn-sm btn-primary mt-2" onclick="showCommentBox({{ review.id }})">댓글 작성 : {{ review.id }}</button>
+            <div id="comment-form-{{ review.id }}" style="display:none;" class="mt-2">
+              <textarea id="comment-content-{{ review.id }}" class="form-control" rows="3"></textarea>
+              <button class="btn btn-sm btn-success mt-2" onclick="addComment({{ review.id }})">댓글 추가</button>
+            </div>
+
+            <!-- 댓글 목록 -->
+            <div id="comment-section-{{ review.id }}" class="mt-3">
+              {% for comment in review.comments.all %}
+                <div>
+                  <strong>{{ comment.user.username }}</strong>: {{ comment.content }} <small>{{ comment.created_at|date:'Y-m-d H:i' }}</small>
+                </div>
+              {% endfor %}
+            </div>
           </li>
         {% endfor %}
       </ul>
     {% else %}
       <p class="text-white mt-3">작성된 리뷰가 없습니다.</p>
     {% endif %}
-  {% endblock %}
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    const csrfToken = '{{ csrf_token }}'
+    function showCommentBox(reviewId) {
+      document.getElementById('comment-form-' + reviewId).style.display = 'block';
+    }
+    axios.defaults.headers.common['X-CSRFToken'] = csrfToken
+    
+    function addComment(reviewId) {
+      const content = document.getElementById('comment-content-' + reviewId).value;
+  
+      if (!content.trim()) {
+          alert('댓글 내용을 입력하세요!');
+          return;
+      }
+  
+      console.log("전송된 데이터:", content); // 전송 데이터 로그 출력
+  
+      axios.post(`/reviews/add_comment/${reviewId}/`, {
+          content: content
+      })
+      .then(response => {
+          console.log("응답 데이터:", response.data); // 서버 응답 데이터 확인
+          const commentSection = document.getElementById('comment-section-' + reviewId);
+          const newComment = response.data.comment;
+          const newCommentElement = document.createElement('div');
+          newCommentElement.innerHTML = `<strong>${newComment.username}</strong>: ${newComment.content} <small>${newComment.created_at}</small>`;
+          commentSection.appendChild(newCommentElement);
+          document.getElementById('comment-content-' + reviewId).value = ''; // 댓글 입력란 초기화
+      })
+      .catch(error => {
+          console.error("오류 발생:", error.response.data); // 오류 응답 데이터 확인
+          alert('댓글 작성 실패!');
+      });
+    }
+  </script>
+{% endblock %}

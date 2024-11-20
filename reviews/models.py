@@ -17,5 +17,11 @@ class Review(models.Model):
     def __str__(self):
         return f'{self.movie.title} - {self.user.username}의 리뷰'
 
+class Comment(models.Model):
+    review = models.ForeignKey(Review, related_name="comments", on_delete=models.CASCADE)  # 리뷰와 연결
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # 작성자
+    content = models.TextField()  # 댓글 내용
+    created_at = models.DateTimeField(auto_now_add=True)  # 작성 시간
 
-# Create your models here.
+    def __str__(self):
+        return f'{self.user.username}의 댓글'
