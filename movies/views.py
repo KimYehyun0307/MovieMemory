@@ -169,18 +169,26 @@ def profile(request, user_name):
     show_nickname = is_self or request.user.is_superuser or user.is_nickname_public
     show_birthdate = is_self or request.user.is_superuser or user.is_birthdate_public
     show_genre = is_self or request.user.is_superuser or user.is_genre_public
+
+    # 리뷰 공개 범위 확인
     show_reviews = is_self or request.user.is_superuser or user.is_reviews_public
+
+    # 리뷰 공개 범위가 비공개인 경우, 주인과 슈퍼유저만 볼 수 있도록 설정
+    if not show_reviews:
+        user_reviews = []  # 비공개이면 리뷰는 빈 리스트로 설정
 
     context = {
         'user': user,
         'has_kakao_account': has_kakao_account,
         'kakao_profile_image': kakao_profile_image,
-        'user_reviews': user_reviews if show_reviews else None,
+        'user_reviews': user_reviews,
         'show_nickname': show_nickname,
         'show_birthdate': show_birthdate,
         'show_genre': show_genre,
+        'show_reviews': show_reviews,  # 리뷰 공개 여부를 템플릿에서 사용할 수 있도록 추가
     }
     return render(request, 'movies/profile.html', context)
+
 
 
 @login_required
