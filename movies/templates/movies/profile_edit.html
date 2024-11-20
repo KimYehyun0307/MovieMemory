@@ -31,6 +31,33 @@
                 <label for="profile_image">새 프로필 사진 수정:</label>
                 <input type="file" id="profile_image" name="profile_image">
             </div>
+            
+            <!-- 생년월일 최초 지정 -->
+            {% if not user.birthdate %}
+            <div class="form-group">
+                <label for="birthdate">생년월일 (한 번 설정 후 수정 불가능):</label>
+                <input type="date" id="birthdate" name="birthdate" required>
+                <small class="text-danger">주의: 생년월일은 한 번 설정하시면 변경이 불가능합니다.</small>
+            </div>
+            {% endif %}
+
+            <!-- 장르 선택 기능 -->
+            <p><strong>좋아하는 장르 설정:</strong></p>
+            <div id="genre-buttons">
+                {% for genre in genres %}
+                <button 
+                    type="button" 
+                    class="btn-sky genre-btn" 
+                    data-genre-id="{{ genre.id }}" 
+                    onclick="selectGenre(this)">
+                    {{ genre.name }}
+                </button>
+                {% endfor %}
+            </div>
+            <small>1순위는 금색, 2순위는 은색, 3순위는 동색으로 표시됩니다.</small>
+            <input type="hidden" id="genre_1" name="genre_1">
+            <input type="hidden" id="genre_2" name="genre_2">
+            <input type="hidden" id="genre_3" name="genre_3">
 
             <!-- 비밀번호 변경 옵션 (kakao_로 시작되는 사용자 제외) -->
             {% if not is_kakao_user %}
@@ -43,9 +70,34 @@
                 <input type="password" id="password_confirm" name="password_confirm" placeholder="비밀번호 확인">
             </div>
             {% endif %}
-            
+
+            <p><strong>프로필 공개 범위 설정:</strong></p>
+            <div>
+                <input type="checkbox" id="nickname_visible" name="nickname_visible" 
+                    {% if user.profile_visibility.nickname %}checked{% endif %}>
+                <label for="nickname_visible">닉네임 공개</label>
+            </div>
+            <div>
+                <input type="checkbox" id="birthdate_visible" name="birthdate_visible" 
+                    {% if user.profile_visibility.birthdate %}checked{% endif %}>
+                <label for="birthdate_visible">생년월일 공개</label>
+            </div>
+            <div>
+                <input type="checkbox" id="genres_visible" name="genres_visible" 
+                    {% if user.profile_visibility.genres %}checked{% endif %}>
+                <label for="genres_visible">좋아하는 장르 공개</label>
+            </div>
+            <div>
+                <input type="checkbox" id="reviews_visible" name="reviews_visible" 
+                    {% if user.profile_visibility.reviews %}checked{% endif %}>
+                <label for="reviews_visible">댓글 공개</label>
+            </div>
+
             <button type="submit" class="btn btn-primary">수정하기</button>
         </form>
     </div>
 </div>
 {% endblock %}
+
+<!-- 자바스크립트 코드 -->
+<script src="{% static 'js/button_event.js' %}" defer></script>
