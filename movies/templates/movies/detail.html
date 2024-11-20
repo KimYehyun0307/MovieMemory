@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <!-- 영화 정보 섹션 -->
+  <div class="d-flex flex-column p-5 rounded mx-auto" style="max-width: 50%; background-color: #161616; border-radius: 10px;">
+    <!-- 첫 번째 행: 포스터와 영화 정보 -->
+    <div class="d-flex align-items-center mb-4">
+      <!-- 영화 포스터 -->
+      <div style="max-width: 150px;" class="mr-4">
+        {% if movie.poster_path %}
+          <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}" class="img-fluid rounded" />
+        {% else %}
+          <p>포스터가 없습니다.</p>
+        {% endif %}
+      </div>
+
+      <!-- 영화 정보 -->
+      <div class="text-left">
+        <h1 class="mb-3 text-white">{{ movie.title }}</h1>
+        <p>
+          <strong class="text-white">장르:</strong>
+          {% for genre in movie.genres %}
+            <a href="{% url 'movies:genre' genre.name %}" class="badge badge-primary">{{ genre.name }}</a>
+          {% endfor %}
+        </p>
+        <p class="text-white">
+          <strong>개봉일:</strong> {{ movie.release_date }}
+        </p>
+        <p class="text-white">
+          <strong>평점:</strong> {{ movie.vote_average }} / 10
+        </p>
+      </div>
+    </div>
+
+    <!-- 두 번째 행: 개요 -->
+    <div class="mt-4">
+      <p class="text-white">{{ movie.overview }}</p>
+    </div>
+
+    {% if trailer %}
+      <div class="mt-4">
+        <h3 class="text-white">트레일러</h3>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ trailer.key }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    {% else %}
+
+    {% endif %}
+  </div>
+
+  <!-- 리뷰 섹션 -->
+  <div class="d-flex flex-column p-5 rounded mx-auto" style="max-width: 50%; background-color: #161616; border-radius: 10px; margin-top: 20px;">
+    <!-- 리뷰 제목 및 작성 버튼 -->
+    <div class="d-flex justify-content-between">
+      <p class="text-white">리뷰</p>
+      {% if user.is_authenticated %}
+        <a href="{% url 'reviews:create_review' movie_id=movie.id %}" >리뷰 작성하기</a>
+      {% else %}
+        <p class="text-muted">리뷰를 작성하려면 로그인하세요.</p>
+      {% endif %}
+    </div>
+
+    <!-- 작성된 리뷰 목록 -->
+    <h2 class="mt-5 text-white">리뷰</h2>
+    {% if reviews %}
+      <ul class="list-group mt-3" style="background-color: #3a3a3a; padding: 20px; border-radius: 10px;">
+        {% for review in reviews %}
+          <li class="list-group-item" style="background-color: #4a4a4a; border: none; color: white;">
+            <div>
+              <strong>{{ review.user.username }}</strong>:
+              {{ review.content }}
+              <span class="badge badge-info">평점: {{ review.rating }}점</span>
+            </div>
+            <small class="text-muted">작성일: {{ review.created_at|date:'Y-m-d H:i' }}</small>
+  
+            {% if review.user == user %}
+              <!-- 리뷰 수정 및 삭제 버튼 -->
+              <div class="mt-2">
+                <a href="{% url 'reviews:update_review' review_id=review.id %}" class="btn btn-sm btn-warning">수정</a>
+                <a href="{% url 'reviews:delete_review' review_id=review.id %}" class="btn btn-sm btn-danger">삭제</a>
+              </div>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-white mt-3">작성된 리뷰가 없습니다.</p>
+    {% endif %}
+  {% endblock %}

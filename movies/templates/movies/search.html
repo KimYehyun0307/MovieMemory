@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>검색 결과</h1>
+    
+    {% if movies %}
+        <div class="row">
+            {% for movie in movies %}
+                <div class="col-md-3">
+                      <a href="{% url 'movies:detail' movie.id %}">
+                        <img class="card-img-top" src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">                       
+                      </a>                        
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>검색 결과가 없습니다.</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Site</title>
+    
+    <!-- static 태그 로드 -->
+    {% load static %}
+
+    <!-- Bootstrap CSS 추가 -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            background-image: url("{% static 'images/background.webp' %}");
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            position: sticky;
+            top: 0; /* 화면 상단에 고정 */
+            z-index: 100; /* 배경 이미지보다 앞에 나오게 설정 */
+        }
+
+        .navbar-left {
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <div class="container-fluid">
+        <!-- 드롭다운 버튼을 왼쪽에 배치 -->
+        <ul class="navbar-nav navbar-left">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    영화
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <!-- 인기 Top 20 -->
+                    <a class="dropdown-item" href="{% url 'movies:index' %}">인기 Top 20</a>
+                    <div class="dropdown-divider"></div>
+                    <!-- 모든 장르 -->
+                    {% for genre in genres %}
+                        <a class="dropdown-item" href="{% url 'movies:genre' genre.id %}">{{ genre.name }}</a>
+                    {% endfor %}
+                </div>
+            </li>
+        </ul>
+
+        <!-- Movie 제목 -->
+        <a class="navbar-brand" href="{% url 'movies:index' %}">Movie</a>
+
+        <!-- 사용자 로그인 여부에 따른 메뉴 -->
+        <!-- 사용자 로그인 여부에 따른 메뉴 -->
+<div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto">
+        {% if user.is_authenticated %}
+            <!-- 드롭다운 메뉴 -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {% if kakao_account %}
+                        <!-- 카카오로 로그인한 경우 카카오 이미지 표시 -->
+                        <img src="{{ kakao_account.get_avatar_url }}" alt="카카오 프로필 사진" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
+                    {% elif user.profile_image %}
+                        <!-- 일반 사용자 프로필 이미지 표시 -->
+                        <img src="{{ user.profile_image.url }}" alt="프로필 사진" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
+                    {% else %}
+                        <!-- 사진이 없는 경우 default.png 이미지 사용 -->
+                        <img src="{% static 'movies/default.png' %}" alt="기본 프로필 사진" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
+                    {% endif %}
+                    {{ user.username }}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item text-dark" href="{% url 'movies:profile' user_name=request.user.username %}">프로필</a>
+                    <a class="dropdown-item text-dark" href="{% url 'accounts:logout' %}">로그아웃</a>
+                    <!-- 회원 탈퇴 추가 -->
+                    <a class="dropdown-item text-danger" href="{% url 'accounts:delete_account' %}">회원 탈퇴</a>
+                </div>
+            </li>
+        {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'accounts:login' %}">로그인</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'accounts:signup' %}">회원가입</a>
+            </li>
+        {% endif %}
+        <!-- 검색창과 드롭다운 메뉴 사이에 간격 추가 -->
+        <li class="nav-item" style="margin-left: 10px;">
+            <form class="form-inline" method="get" action="{% url 'movies:search' %}">
+                <input class="form-control" type="search" name="query" placeholder="영화 검색" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">검색</button>
+            </form>
+        </li>
+    </ul>
+</div>
+
+    </div>
+</nav>
+
+<main>
+    {% block content %}
+    <!-- 각 페이지의 내용이 여기에 표시됩니다. -->
+    {% endblock content %}
+</main>
+
+<!-- Bootstrap JS와 jQuery 추가 -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
