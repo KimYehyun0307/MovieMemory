@@ -196,3 +196,65 @@ body {
 .login-container .delete-account-button:hover {
   background-color: #c9302c; /* 마우스를 올렸을 때 배경색 */
 }
+
+/* 기본 버튼 스타일 */
+.btn-sky {
+  background-color: #3498db; /* 기본 버튼 색상 */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-sky:hover {
+  background-color: #2980b9; /* 호버 시 색상 */
+}
+
+/* 1순위 (금색) */
+.btn-gold {
+  background-color: #f39c12; /* 금색 */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.btn-gold:hover {
+  background-color: #e67e22; /* 금색 버튼 호버 */
+}
+
+/* 2순위 (은색) */
+.btn-silver {
+  background-color: #95a5a6; /* 은색 */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.btn-silver:hover {
+  background-color: #7f8c8d; /* 은색 버튼 호버 */
+}
+
+/* 3순위 (동색) */
+.btn-bronze {
+  background-color: #cd7f32; /* 동색 */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.btn-bronze:hover {
+  background-color: #9e6f27; /* 동색 버튼 호버 */
+}
+

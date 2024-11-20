@@ -15,32 +15,69 @@
         {% endif %}
 
         <p><strong>아이디:</strong> {{ user.username }}</p>
-        <p><strong>닉네임:</strong> {{ user.nickname }}</p>
+
+        <!-- 닉네임 공개 여부 -->
+        {% if show_nickname %}
+            <p><strong>닉네임:</strong> {{ user.nickname }}</p>
+        {% else %}
+            <p><strong>닉네임:</strong> 비공개</p>
+        {% endif %}
+
+        <!-- 생년월일 공개 여부 -->
+        <p><strong>생년월일:</strong>
+            {% if show_birthdate %}
+                {% if user.birthdate %}
+                    {{ user.birthdate }}
+                {% else %}
+                    아직 생년월일을 입력하지 않았습니다.
+                {% endif %}
+            {% else %}
+                비공개
+            {% endif %}
+        </p>
+
+        <!-- 좋아하는 장르 공개 여부 -->
+        <p><strong>좋아하는 장르:</strong></p>
+        <ul>
+            {% if show_genre %}
+                <li>1순위: {{ user.genre_1.name|default:"선택된 장르가 없습니다." }}</li>
+                <li>2순위: {{ user.genre_2.name|default:"선택된 장르가 없습니다." }}</li>
+                <li>3순위: {{ user.genre_3.name|default:"선택된 장르가 없습니다." }}</li>
+            {% else %}
+                <p>비공개</p>
+            {% endif %}
+        </ul>
 
         <!-- 수정하기 버튼 -->
-        <a href="{% url 'movies:profile_edit' user.username %}" class="btn btn-primary">회원정보 변경하기</a>
+        {% if user == request.user %}
+            <a href="{% url 'movies:profile_edit' user.username %}" class="btn btn-primary">회원정보 변경하기</a>
+        {% endif %}
     </div>
 
     <!-- 댓글 단 글의 목록 -->
     <div class="user-reviews profile-box">
         <h3><strong>댓글 단 글의 목록</strong></h3>
 
-        {% if user_reviews %}
-            <ul>
-                {% for review in user_reviews %}
-                    <li class="review-item">
-                        <!-- 댓글 박스를 클릭하면 해당 영화의 상세 페이지로 이동 -->
-                        <a href="{% url 'movies:detail' movie_id=review.movie.tmdb_id %}" class="review-link">
-                            <div class="review-box">
-                                <strong>{{ review.movie.title }}</strong> - 
-                                {{ review.content|slice:":30" }}{% if review.content|length > 30 %}...{% endif %}
-                            </div>
-                        </a>
-                    </li>
-                {% endfor %}
-            </ul>
+        {% if show_reviews %}
+            {% if user_reviews %}
+                <ul>
+                    {% for review in user_reviews %}
+                        <li class="review-item">
+                            <!-- 댓글 박스를 클릭하면 해당 영화의 상세 페이지로 이동 -->
+                            <a href="{% url 'movies:detail' movie_id=review.movie.tmdb_id %}" class="review-link">
+                                <div class="review-box">
+                                    <strong>{{ review.movie.title }}</strong> - 
+                                    {{ review.content|slice:":30" }}{% if review.content|length > 30 %}...{% endif %}
+                                </div>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>아직 댓글을 단 글이 없습니다. 재미있게 본 영화의 댓글을 달아보시는 건 어떨까요?</p>
+            {% endif %}
         {% else %}
-            <p>아직 댓글을 단 글이 없습니다. 재미있게 본 영화의 댓글을 달아보시는 건 어떨까요?</p>
+            <p>댓글 목록은 비공개입니다.</p>
         {% endif %}
     </div>
 </div>
