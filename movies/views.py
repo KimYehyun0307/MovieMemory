@@ -11,6 +11,7 @@ from django.core.files.storage import default_storage
 
 from .models import Movie
 from reviews.models import Review
+from accounts.models import Genre
 
 
 def get_genres(genre_id):
@@ -152,79 +153,91 @@ def search(request):
 
     return render(request, 'movies/search.html', {'movies': movies})
 
-@login_required
 def profile(request, user_name):
-    # user_name을 기준으로 해당 사용자 정보 가져오기
-    user = get_object_or_404(User, username=user_name)  # user_name을 통해 해당 사용자 찾기
+    user = get_object_or_404(User, username=user_name)
 
-    # 카카오 계정 여부 확인
     has_kakao_account = SocialAccount.objects.filter(user=user, provider='kakao').exists()
+    kakao_profile_image = (
+        SocialAccount.objects.get(user=user, provider='kakao').get_avatar_url()
+        if has_kakao_account else None
+    )
 
-    # 카카오 프로필 이미지 가져오기
-    kakao_profile_image = None
-    if has_kakao_account:
-        social_account = SocialAccount.objects.get(user=user, provider='kakao')
-        kakao_profile_image = social_account.get_avatar_url()  # 카카오 프로필 이미지 URL
-
-    # 사용자가 작성한 리뷰 가져오기 (최근 작성한 순서대로)
     user_reviews = Review.objects.filter(user=user).order_by('-created_at')
 
-    # POST 요청 시 닉네임 및 프로필 이미지 수정
-    if request.method == 'POST':
-        nickname = request.POST.get('nickname')
-        user.nickname = nickname
-
-        # 프로필 이미지 수정
-        if 'profile_image' in request.FILES:
-            profile_image = request.FILES['profile_image']
-            if user.profile_image:  # 기존 이미지가 있으면 삭제
-                user.profile_image.delete()
-            user.profile_image = profile_image  # 새 이미지 저장
-
-        user.save()  # 변경 사항 저장
-        return redirect('movies:profile', user_name=user.username)  # 수정 후 해당 사용자의 프로필 페이지로 리디렉션
+    # 프로필 공개 범위 확인
+    is_self = request.user == user  # 자신이 프로필을 보고 있는지 확인
+    show_nickname = is_self or request.user.is_superuser or user.is_nickname_public
+    show_birthdate = is_self or request.user.is_superuser or user.is_birthdate_public
+    show_genre = is_self or request.user.is_superuser or user.is_genre_public
+    show_reviews = is_self or request.user.is_superuser or user.is_reviews_public
 
     context = {
         'user': user,
         'has_kakao_account': has_kakao_account,
         'kakao_profile_image': kakao_profile_image,
-        'user_reviews': user_reviews,  # 댓글 단 글 목록 전달
+        'user_reviews': user_reviews if show_reviews else None,
+        'show_nickname': show_nickname,
+        'show_birthdate': show_birthdate,
+        'show_genre': show_genre,
     }
     return render(request, 'movies/profile.html', context)
 
 
 @login_required
 def profile_edit(request, user_name):
-    user = get_object_or_404(User, username=user_name)  # user_name을 통해 해당 사용자 찾기
-    
-    # 현재 로그인한 사용자가 아니라면 수정 불가
+    user = get_object_or_404(User, username=user_name)
     if request.user != user:
-        return redirect('movies:index')  # 접근을 제한하려면 다른 페이지로 리디렉션
-    
-    # kakao_로 시작하는 경우 비밀번호 수정 옵션을 사용하지 않도록 설정
+        return redirect('movies:index')
+
     is_kakao_user = user.username.startswith('kakao_')
 
     if request.method == 'POST':
-        # 닉네임 수정
         nickname = request.POST.get('nickname')
         user.nickname = nickname
 
-        # 프로필 이미지 수정
         if 'profile_image' in request.FILES:
             profile_image = request.FILES['profile_image']
-            if user.profile_image:  # 기존 이미지가 있으면 삭제
+            if user.profile_image:
                 user.profile_image.delete()
-            user.profile_image = profile_image  # 새 이미지 저장
+            user.profile_image = profile_image
 
-        # 비밀번호 수정
+        # 생년월일 최초 설정
+        if not user.birthdate:
+            birthdate = request.POST.get('birthdate')
+            if birthdate:
+                user.birthdate = birthdate
+
+        # 좋아하는 장르 설정
+        genre_1 = request.POST.get('genre_1')
+        genre_2 = request.POST.get('genre_2')
+        genre_3 = request.POST.get('genre_3')
+
+        if genre_1:
+            user.genre_1 = Genre.objects.get(id=genre_1)
+        if genre_2:
+            user.genre_2 = Genre.objects.get(id=genre_2)
+        if genre_3:
+            user.genre_3 = Genre.objects.get(id=genre_3)
+
+        # 비밀번호 변경
         if not is_kakao_user:
             password = request.POST.get('password')
             if password:
                 user.set_password(password)
 
-        user.save()  # 변경 사항 저장
-        return redirect('movies:profile', user_name=user.username)  # 수정 후 해당 사용자의 프로필 페이지로 리디렉션
+        # 프로필 공개 범위 업데이트
+        user.is_nickname_public = 'nickname_visible' in request.POST
+        user.is_birthdate_public = 'birthdate_visible' in request.POST
+        user.is_genre_public = 'genres_visible' in request.POST
+        user.is_reviews_public = 'reviews_visible' in request.POST
 
-    context = {'user': user, 'is_kakao_user': is_kakao_user}
+        user.save()
+        return redirect('movies:profile', user_name=user.username)
+
+    context = {
+        'user': user,
+        'is_kakao_user': is_kakao_user,
+        'genres': Genre.objects.all(),
+    }
     return render(request, 'movies/profile_edit.html', context)
 

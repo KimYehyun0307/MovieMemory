@@ -62,24 +62,20 @@
         <a class="navbar-brand" href="{% url 'movies:index' %}">Movie</a>
 
         <!-- 사용자 로그인 여부에 따른 메뉴 -->
-        <!-- 사용자 로그인 여부에 따른 메뉴 -->
 <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ml-auto">
         {% if user.is_authenticated %}
             <!-- 드롭다운 메뉴 -->
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {% if kakao_account %}
-                        <!-- 카카오로 로그인한 경우 카카오 이미지 표시 -->
-                        <img src="{{ kakao_account.get_avatar_url }}" alt="카카오 프로필 사진" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
-                    {% elif user.profile_image %}
-                        <!-- 일반 사용자 프로필 이미지 표시 -->
-                        <img src="{{ user.profile_image.url }}" alt="프로필 사진" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
+                    {% if request.user.profile_image %}
+                        <!-- 현재 로그인한 유저의 프로필 사진 -->
+                        <img src="{{ request.user.profile_image.url }}" alt="프로필 사진" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
                     {% else %}
-                        <!-- 사진이 없는 경우 default.png 이미지 사용 -->
+                        <!-- 프로필 사진이 없으면 기본 이미지 -->
                         <img src="{% static 'movies/default.png' %}" alt="기본 프로필 사진" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
                     {% endif %}
-                    {{ user.username }}
+                    {{ request.user.username }}  <!-- 로그인한 유저의 이름 -->
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item text-dark" href="{% url 'movies:profile' user_name=request.user.username %}">프로필</a>
@@ -119,5 +115,9 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- 페이지 하단에서 JavaScript 파일 추가 (defer 속성으로 로딩 지연) -->
+<script src="{% static 'js/button_event.js' %}" defer></script>
+
 </body>
 </html>
