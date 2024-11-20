@@ -33,6 +33,11 @@
         .navbar-left {
             margin-right: auto;
         }
+        
+        .navbar-brand img {
+            height: 40px;
+        }
+        
     </style>
 </head>
 <body>
@@ -59,7 +64,10 @@
         </ul>
 
         <!-- Movie 제목 -->
-        <a class="navbar-brand" href="{% url 'movies:index' %}">Movie</a>
+        <a class="navbar-brand" href="{% url 'movies:index' %}">
+            <img src="{% static 'images/moviememory.jpg' %}" alt="MovieMemory Logo" style="height: 40px;">
+        </a>
+        
 
         <!-- 사용자 로그인 여부에 따른 메뉴 -->
 <div class="collapse navbar-collapse" id="navbarNav">

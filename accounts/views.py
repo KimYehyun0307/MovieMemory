@@ -52,7 +52,7 @@ def delete_account(request):
     return render(request, 'accounts/delete_account.html')
 
 def kakao_login(request):
-    kakao_api_key = settings.KAKAO_REST_API_KEY
+    kakao_api_key = settings.SOCIAL_AUTH_KAKAO_KEY
     redirect_uri = request.build_absolute_uri('/accounts/kakao/callback/')
     kakao_auth_url = f"https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={kakao_api_key}&redirect_uri={redirect_uri}"
     return redirect(kakao_auth_url)
@@ -60,7 +60,7 @@ def kakao_login(request):
 def kakao_callback(request):
     """카카오 로그인 후 콜백을 처리하는 뷰"""
     code = request.GET.get('code')
-    kakao_api_key = settings.KAKAO_REST_API_KEY
+    kakao_api_key = settings.SOCIAL_AUTH_KAKAO_KEY
     redirect_uri = request.build_absolute_uri('/accounts/kakao/callback/')
     token_url = f"https://kauth.kakao.com/oauth/token"
     headers = {
