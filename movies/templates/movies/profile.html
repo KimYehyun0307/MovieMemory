@@ -4,7 +4,7 @@
 {% block content %}
 <div class="profile-container">
     <div class="profile-box">
-        <h2>{{ user.nickname }}님의 프로필</h2>
+        <h2><strong>{{ user.nickname }}님의 프로필</strong></h2>
 
         <!-- 카카오 계정일 경우 프로필 이미지 처리 -->
         {% if has_kakao_account %}
@@ -15,7 +15,7 @@
         {% endif %}
 
         {% if show_id %}
-            <p><strong>아이디:</strong> {{ user.username }}</p>
+        <p><strong>아이디:</strong> {{ user.username }}</p>
         {% endif %}
 
         <!-- 닉네임 공개 여부 -->
@@ -48,7 +48,7 @@
 
         <!-- 수정하기 버튼 -->
         {% if user == request.user %}
-            <a href="{% url 'movies:profile_edit' user.username %}" class="btn btn-primary">회원정보 변경하기</a>
+            <a href="{% url 'movies:profile_edit' user_nickname=request.user.nickname|escapejs %}" class="btn btn-primary">회원정보 변경하기</a>
         {% endif %}
     </div>
 
