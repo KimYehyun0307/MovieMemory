@@ -29,16 +29,14 @@
             <thead>
                 <tr>
                     <th>영화 제목</th>
-                    <th>상영관</th>
                     <th>상영 일시</th>
                 </tr>
             </thead>
             <tbody>
                 {% for schedule in screening_schedules %}
                     <tr>
-                        <td>{{ schedule.movie.title }}</td>
-                        <td>{{ schedule.cinema_name }}</td>
-                        <td>{{ schedule.screening_date|date:"Y-m-d" }} {{ schedule.screening_time|time:"H:i" }}</td>
+                        <td>{{ schedule.movie_title }}</td>
+                        <td>{{ schedule.screening_date|date:"Y-m-d" }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

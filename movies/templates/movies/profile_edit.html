@@ -73,11 +73,6 @@
 
             <p><strong>프로필 공개 범위 설정:</strong></p>
             <div>
-                <input type="checkbox" id="nickname_visible" name="nickname_visible" 
-                    {% if user.profile_visibility.nickname %}checked{% endif %}>
-                <label for="nickname_visible">닉네임 공개</label>
-            </div>
-            <div>
                 <input type="checkbox" id="birthdate_visible" name="birthdate_visible" 
                     {% if user.profile_visibility.birthdate %}checked{% endif %}>
                 <label for="birthdate_visible">생년월일 공개</label>

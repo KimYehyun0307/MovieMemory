@@ -5,16 +5,11 @@ import requests
 from django.conf import settings
 
 class Genre(models.Model):
+    id = models.PositiveIntegerField(primary_key=True)  # id를 primary_key로 설정하여 fixtures에서 수동 관리 가능
     name = models.CharField(max_length=100)
 
-    @staticmethod
-    def update_genres_from_tmdb():
-        response = requests.get(f'https://api.themoviedb.org/3/genre/movie/list',
-                                params={'api_key': settings.TMDB_API_KEY, 'language': 'ko-KR'})
-        if response.status_code == 200:
-            genres = response.json().get('genres', [])
-            for genre in genres:
-                Genre.objects.update_or_create(id=genre['id'], defaults={'name': genre['name']})
+    def __str__(self):
+        return self.name
 
 
 class User(AbstractUser):
