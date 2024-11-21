@@ -102,6 +102,7 @@ def add_comment(request, review_id):
         
         return JsonResponse({
             'comment': {
+                'id': comment.id,
                 'username': comment.user.username,
                 'content': comment.content,
                 'created_at': comment.created_at.strftime('%Y-%m-%d %H:%M'),
@@ -109,6 +110,16 @@ def add_comment(request, review_id):
         })
 
     return JsonResponse({'error': '잘못된 요청입니다.'}, status=400)
+
+@login_required
+def delete_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+    if comment.user == request.user:  # 본인 댓글인지 확인
+        comment.delete()
+        return JsonResponse({'status': 'success'}, status=200)
+    else:
+        return JsonResponse({'status': 'error', 'message': '권한이 없습니다.'}, status=403)
+
 
 
 
