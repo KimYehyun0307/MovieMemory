@@ -31,6 +31,8 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+# 링크에 한글 쓸 수 있도록
+DEFAULT_CHARSET = 'UTF-8'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -62,6 +64,7 @@ INSTALLED_APPS = [
     'accounts',
     'movies',
     'reviews',
+    'communities',
 ]
 
 MIDDLEWARE = [

@@ -4,7 +4,7 @@
 {% block content %}
 <div class="profile-container">
     <div class="profile-box">
-        <h2>{{ user.username }}님의 프로필 수정</h2>
+        <h2>{{ user.nickname }}님의 프로필 수정</h2>
 
         <!-- 현재 프로필 이미지 표시 -->
         <div class="current-profile-image">
@@ -72,11 +72,6 @@
             {% endif %}
 
             <p><strong>프로필 공개 범위 설정:</strong></p>
-            <div>
-                <input type="checkbox" id="nickname_visible" name="nickname_visible" 
-                    {% if user.profile_visibility.nickname %}checked{% endif %}>
-                <label for="nickname_visible">닉네임 공개</label>
-            </div>
             <div>
                 <input type="checkbox" id="birthdate_visible" name="birthdate_visible" 
                     {% if user.profile_visibility.birthdate %}checked{% endif %}>

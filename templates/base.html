@@ -87,51 +87,52 @@
 
         <!-- Movie 제목 -->
         <a class="navbar-brand" href="{% url 'movies:index' %}">
-            <img src="{% static 'images/moviememory.jpg' %}" alt="MovieMemory Logo" style="height: 40px;">
+            <img src="{% static 'images/moviememory.png' %}" alt="MovieMemory Logo" style="height: 40px;">
         </a>
-        
+
+        <!-- 커뮤니티 -->
+        <a class="navbar-nav" href="{% url 'communities:main_community' %}">커뮤니티</a>
 
         <!-- 사용자 로그인 여부에 따른 메뉴 -->
-<div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav ml-auto">
-        {% if user.is_authenticated %}
-            <!-- 드롭다운 메뉴 -->
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {% if request.user.profile_image %}
-                        <!-- 현재 로그인한 유저의 프로필 사진 -->
-                        <img src="{{ request.user.profile_image.url }}" alt="프로필 사진" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
-                    {% else %}
-                        <!-- 프로필 사진이 없으면 기본 이미지 -->
-                        <img src="{% static 'movies/default.png' %}" alt="기본 프로필 사진" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
-                    {% endif %}
-                    {{ request.user.nickname }}  <!-- 로그인한 유저의 이름 -->
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item text-dark" href="{% url 'movies:profile' user_name=request.user.username %}">프로필</a>
-                    <a class="dropdown-item text-dark" href="{% url 'accounts:logout' %}">로그아웃</a>
-                    <!-- 회원 탈퇴 추가 -->
-                    <a class="dropdown-item text-danger" href="{% url 'accounts:delete_account' %}">회원 탈퇴</a>
-                </div>
-            </li>
-        {% else %}
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'accounts:login' %}">로그인</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'accounts:signup' %}">회원가입</a>
-            </li>
-        {% endif %}
-        <!-- 검색창과 드롭다운 메뉴 사이에 간격 추가 -->
-        <li class="nav-item" style="margin-left: 10px;">
-            <form class="form-inline" method="get" action="{% url 'movies:search' %}">
-                <input class="form-control" type="search" name="query" placeholder="영화 검색" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">검색</button>
-            </form>
-        </li>
-    </ul>
-</div>
-
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                {% if user.is_authenticated %}
+                    <!-- 드롭다운 메뉴 -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {% if request.user.profile_image %}
+                                <!-- 현재 로그인한 유저의 프로필 사진 -->
+                                <img src="{{ request.user.profile_image.url }}" alt="프로필 사진" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
+                            {% else %}
+                                <!-- 프로필 사진이 없으면 기본 이미지 -->
+                                <img src="{% static 'movies/default.png' %}" alt="기본 프로필 사진" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
+                            {% endif %}
+                            {{ request.user.nickname }}  <!-- 로그인한 유저의 이름 -->
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item text-dark" href="{% url 'movies:profile' user_nickname=request.user.nickname|escapejs %}">프로필</a>
+                            <a class="dropdown-item text-dark" href="{% url 'accounts:logout' %}">로그아웃</a>
+                            <!-- 회원 탈퇴 추가 -->
+                            <a class="dropdown-item text-danger" href="{% url 'accounts:delete_account' %}">회원 탈퇴</a>
+                        </div>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'accounts:login' %}">로그인</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'accounts:signup' %}">회원가입</a>
+                    </li>
+                {% endif %}
+                <!-- 검색창과 드롭다운 메뉴 사이에 간격 추가 -->
+                <li class="nav-item" style="margin-left: 10px;">
+                    <form class="form-inline" method="get" action="{% url 'movies:search' %}">
+                        <input class="form-control" type="search" name="query" placeholder="영화 검색" aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">검색</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
     </div>
 </nav>
 
