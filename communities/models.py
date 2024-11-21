@@ -122,4 +122,4 @@ class ScreeningSchedule(models.Model):
     screening_date = models.DateField()
 
     def __str__(self):
-        return f"{self.movie_title} at {self.cinema_name} ({self.screening_date})"
+        return f"{self.movie_title} at ({self.screening_date})"

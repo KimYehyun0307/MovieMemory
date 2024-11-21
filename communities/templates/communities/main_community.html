@@ -1,75 +1,71 @@
 {% extends "base.html" %}
 {% load static %}
+{% load customfilter %}
 
 {% block content %}
-    <h1>커뮤니티 메인 페이지</h1>
+<h1>{{ current_year }}년 {{ current_month }}월 상영 시간표</h1>
 
-    <!-- 진행 중인 이벤트 -->
-    <section>
-        <h2>진행 중인 이벤트</h2>
-        {% if active_events %}
-            <ul>
-                {% for event in active_events %}
-                    <li>
-                        <a href="{% url 'communities:event_section' eventname=event.name %}">{{ event.name }}</a>
-                        <p>{{ event.description }}</p>
-                        <p>기간: {{ event.start_date|date:"Y-m-d" }} ~ {{ event.end_date|date:"Y-m-d" }}</p>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>진행 중인 이벤트가 없습니다.</p>
-        {% endif %}
-    </section>
+<table class="calendar">
+    <thead>
+        <tr>
+            <th>일</th>
+            <th>월</th>
+            <th>화</th>
+            <th>수</th>
+            <th>목</th>
+            <th>금</th>
+            <th>토</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for week in weeks_in_month %}
+        <tr>
+            {% for day in week %}
+                {% if day.month == current_month and day.year == current_year %}
+                    <td>
+                        <div class="day-number">{{ day.day }}</div>
+                        {% with formatted_day=day|date:"Y-m-d" %}
+                            {% if grouped_schedules|get_item:formatted_day %}
+                                <ul class="movie-list">
+                                    {% for movie in grouped_schedules|get_item:formatted_day %}
+                                        <li class="movie-title">{{ movie }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        {% endwith %}
+                    </td>
+                {% else %}
+                    <td></td>  <!-- 다른 달의 날짜는 빈 칸으로 처리 -->
+                {% endif %}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
-    <!-- 영화 상영 일정 -->
-    <section>
-        <h2>영화 상영 일정</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>영화 제목</th>
-                    <th>상영 일시</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for schedule in screening_schedules %}
-                    <tr>
-                        <td>{{ schedule.movie_title }}</td>
-                        <td>{{ schedule.screening_date|date:"Y-m-d" }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </section>
 
-    <!-- 인기 게시물 -->
-    <section>
-        <h2>인기 게시물</h2>
-        
-        <div>
-            <h3>영화 리뷰</h3>
-            <ul>
-                {% for review in popular_reviews %}
-                    <li>
-                        <a href="{% url 'communities:post' movie_title=review.movie.title post_num=review.id %}">{{ review.title }}</a>
-                        <p>{{ review.likes }} Likes</p>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
+<!-- 진행 중인 이벤트 -->
+<h2>진행 중인 이벤트</h2>
+<ul class="event-list">
+    {% for event in active_events %}
+    <li>{{ event.title }}</li>
+    {% endfor %}
+</ul>
 
-        <div>
-            <h3>대나무숲</h3>
-            <ul>
-                {% for post in popular_bamboo_posts %}
-                    <li>
-                        <a href="{% url 'communities:bamboo_post' post_num=post.id %}">{{ post.content|truncatewords:10 }}</a>
-                        <p>{{ post.comments.count }} Comments</p>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-    </section>
+<!-- 인기 영화 리뷰 -->
+<h2>인기 영화 리뷰</h2>
+<ul class="review-list">
+    {% for review in popular_reviews %}
+    <li>{{ review.movie.title }} - {{ review.like_count }} 좋아요</li>
+    {% endfor %}
+</ul>
+
+<!-- 인기 대나무숲 게시물 -->
+<h2>인기 대나무숲 게시물</h2>
+<ul class="bamboo-post-list">
+    {% for post in popular_bamboo_posts %}
+    <li>{{ post.title }} - {{ post.comment_count }} 댓글</li>
+    {% endfor %}
+</ul>
 
 {% endblock content %}
