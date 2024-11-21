@@ -117,13 +117,9 @@ class EventParticipation(models.Model):
         return f"{self.user} in {self.event.name}"
 
 
-# 상영 일정 관리 모델
 class ScreeningSchedule(models.Model):
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="screenings")
-    cinema_name = models.CharField(max_length=255)
-    location = models.CharField(max_length=255)
+    movie_title = models.CharField(max_length=255)  # 영화 제목을 저장할 컬럼
     screening_date = models.DateField()
-    screening_time = models.TimeField()
 
     def __str__(self):
-        return f"{self.movie.title} at {self.cinema_name} ({self.screening_date})"
+        return f"{self.movie_title} at {self.cinema_name} ({self.screening_date})"
