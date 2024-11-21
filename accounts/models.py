@@ -4,7 +4,6 @@ from django.utils.crypto import get_random_string
 import requests
 from django.conf import settings
 
-
 class Genre(models.Model):
     name = models.CharField(max_length=100)
 

@@ -24,7 +24,6 @@ environ.Env.read_env(BASE_DIR / '.env')
 TMDB_API_KEY = env('TMDB_API_KEY') 
 SOCIAL_AUTH_KAKAO_KEY = env('SOCIAL_AUTH_KAKAO_KEY')
 SOCIAL_AUTH_KAKAO_SECRET = env('SOCIAL_AUTH_KAKAO_SECRET')
-KAKAO_REST_API_KEY = env('KAKAO_REST_API_KEY')
 
 # 백엔드 설정
 AUTHENTICATION_BACKENDS = (
@@ -32,6 +31,8 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+# 링크에 한글 쓸 수 있도록
+DEFAULT_CHARSET = 'UTF-8'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -63,6 +64,7 @@ INSTALLED_APPS = [
     'accounts',
     'movies',
     'reviews',
+    'communities',
 ]
 
 MIDDLEWARE = [

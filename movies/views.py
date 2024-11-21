@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from allauth.socialaccount.models import SocialAccount
+import urllib.parse
 from django.conf import settings
 from reviews.models import Review
 from accounts.forms import UserCreationForm  
@@ -153,8 +154,9 @@ def search(request):
 
     return render(request, 'movies/search.html', {'movies': movies})
 
-def profile(request, user_name):
-    user = get_object_or_404(User, username=user_name)
+def profile(request, user_nickname):
+    user_nickname = urllib.parse.unquote(user_nickname)
+    user = get_object_or_404(User, nickname=user_nickname)
 
     has_kakao_account = SocialAccount.objects.filter(user=user, provider='kakao').exists()
     kakao_profile_image = (
@@ -193,8 +195,8 @@ def profile(request, user_name):
 
 
 @login_required
-def profile_edit(request, user_name):
-    user = get_object_or_404(User, username=user_name)
+def profile_edit(request, user_nickname):
+    user = get_object_or_404(User, nickname=user_nickname)
     if request.user != user:
         return redirect('movies:index')
 
@@ -241,7 +243,7 @@ def profile_edit(request, user_name):
         user.is_reviews_public = 'reviews_visible' in request.POST
 
         user.save()
-        return redirect('movies:profile', user_name=user.username)
+        return redirect('movies:profile', user_nickname=user.nickname)
 
     context = {
         'user': user,
