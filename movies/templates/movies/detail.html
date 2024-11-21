@@ -20,7 +20,7 @@
         <p>
           <strong class="text-white">장르:</strong>
           {% for genre in movie.genres %}
-            <a href="{% url 'movies:genre' genre.name %}" class="badge badge-primary">{{ genre.name }}</a>
+            <a href="{% url 'movies:genre' genre.id %}" class="badge badge-primary">{{ genre.name }}</a>
           {% endfor %}
         </p>
         <p class="text-white">

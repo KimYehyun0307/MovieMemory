@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path
 from . import views
 
 app_name = 'movies'
@@ -9,5 +9,5 @@ urlpatterns = [
     path('<str:user_name>/profile/', views.profile, name='profile'),
     path('<str:user_name>/profile/edit', views.profile_edit, name='profile_edit'),
     path('search/', views.search, name='search'),
-    path('<str:genre_name>/', views.genre, name='genre'),
+    path('genre/<int:genre_id>/', views.genre, name='genre'),  # 장르 URL 경로 수정
 ]

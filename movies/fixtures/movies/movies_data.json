@@ -1,0 +1,473 @@
+[
+    {
+        "model": "movies.genres",
+        "pk": 28,
+        "fields": {
+            "name": "액션",
+            "tmdb_id": 28
+        }
+    },
+    {
+        "model": "movies.genres",
+        "pk": 12,
+        "fields": {
+            "name": "모험",
+            "tmdb_id": 12
+        }
+    },
+    {
+        "model": "movies.genres",
+        "pk": 16,
+        "fields": {
+            "name": "애니메이션",
+            "tmdb_id": 16
+        }
+    },
+    {
+        "model": "movies.genres",
+        "pk": 35,
+        "fields": {
+            "name": "코미디",
+            "tmdb_id": 35
+        }
+    },
+    {
+        "model": "movies.genres",
+        "pk": 80,
+        "fields": {
+            "name": "범죄",
+            "tmdb_id": 80
+        }
+    },
+    {
+        "model": "movies.genres",
+        "pk": 99,
+        "fields": {
+            "name": "다큐멘터리",
+            "tmdb_id": 99
+        }
+    },
+    {
+        "model": "movies.genres",
+        "pk": 18,
+        "fields": {
+            "name": "드라마",
+            "tmdb_id": 18
+        }
+    },
+    {
+        "model": "movies.genres",
+        "pk": 10751,
+        "fields": {
+            "name": "가족",
+            "tmdb_id": 10751
+        }
+    },
+    {
+        "model": "movies.genres",
+        "pk": 14,
+        "fields": {
+            "name": "판타지",
+            "tmdb_id": 14
+        }
+    },
+    {
+        "model": "movies.genres",
+        "pk": 36,
+        "fields": {
+            "name": "역사",
+            "tmdb_id": 36
+        }
+    },
+    {
+        "model": "movies.genres",
+        "pk": 27,
+        "fields": {
+            "name": "공포",
+            "tmdb_id": 27
+        }
+    },
+    {
+        "model": "movies.genres",
+        "pk": 10402,
+        "fields": {
+            "name": "음악",
+            "tmdb_id": 10402
+        }
+    },
+    {
+        "model": "movies.genres",
+        "pk": 9648,
+        "fields": {
+            "name": "미스터리",
+            "tmdb_id": 9648
+        }
+    },
+    {
+        "model": "movies.genres",
+        "pk": 10749,
+        "fields": {
+            "name": "로맨스",
+            "tmdb_id": 10749
+        }
+    },
+    {
+        "model": "movies.genres",
+        "pk": 878,
+        "fields": {
+            "name": "SF",
+            "tmdb_id": 878
+        }
+    },
+    {
+        "model": "movies.genres",
+        "pk": 10770,
+        "fields": {
+            "name": "TV 영화",
+            "tmdb_id": 10770
+        }
+    },
+    {
+        "model": "movies.genres",
+        "pk": 53,
+        "fields": {
+            "name": "스릴러",
+            "tmdb_id": 53
+        }
+    },
+    {
+        "model": "movies.genres",
+        "pk": 10752,
+        "fields": {
+            "name": "전쟁",
+            "tmdb_id": 10752
+        }
+    },
+    {
+        "model": "movies.genres",
+        "pk": 37,
+        "fields": {
+            "name": "서부",
+            "tmdb_id": 37
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 912649,
+        "fields": {
+            "tmdb_id": 912649,
+            "title": "베놈: 라스트 댄스",
+            "overview": "환상의 케미스트리의 에디 브록과 그의 심비오트 베놈은 그들을 노리는 정체불명 존재의 추격을 피해 같이 도망을 다니게 된다. 한편 베놈의 창조자 널은 고향 행성에서부터 그들을 찾아내기 위해 지구를 침략하고 에디와 베놈은 그동안 겪어보지 못한 최악의 위기를 맞이하게 되는데…",
+            "release_date": "2024-10-22",
+            "poster_path": "/3flIDcZF3tnR7m5OU2h7lLPQwmr.jpg",
+            "genres": [
+                878,
+                28,
+                12
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 1034541,
+        "fields": {
+            "tmdb_id": 1034541,
+            "title": "테리파이어 3",
+            "overview": "\"아트 더 클라운\"이 크리스마스 이브에 평화롭게 잠든 \"마일스 카운티\"의 주민들을 향해 혼돈을 일으키려 한다",
+            "release_date": "2024-10-09",
+            "poster_path": "/l1175hgL5DoXnqeZQCcU3eZIdhX.jpg",
+            "genres": [
+                27,
+                53,
+                9648
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 558449,
+        "fields": {
+            "tmdb_id": 558449,
+            "title": "글래디에이터 II",
+            "overview": "로마의 영웅이자 최고의 검투사였던 막시무스가 콜로세움에서 죽음을 맞이한 뒤 20여 년이 흐른 후. 쌍둥이 황제 게타와 카라칼라의 폭압 아래 시민을 위한 자유로운 나라 로마의 꿈은 잊힌 지 오래다. 한편 아카시우스 장군이 이끄는 로마군에 대패한 후 모든 것을 잃고 노예로 전락한 루시우스는 강한 권력욕을 지닌 마크리누스의 눈에 띄어 검투사로 발탁된다. 로마를 향한 걷잡을 수 없는 분노, 타고난 투사의 기질로 콜로세움에 입성하게 된 루시우스는 결투를 거듭하며 자신이 진짜 누구인지 알게 되고 마침내 로마의 운명을 건 결전을 준비하게 되는데...!",
+            "release_date": "2024-11-13",
+            "poster_path": "/b5UXjzW5cLZhprMnlAmsVAA3G4t.jpg",
+            "genres": [
+                28,
+                12,
+                18
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 1184918,
+        "fields": {
+            "tmdb_id": 1184918,
+            "title": "와일드 로봇",
+            "overview": "우연한 사고로 거대한 야생에 불시착한 로봇 로즈는 주변 동물들의 행동을 배우며 낯선 환경 속에 적응해 가던 중, 사고로 세상에 홀로 남겨진 아기 기러기 브라이트빌의 보호자가 된다. 로즈는 입력되어 있지 않은 새로운 역할과 관계에 낯선 감정을 마주하고 겨울이 오기 전에 남쪽으로 떠나야 하는 브라이트빌을 위해 동물들의 도움을 받아 이주를 위한 생존 기술을 가르쳐준다. 그러나 선천적으로 몸집이 작은 브라이트빌은 짧은 비행도 힘겨워 하는데...",
+            "release_date": "2024-09-12",
+            "poster_path": "/8dkuf9IuVh0VZjDTk7kAY67lU0U.jpg",
+            "genres": [
+                16,
+                878,
+                10751
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 1118031,
+        "fields": {
+            "tmdb_id": 1118031,
+            "title": "아포칼립스 Z: 종말의 시작",
+            "overview": "광견병과 유사한 질병이 지구 전역에 퍼져 사람들이 공격적인 생명체로 변한다. 마넬은 고양이와 함께 집에 숨어서 재치를 발휘해 살아남는다. 곧 둘은 식량을 구하고 육지와 바다의 안전한 곳을 찾기 위해 떠나야 한다.",
+            "release_date": "2024-10-04",
+            "poster_path": "/hofZ9t2zQEYjQWNZ8cPjMByVHci.jpg",
+            "genres": [
+                18,
+                28,
+                27
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 533535,
+        "fields": {
+            "tmdb_id": 533535,
+            "title": "데드풀과 울버린",
+            "overview": "히어로 생활에서 은퇴한 후, 평범한 중고차 딜러로 살아가던 ‘데드풀’이 예상치 못한 거대한 위기를 맞아 모든 면에서 상극인 ‘울버린’을 찾아가게 되며 펼쳐지는 도파민 폭발 액션 블록버스터.",
+            "release_date": "2024-07-24",
+            "poster_path": "/4Zb4Z2HjX1t5zr1qYOTdVoisJKp.jpg",
+            "genres": [
+                28,
+                35,
+                878
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 933260,
+        "fields": {
+            "tmdb_id": 933260,
+            "title": "서브스턴스",
+            "overview": "더 나은 버전의 당신을 꿈꿔본 적 있나요? 당신의 인생을 바꿔줄 신제품 ‘서브스턴스’. ‘서브스턴스’는 또 다른 당신을 만들어냅니다. 새롭고, 젊고, 더 아름답고, 더 완벽한 당신을. 단 한가지 규칙, 당신의 시간을 공유하면 됩니다. 당신을 위한 일주일, 새로운 당신을 위한 일주일, 각각 7일간의 완벽한 밸런스. 쉽죠? 균형을 존중한다면… 무엇이 잘못될 수 있을까요?",
+            "release_date": "2024-09-07",
+            "poster_path": "/pq5Wh3DE0KIBjF2kdGHn98eV1PC.jpg",
+            "genres": [
+                18,
+                27,
+                878
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 1124641,
+        "fields": {
+            "tmdb_id": 1124641,
+            "title": "Classified",
+            "overview": "",
+            "release_date": "2024-09-19",
+            "poster_path": "/3k8jv1kSAAc0rCfFGtWDDQL4dfK.jpg",
+            "genres": [
+                28,
+                53
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 698687,
+        "fields": {
+            "tmdb_id": 698687,
+            "title": "트랜스포머 ONE",
+            "overview": "사이버트론 행성의 지하 광산에서 일하는 변신 못 하는 하급 로봇 오라이온 팩스와 D-16. 한 번도 가보지 못한 지상 세계를 꿈꾸던 둘은 쾌활한 수다쟁이 B-127, 카리스마 넘치는 엘리타 원과 함께 출입이 금지된 지상에 도달한다. 지상에서 잠들어 있던 알파 트라이온을 만난 넷은 그의 도움으로 잠재되어 있던 변신 능력을 얻게 된다. 막강한 힘과 변신 능력으로 자유를 느낀 것도 잠시, 자신들의 행성을 지배하고 있는 거대한 배후의 존재를 알게 되며 모든 것을 바꿀 전쟁을 시작하는데…",
+            "release_date": "2024-09-11",
+            "poster_path": "/c2JXlWzvXegSda8qaATr8I47kMx.jpg",
+            "genres": [
+                16,
+                878,
+                12,
+                10751
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 845781,
+        "fields": {
+            "tmdb_id": 845781,
+            "title": "레드 원",
+            "overview": "크리스마스 D-1, 철통같은 보안을 뚫고 코드명 '레드 원' 산타클로스가 납치되고 크리스마스가 사라질 위기에 처했다! '레드 원'을 찾기 위해 사령관 '칼럼 드리프트'는 산타클로스 따위는 없다고 믿는 현상금 사냥꾼 '잭 오말리'와 협력하기로 한다. 시작부터 삐그덕 거리는 이들 앞에 크리스마스의 존재를 위협하는 위험천만한 적들이 나타나는데…",
+            "release_date": "2024-10-31",
+            "poster_path": "/ryYEpxWiZFmJJZUyvQCBvM5UOCU.jpg",
+            "genres": [
+                28,
+                35,
+                14
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 791042,
+        "fields": {
+            "tmdb_id": 791042,
+            "title": "레벨스",
+            "overview": "",
+            "release_date": "2024-11-01",
+            "poster_path": "/y1xm0jMIlx9Oo2a3jWNyLGm43sJ.jpg",
+            "genres": [
+                28,
+                878,
+                53
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 945961,
+        "fields": {
+            "tmdb_id": 945961,
+            "title": "에이리언: 로물루스",
+            "overview": "2142년, 부모 세대가 맞닥뜨렸던 암울한 미래를 피하려는 청년들이 더 나은 삶을 찾기 위해 식민지를 떠날 계획을 세운다. 하지만 버려진 우주 기지 로물루스에 도착한 이들은 악몽과도 같은 에이리언의 무자비한 공격에 쫓기기 시작한다. 그 누구도 그들의 절규를 들을 수 없는 우주 한가운데, 생존을 위한 치열한 사투를 벌여야 하는데...",
+            "release_date": "2024-08-13",
+            "poster_path": "/AmWTYg3RCMv7fbQxwCqrxiaUhkc.jpg",
+            "genres": [
+                878,
+                27
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 179387,
+        "fields": {
+            "tmdb_id": 179387,
+            "title": "Heavenly Touch",
+            "overview": "",
+            "release_date": "2009-05-12",
+            "poster_path": "/ory8WuAqznTE7lfopTSymHpop2t.jpg",
+            "genres": [
+                18,
+                10749
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 519182,
+        "fields": {
+            "tmdb_id": 519182,
+            "title": "슈퍼배드 4",
+            "overview": "슈트-업 하고 악당 전담 처리반 AVL이 된 에이전트 미니언즈와 미니언즈 만큼 귀여운 그루 주니어가 태어나면서 더욱 완벽해진 그루 패밀리. 이들 앞에 과거 그루의 고등학교 동창이자 그에게 체포당했던 빌런 맥심이 등장하고, 오직 그루를 향한 복수심에 불타올라 탈옥까지 감행한 맥심은 그루 패밀리의 뒤를 바짝 추격하며 위협을 가하기 시작하는데... 과연 에이전트 미니언즈와 그루 패밀리는 맥심을 막아낼 수 있을까?",
+            "release_date": "2024-06-20",
+            "poster_path": "/5hl1PEpAvZ8Ok37kB7woIssHi3X.jpg",
+            "genres": [
+                16,
+                10751,
+                35,
+                28
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 1051896,
+        "fields": {
+            "tmdb_id": 1051896,
+            "title": "아카디안",
+            "overview": "문명의 대부분이 파괴된 지구, 쌍둥이 형제들이 정체를 알 수 없는 괴물들로부터 아버지 ‘폴’과 이웃들을 지키기 위해 나서며 벌어지는 액션 스릴러",
+            "release_date": "2024-04-12",
+            "poster_path": "/spWV1eRzlDxvai8LbxwAWR0Vst4.jpg",
+            "genres": [
+                28,
+                27,
+                53,
+                878
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 1142518,
+        "fields": {
+            "tmdb_id": 1142518,
+            "title": "자유",
+            "overview": "1980년대 프랑스에서 가장 악명 높았던 비폭력 강도 브루노 술락의 실화를 바탕으로 한 이야기다. 그는 여러 번 강도질을 하고, 경찰에 잡혀도 대담하게 탈출해 대중의 관심을 끌었다. 그가 매번 탈출한 이유는 사랑하는 연인이자 공범인 애니와 다시 만나기 위해서였고, 결국 그는 프랑스의 공공의 적 1호이자 자유의 아이콘이 되었다.",
+            "release_date": "2024-11-01",
+            "poster_path": "/trN0zFcrtcCPLWyqqQEVoToztNk.jpg",
+            "genres": [
+                28,
+                10749,
+                18
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 402431,
+        "fields": {
+            "tmdb_id": 402431,
+            "title": "위키드",
+            "overview": "자신의 진정한 힘을 아직 발견하지 못한 엘파바와 자신의 진정한 본성을 발견하지 못한 글린다, 전혀 다른 두 인물이 우정을 쌓아가며 맞닥뜨리는 예상치 못한 위기와 모험을 그린 이야기",
+            "release_date": "2024-11-20",
+            "poster_path": "/4FKnORrMQZtvk96YM4zdJLDwC9E.jpg",
+            "genres": [
+                18,
+                14,
+                10749
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 1116490,
+        "fields": {
+            "tmdb_id": 1116490,
+            "title": "캐시 아웃",
+            "overview": "전설적인 강도단의 보스 ‘메이슨’(존 트라볼타) 실패로 끝난 작전 이후 은퇴하고 잠적했던 그가 옛 팀원들의 다급한 요청으로 은행 강도 현장에 도착한다.  하지만 현장은 곧 치밀한 작전 따윈 사라지고 예상치 못한 FBI 협상가까지 등장하며 엉망이 되어버린다.  ‘메이슨’은 이제 FBI에 맞서 팀원들을 지키고 인생 마지막 한탕을 성공시키기 위해 완벽한 플랜 B를 설계하기 시작하는데…",
+            "release_date": "2024-04-26",
+            "poster_path": "/4r77ZO9pKgQuW1GxjMrktyY8eUP.jpg",
+            "genres": [
+                28,
+                53
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 1041317,
+        "fields": {
+            "tmdb_id": 1041317,
+            "title": "웨스턴 프론트: 서부전선",
+            "overview": "세계대전에서 가장 치열한 전투가 이어지는 서부전선. 전쟁 영웅을 동경하며 자원입대한 병사들은 생사의 전투 속에 오직 생존하기 위해 고군분투한다. 세계대전을 끝내기 위한 마지막 작전이 개시되고 지상전과 공중전의 총력전이 시작되는데… 진격하라 그리고 생존하라!",
+            "release_date": "2022-10-06",
+            "poster_path": "/b6311UcoaPq1JIuU3sDTVCKybP2.jpg",
+            "genres": [
+                10752
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 1022789,
+        "fields": {
+            "tmdb_id": 1022789,
+            "title": "인사이드 아웃 2",
+            "overview": "13살이 된 라일리의 행복을 위해 매일 바쁘게 머릿속 감정 컨트롤 본부를 운영하는 ‘기쁨’, ‘슬픔’, ‘버럭’, ‘까칠’, ‘소심’. 그러던 어느 날, 낯선 감정인 ‘불안’, ‘당황’, ‘따분’, ‘부럽’이가 본부에 등장하고, 언제나 최악의 상황을 대비하며 제멋대로인 ‘불안’이와 기존 감정들은 계속 충돌한다. 결국 새로운 감정들에 의해 본부에서 쫓겨나게 된 기존 감정들은 다시 본부로 돌아가기 위해 위험천만한 모험을 시작하는데…",
+            "release_date": "2024-06-11",
+            "poster_path": "/x2BHx02jMbvpKjMvbf8XxJkYwHJ.jpg",
+            "genres": [
+                16,
+                10751,
+                12,
+                35,
+                18
+            ]
+        }
+    }
+]

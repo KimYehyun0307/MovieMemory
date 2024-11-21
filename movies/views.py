@@ -8,9 +8,8 @@ from reviews.models import Review
 from accounts.forms import UserCreationForm  
 from accounts.models import User
 from django.core.files.storage import default_storage
-
 from .models import Movie
-from reviews.models import Review
+from .models import Genres
 from accounts.models import Genre
 
 
@@ -61,43 +60,53 @@ def index(request):
 
         # 5개씩 묶어서 처리
         genre_movies[genre_name] = [genre_movies[genre_name][i:i + 5] for i in range(0, len(genre_movies[genre_name]), 5)]  # 장르별로 5개씩 묶음
-    
+    genres = Genres.objects.all()
+
     return render(request, 'movies/index.html', {
         'grouped_movies': grouped_movies,
-        'genre_movies': genre_movies
+        'genre_movies': genre_movies,
+        'genres': genres,
     })
 
 
-def genre(request, genre_name):
-
+def genre(request, genre_id):
     # TMDB API에서 장르 ID와 해당 장르에 대한 영화 데이터를 가져오기
     genre_url = f"https://api.themoviedb.org/3/genre/movie/list?api_key={settings.TMDB_API_KEY}&language=ko"
     genre_response = requests.get(genre_url)
     genre_data = genre_response.json()
 
-    genre_mapping = {genre['name']: genre['id'] for genre in genre_data['genres']}
-    genre_id = genre_mapping.get(genre_name)
+    # 장르 ID를 확인하여 해당 장르 이름을 찾기
+    genre_mapping = {genre['id']: genre['name'] for genre in genre_data['genres']}
+    genre_name = genre_mapping.get(genre_id)
 
-    if not genre_id:
-        return render(request, 'movies/genre.html', {'error_message': f"'{genre_name}' 장르를 찾을 수 없습니다."})
+    if not genre_name:
+        return render(request, 'movies/genre.html', {'error_message': f"ID '{genre_id}'에 해당하는 장르를 찾을 수 없습니다."})
 
-    movies = get_genres(genre_id)
+    # TMDB에서 해당 장르의 영화 데이터를 가져오기
+    movies = get_genres(genre_id)  # get_genres 함수는 TMDB API에서 해당 장르의 영화 목록을 가져오는 함수입니다.
 
+    # DB에서 해당 장르의 영화 목록을 가져오기
+    genre_obj = get_object_or_404(Genres, tmdb_id=genre_id)  # 수정된 부분: genre_id를 기준으로 Genres 테이블에서 찾기
+    genre_movies = Movie.objects.filter(genres=genre_obj)
+
+    # 인기순, 평점순, 최근 출시순으로 영화 정렬
     sorted_movies = {
         '인기순': sorted(movies, key=lambda x: x['popularity'], reverse=True),
         '평점순': sorted(movies, key=lambda x: x['vote_average'], reverse=True),
         '최근 출시순': sorted(movies, key=lambda x: x['release_date'], reverse=True),
     }
 
+    # 영화 목록을 5개씩 묶어서 그룹화
     grouped_movies = {
         key: [sorted_movies[key][i:i + 5] for i in range(0, len(sorted_movies[key]), 5)]
         for key in sorted_movies
     }
 
     return render(request, 'movies/genre.html', {
-        'genre_name': genre_name,
-        'grouped_movies': grouped_movies,
-        'genres': genre_data['genres'],  # 장르 데이터를 전달
+        'genre_name': genre_name,  # 장르 이름 전달
+        'grouped_movies': grouped_movies,  # 영화 데이터를 그룹화하여 전달
+        'genres': genre_data['genres'],  # TMDB에서 가져온 모든 장르 데이터를 전달
+        'genre_movies': genre_movies,  # DB에서 가져온 해당 장르의 영화 목록 전달
     })
 
 
@@ -125,12 +134,13 @@ def detail(request, movie_id):
             'poster_path': movie_data.get('poster_path', ''),
         }
     )
+    genres = Genres.objects.all()  # 장르 데이터 가져오기
 
     # 영화에 대한 리뷰 가져오기
     reviews = Review.objects.filter(movie=movie).order_by('-created_at')
 
     # 영화 세부 정보와 리뷰를 전달
-    return render(request, 'movies/detail.html', {'movie': movie_data, 'reviews': reviews, 'trailer': trailer})
+    return render(request, 'movies/detail.html', {'movie': movie_data, 'reviews': reviews, 'trailer': trailer, 'genres': genres})
 
 
 def search(request):
