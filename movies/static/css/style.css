@@ -258,3 +258,158 @@ body {
   background-color: #9e6f27; /* 동색 버튼 호버 */
 }
 
+/* 달력 스타일링 */
+/* 달력 전체 스타일 */
+.calendar {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+/* 테이블 헤더(th)와 데이터 셀(td) 공통 스타일 */
+.calendar th, .calendar td {
+  padding: 15px;
+  text-align: center;
+  font-size: 1.2em;
+  border: 1px solid #ccc; /* 공통 테두리 스타일 */
+}
+
+/* 헤더 스타일 */
+.calendar th {
+  background-color: #f0f0f0;
+}
+
+/* 날짜 셀의 기본 스타일 */
+.calendar td {
+  width: 14.2%; /* 7열 균등 */
+  height: 120px; /* 고정 높이 */
+  background-color: #fafafa;  /* 배경색 설정 */
+  vertical-align: top;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 날짜 숫자 스타일 */
+.calendar .day-number {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 5px 0;
+  color: #000;
+}
+
+/* 영화 리스트 스타일 */
+.calendar .movie-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 5px 0 0 0;
+  font-size: 12px;
+  color: #333;
+  text-align: left;
+  max-height: 80px; /* 영화 목록 최대 높이 */
+  overflow-y: auto; /* 스크롤 표시 */
+}
+
+/* 영화 제목 스타일 (긴 제목을 ...으로 표시) */
+.calendar .movie-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* 내용이 넘치면 "..." 표시 */
+  margin: 2px 0;
+}
+
+/* 날짜 셀의 배경과 관련된 스타일은 제거하고, 더 간결하게 조정함 */
+.calendar .calendar-day {
+  background-color: #fff; /* 날짜 셀 배경색 */
+  position: relative;
+  height: 100px; /* 고정 높이 */
+  border: 1px solid #ddd; /* 테두리 */
+}
+
+/* "더 보기" 버튼 스타일 */
+.more-movies {
+  font-size: 12px;
+  color: #007bff;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 5px;
+}
+
+
+
+.day-number {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.movie-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 5px 0 0 0;
+  font-size: 12px;
+  color: #333;
+  text-align: left;
+  max-height: 80px; /* 영화 목록 최대 높이 */
+  overflow: hidden; /* 스크롤 제거 */
+}
+
+/* 각 영화 제목 */
+.movie-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* 내용이 넘치면 "..." 표시 */
+  margin: 2px 0;
+}
+
+.movie-title:hover {
+  overflow: visible; /* 제목이 길 경우 툴팁을 통해 확인 가능 */
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+/* 5개 이상일 경우 "..." 추가 표시 */
+.movie-title.more {
+  font-size: 12px;
+  color: #007bff;
+  text-align: center;
+  cursor: pointer;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+/* 모달 스타일 */
+.modal {
+  display: none; /* 기본적으로 숨김 */
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding-top: 60px;
+}
+
+/* 모달 내용 */
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px;
+}
+
+/* 닫기 버튼 */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover, .close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}

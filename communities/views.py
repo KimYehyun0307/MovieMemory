@@ -5,13 +5,41 @@ from .forms import MovieReviewForm, CommentForm, BambooPostForm, EventParticipat
 from django.contrib.auth.decorators import login_required
 from accounts.models import User
 from movies.models import Movie
-from django.shortcuts import render
 from .models import ScreeningSchedule, Event, MovieReview, BambooPost
+from collections import defaultdict
 from django.db.models import Count
+from datetime import datetime
+import calendar
 
-# 커뮤니티 메인 페이지
 def main_community(request):
-    screening_schedules = ScreeningSchedule.objects.all()
+    # 현재 날짜 가져오기
+    today = datetime.today()
+    current_year = today.year  # 현재 연도
+    current_month = today.month  # 현재 월
+    current_day = today.day  # 현재 일
+
+    # 상영 예정 영화 데이터를 날짜별로 가져오기 (이미 DB에 저장된 데이터 사용)
+    upcoming_schedules = ScreeningSchedule.objects.all().order_by('screening_date')
+
+    grouped_schedules = defaultdict(set)  # 중복 제거를 위해 set 사용
+    for schedule in upcoming_schedules:
+        formatted_date = schedule.screening_date.strftime('%Y-%m-%d')
+        grouped_schedules[formatted_date].add(schedule.movie_title)
+
+    # set을 다시 list로 변환 (템플릿에서 반복 가능하도록)
+    grouped_schedules = {date: list(titles) for date, titles in grouped_schedules.items()}
+
+    # 주별로 나누어진 날짜 생성 (달력 데이터)
+    calendar_instance = calendar.Calendar()
+    weeks_in_month = list(calendar_instance.monthdatescalendar(current_year, current_month))
+
+    # 각 날짜에 해당하는 "몇 주차"인지 계산
+    week_info = {}  # 날짜별 몇 주차 정보를 저장
+    for week_index, week in enumerate(weeks_in_month, start=1):  # 주차는 1부터 시작
+        for day in week:
+            if day.month == current_month:  # 현재 월의 날짜만 저장
+                formatted_day = day.strftime('%Y-%m-%d')
+                week_info[formatted_day] = week_index
 
     # 진행 중인 이벤트 가져오기
     active_events = Event.objects.filter(is_active=True)
@@ -22,8 +50,14 @@ def main_community(request):
     # 인기 대나무숲 게시물
     popular_bamboo_posts = BambooPost.objects.annotate(comment_count=Count('comments')).order_by('-comment_count')[:5]
 
+    # Context에 데이터 추가
     context = {
-        'screening_schedules': screening_schedules,
+        'grouped_schedules': grouped_schedules,  # 날짜별 영화 목록
+        'week_info': week_info,  # 날짜별 몇 주차 정보
+        'current_year': current_year,
+        'current_month': current_month,
+        'current_day': current_day,
+        'weeks_in_month': weeks_in_month,  # 주별로 나누어진 날짜들
         'active_events': active_events,
         'popular_reviews': popular_reviews,
         'popular_bamboo_posts': popular_bamboo_posts,
