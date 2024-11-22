@@ -10,6 +10,7 @@ from collections import defaultdict
 from django.db.models import Count
 from datetime import datetime
 import calendar
+from django.core.paginator import Paginator
 
 def main_community(request):
     # 현재 날짜 가져오기
@@ -69,13 +70,20 @@ def main_community(request):
 # 영화 게시판
 def board(request, movie_title):
     movie = get_object_or_404(Movie, title=movie_title)
-    reviews = MovieReview.objects.filter(movie=movie)
+    # 인기 글 5개 (좋아요 많은 순으로)
+    popular_reviews = MovieReview.objects.filter(movie=movie).order_by('-likes')[:5]
+
+    # 영화 후기 15개씩 페이지네이션
+    reviews = MovieReview.objects.filter(movie=movie).order_by('-created_at')
+    paginator = Paginator(reviews, 15)
+    page_number = request.GET.get('page')
+    reviews_page = paginator.get_page(page_number)
 
     context = {
-      'movie': movie, 
-      'reviews': reviews,
+        'movie': movie,
+        'popular_reviews': popular_reviews,
+        'reviews': reviews_page
     }
-
     return render(request, 'communities/board.html', context)
 
 # 영화 게시물 보기
@@ -94,25 +102,40 @@ def post(request, movie_title, post_num):
 
 # 영화 게시물 수정
 @login_required
-def post_edit(request, movie_title, post_num):
-    review = get_object_or_404(MovieReview, pk=post_num)
-    # 수정 권한 체크 (작성자 본인만 수정 가능)
-    if review.user != request.user and not request.user.is_superuser:
-        return HttpResponseForbidden("권한이 없습니다.")
-    
+def post_edit(request, movie_title, post_num=None):
+    # post_num이 None이면 새 게시물 작성, 아니면 기존 게시물 수정
+    if post_num:
+        review = get_object_or_404(MovieReview, pk=post_num)
+        # 수정 권한 체크 (작성자 본인만 수정 가능)
+        if review.user != request.user and not request.user.is_superuser:
+            return HttpResponseForbidden("권한이 없습니다.")
+    else:
+        review = None  # 새 게시물 작성
+
     if request.method == "POST":
         form = MovieReviewForm(request.POST, request.FILES, instance=review)
         if form.is_valid():
-            form.save()
-            return redirect('communities:board', movie_title=movie_title)
+            # 새 게시물인 경우
+            if not review:
+                new_review = form.save(commit=False)
+                new_review.user = request.user  # 새 게시물 작성자 설정
+                new_review.movie_title = movie_title  # 영화 제목 설정
+                new_review.save()
+            else:
+                form.save()  # 기존 게시물 수정
+
+            return redirect('communities:movieboard', movie_title=movie_title)
     else:
         form = MovieReviewForm(instance=review)
 
     context = {
-        'form': form, 
-        'review': review
+        'form': form,
+        'review': review,
+        'movie_title': movie_title,
     }
     return render(request, 'communities/post_edit.html', context)
+
+
 
 # 영화 게시물 삭제
 @login_required
@@ -123,7 +146,7 @@ def post_delete(request, movie_title, post_num):
         return HttpResponseForbidden("권한이 없습니다.")
     
     review.delete()
-    return redirect('communities:board', movie_title=movie_title)
+    return redirect('communities:movieboard', movie_title=movie_title)
 
 # 대나무숲 게시판
 def bamboo(request):
