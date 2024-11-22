@@ -1,0 +1,98 @@
+[
+  {
+    "model": "movies.movie",
+    "pk": 1,
+    "fields": {
+      "title": "Wicked",
+      "release_date": "2024-11-20",
+      "overview": "A magical musical about witches",
+      "poster_path": "/4FKnORrMQZtvk96YM4zdJLDwC9E.jpg",
+      "tmdb_id": 1
+    }
+  },
+  {
+      "model": "communities.moviereview",
+      "pk": 10,
+      "fields": {
+          "movie": 1,
+          "user": 1,
+          "nickname": "뮤지컬팬1",
+          "title": "위키드 정말 감동적이에요!",
+          "content": "위키드는 정말 마법같은 영화입니다. 배우들의 연기와 음악이 환상적이에요.",
+          "created_at": "2024-11-21T12:00:00Z",
+          "updated_at": "2024-11-21T12:00:00Z",
+          "is_comment_enabled": true,
+          "rating": 5,
+          "likes": 10,
+          "image": null
+      }
+  },
+  {
+      "model": "communities.moviereview",
+      "pk": 2,
+      "fields": {
+          "movie": 1,
+          "user": 2,
+          "nickname": "영화광2",
+          "title": "음악이 정말 좋았습니다.",
+          "content": "뮤지컬 영화답게 음악이 정말 마음에 들었어요. 다만 중간에 전개가 조금 느렸던 것 같아요.",
+          "created_at": "2024-11-21T14:30:00Z",
+          "updated_at": "2024-11-21T14:30:00Z",
+          "is_comment_enabled": true,
+          "rating": 4,
+          "likes": 8,
+          "image": null
+      }
+  },
+  {
+      "model": "communities.moviereview",
+      "pk": 3,
+      "fields": {
+          "movie": 1,
+          "user": 3,
+          "nickname": "아름다운삶",
+          "title": "다시 보고 싶은 영화",
+          "content": "한 번으로는 감상하기에 부족할 정도로 매력적인 영화였어요. 특히 마지막 장면이 압권이었죠.",
+          "created_at": "2024-11-21T16:45:00Z",
+          "updated_at": "2024-11-21T16:45:00Z",
+          "is_comment_enabled": true,
+          "rating": 5,
+          "likes": 15,
+          "image": "movie_reviews/wicked_final_scene.jpg"
+      }
+  },
+  {
+      "model": "communities.moviereview",
+      "pk": 4,
+      "fields": {
+          "movie": 1,
+          "user": 4,
+          "nickname": "초록마녀팬",
+          "title": "스토리가 독특해서 좋았습니다",
+          "content": "기존의 뮤지컬과 달리 캐릭터 중심의 이야기가 흥미로웠습니다. 추천합니다!",
+          "created_at": "2024-11-22T09:00:00Z",
+          "updated_at": "2024-11-22T09:00:00Z",
+          "is_comment_enabled": false,
+          "rating": 4,
+          "likes": 5,
+          "image": null
+      }
+  },
+  {
+      "model": "communities.moviereview",
+      "pk": 5,
+      "fields": {
+          "movie": 1,
+          "user": 5,
+          "nickname": "엘파바의눈물",
+          "title": "이 영화는 걸작입니다.",
+          "content": "엘파바의 캐릭터에 감정 이입이 많이 되었습니다. 정말 걸작이라 생각합니다.",
+          "created_at": "2024-11-22T11:30:00Z",
+          "updated_at": "2024-11-22T11:30:00Z",
+          "is_comment_enabled": true,
+          "rating": 5,
+          "likes": 20,
+          "image": null
+      }
+  }
+]

@@ -2,4 +2,29 @@
 {% load static %}
 
 {% block content %}
+<h1>{{ review.title }}</h1>
+<p>작성자: {{ review.nickname }}</p>
+<p>작성일: {{ review.created_at }}</p>
+<p>{{ review.content }}</p>
+{% if review.image %}
+<img src="{{ review.image.url }}" alt="Review Image">
+{% endif %}
+
+<h3>댓글</h3>
+<ul>
+    {% for comment in comments %}
+    <li>{{ comment.nickname }}: {{ comment.content }}</li>
+    {% endfor %}
+</ul>
+
+<!-- 댓글 작성 폼 -->
+<form method="POST">
+    {% csrf_token %}
+    {{ comment_form.as_p }}
+    <button type="submit">댓글 작성</button>
+</form>
+
+<!-- 수정 및 삭제 -->
+<a href="{% url 'communities.post_edit' review.movie.title review.id %}">수정</a>
+<a href="{% url 'communities.post_delete' review.movie.title review.id %}">삭제</a>
 {% endblock content %}

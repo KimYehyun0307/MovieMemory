@@ -17,6 +17,6 @@ def load_fixtures(sender, **kwargs):
     """
     try:
         call_command('loaddata', 'movies/fixtures/movies/movies_data.json')  
-        print("Genres fixtures loaded successfully.")
+        print("Movie Data fixtures loaded successfully.")
     except Exception as e:
         print(f"Error loading fixtures: {e}")
