@@ -2,4 +2,11 @@
 {% load static %}
 
 {% block content %}
+<h1>{{ review.id|yesno:"글 수정하기,새 글 작성하기" }}</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">저장</button>
+</form>
+<a href="{% url 'communities:movieboard' review.movie.title %}">돌아가기</a>
 {% endblock content %}

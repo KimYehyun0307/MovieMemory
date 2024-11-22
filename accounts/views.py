@@ -1,17 +1,13 @@
-import logging
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.conf import settings
-from social_django.utils import psa, get_strategy
 from .models import User, KakaoUser, Genre
 from .forms import CustomUserCreationForm
+from social_django.utils import psa
 import requests
 import os
-
-# 로거 설정
-logger = logging.getLogger(__name__)
 
 def login_view(request):
     if request.method == 'POST':
@@ -59,7 +55,6 @@ def kakao_login(request):
     kakao_api_key = settings.SOCIAL_AUTH_KAKAO_KEY
     redirect_uri = request.build_absolute_uri('/accounts/kakao/callback/')
     kakao_auth_url = f"https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={kakao_api_key}&redirect_uri={redirect_uri}"
-    logger.debug(f"Kakao login redirect URL: {kakao_auth_url}")  # 로그인 URL 디버깅
     return redirect(kakao_auth_url)
 
 def kakao_callback(request):
@@ -107,11 +102,6 @@ def kakao_callback(request):
                 image_name = f"{username}_profile.jpg"  # 파일 이름을 사용자 이름 기반으로 설정
                 image_path = os.path.join(settings.MEDIA_ROOT, 'profile', image_name)
                 
-                # 디렉토리 확인 후 없으면 생성
-                image_dir = os.path.join(settings.MEDIA_ROOT, 'profile')
-                if not os.path.exists(image_dir):
-                    os.makedirs(image_dir)
-
                 # 이미지 파일 저장
                 with open(image_path, 'wb') as image_file:
                     image_file.write(image_response.content)
@@ -135,6 +125,8 @@ def kakao_callback(request):
                 user=user,
                 profile_nickname=nickname,
                 profile_image=profile_image,
+                # 생년월일 및 장르 정보는 사용자가 따로 입력하도록 처리
+                # 예: user.birthdate = 생년월일 입력값, user.genre_1 = 장르 입력값 등
             )
         else:
             # 기존 사용자 정보 갱신
@@ -153,7 +145,6 @@ def kakao_callback(request):
         return redirect('movies:index')
 
     # 사용자 로그인 처리 (backend 명시)
-    strategy = get_strategy(request)
-    login(request, user, backend='social_core.backends.kakao.KakaoOAuth2', strategy=strategy)
+    login(request, user, backend='social_core.backends.kakao.KakaoOAuth2')
     messages.success(request, "카카오 로그인 성공!")
     return redirect('movies:index')

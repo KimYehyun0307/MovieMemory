@@ -1,0 +1,182 @@
+[
+  {
+    "model": "accounts.user",
+    "pk": 1,
+    "fields": {
+      "username": "user1",
+      "password": "password1",
+      "nickname": "뮤지컬팬1",
+      "birthdate": "1995-06-15",
+      "profile_image": "images/default.png",
+      "genre_1": 12,
+      "genre_2": 14,
+      "genre_3": 16,
+      "is_nickname_public": true,
+      "is_birthdate_public": true,
+      "is_genre_public": true,
+      "is_reviews_public": true
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 2,
+    "fields": {
+      "username": "user2",
+      "password": "password2",
+      "nickname": "영화광2",
+      "birthdate": "1992-04-20",
+      "profile_image": "images/default.png",
+      "genre_1": 18,
+      "genre_2": 27,
+      "genre_3": 28,
+      "is_nickname_public": true,
+      "is_birthdate_public": true,
+      "is_genre_public": true,
+      "is_reviews_public": true
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 3,
+    "fields": {
+      "username": "user3",
+      "password": "password3",
+      "nickname": "아름다운삶",
+      "birthdate": "1990-11-30",
+      "profile_image": "images/default.png",
+      "genre_1": 35,
+      "genre_2": 36,
+      "genre_3": 37,
+      "is_nickname_public": true,
+      "is_birthdate_public": false,
+      "is_genre_public": true,
+      "is_reviews_public": true
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 4,
+    "fields": {
+      "username": "user4",
+      "password": "password4",
+      "nickname": "초록마녀팬",
+      "birthdate": "1988-02-14",
+      "profile_image": "images/default.png",
+      "genre_1": 53,
+      "genre_2": 80,
+      "genre_3": 99,
+      "is_nickname_public": false,
+      "is_birthdate_public": true,
+      "is_genre_public": false,
+      "is_reviews_public": false
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 5,
+    "fields": {
+      "username": "user5",
+      "password": "password5",
+      "nickname": "엘파바의눈물",
+      "birthdate": "1999-08-23",
+      "profile_image": "images/default.png",
+      "genre_1": 878,
+      "genre_2": 9648,
+      "genre_3": 10402,
+      "is_nickname_public": true,
+      "is_birthdate_public": true,
+      "is_genre_public": true,
+      "is_reviews_public": true
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 6,
+    "fields": {
+      "username": "user6",
+      "password": "password6",
+      "nickname": "영화매니아6",
+      "birthdate": "1991-03-10",
+      "profile_image": "images/default.png",
+      "genre_1": 10749,
+      "genre_2": 10751,
+      "genre_3": 10752,
+      "is_nickname_public": true,
+      "is_birthdate_public": false,
+      "is_genre_public": true,
+      "is_reviews_public": false
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 7,
+    "fields": {
+      "username": "user7",
+      "password": "password7",
+      "nickname": "시네마러버",
+      "birthdate": "1994-12-25",
+      "profile_image": "images/default.png",
+      "genre_1": 12,
+      "genre_2": 14,
+      "genre_3": 16,
+      "is_nickname_public": false,
+      "is_birthdate_public": true,
+      "is_genre_public": true,
+      "is_reviews_public": true
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 8,
+    "fields": {
+      "username": "user8",
+      "password": "password8",
+      "nickname": "영화광8",
+      "birthdate": "1985-09-17",
+      "profile_image": "images/default.png",
+      "genre_1": 18,
+      "genre_2": 27,
+      "genre_3": 28,
+      "is_nickname_public": true,
+      "is_birthdate_public": true,
+      "is_genre_public": true,
+      "is_reviews_public": true
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 9,
+    "fields": {
+      "username": "user9",
+      "password": "password9",
+      "nickname": "무비매니아9",
+      "birthdate": "1980-05-04",
+      "profile_image": "images/default.png",
+      "genre_1": 35,
+      "genre_2": 36,
+      "genre_3": 37,
+      "is_nickname_public": true,
+      "is_birthdate_public": false,
+      "is_genre_public": true,
+      "is_reviews_public": true
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 10,
+    "fields": {
+      "username": "user10",
+      "password": "password10",
+      "nickname": "영화광10",
+      "birthdate": "1996-07-13",
+      "profile_image": "images/default.png",
+      "genre_1": 53,
+      "genre_2": 80,
+      "genre_3": 99,
+      "is_nickname_public": true,
+      "is_birthdate_public": true,
+      "is_genre_public": true,
+      "is_reviews_public": false
+    }
+  }
+]
