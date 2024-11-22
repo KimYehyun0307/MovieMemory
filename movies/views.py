@@ -97,11 +97,11 @@ def genre(request, genre_id):
         '최근 출시순': sorted(movies, key=lambda x: x['release_date'], reverse=True),
     }
 
-    # 영화 목록을 5개씩 묶어서 그룹화
-    grouped_movies = {
-        key: [sorted_movies[key][i:i + 5] for i in range(0, len(sorted_movies[key]), 5)]
-        for key in sorted_movies
-    }
+    # 각 영화 데이터에 rank를 추가하고 그룹화
+    grouped_movies = {}
+    for sort_type, movie_list in sorted_movies.items():
+        # 5개씩 묶어서 그룹화
+        grouped_movies[sort_type] = [movie_list[i:i + 5] for i in range(0, len(movie_list), 5)]
 
     return render(request, 'movies/genre.html', {
         'genre_name': genre_name,  # 장르 이름 전달
@@ -109,6 +109,7 @@ def genre(request, genre_id):
         'genres': genre_data['genres'],  # TMDB에서 가져온 모든 장르 데이터를 전달
         'genre_movies': genre_movies,  # DB에서 가져온 해당 장르의 영화 목록 전달
     })
+
 
 
 def detail(request, movie_id):

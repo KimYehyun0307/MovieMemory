@@ -114,11 +114,13 @@
 
               <!-- 댓글 작성란 -->
               <div style="flex: 0.5; text-align: right;">
-                <button class="btn btn-sm btn-primary" onclick="showCommentBox({{ review.id }})">댓글 작성</button>
-                <div id="comment-form-{{ review.id }}" style="display:none; margin-top: 10px;">
-                  <textarea id="comment-content-{{ review.id }}" class="form-control mb-2" rows="3"></textarea>
-                  <button class="btn btn-sm btn-success" onclick="addComment({{ review.id }})">댓글 추가</button>
-                </div>
+                {% if user.is_authenticated %}
+                  <button class="btn btn-sm btn-primary" onclick="showCommentBox({{ review.id }})">댓글 작성</button>
+                  <div id="comment-form-{{ review.id }}" style="display:none; margin-top: 10px;">
+                    <textarea id="comment-content-{{ review.id }}" class="form-control mb-2" rows="3"></textarea>
+                    <button class="btn btn-sm btn-success" onclick="addComment({{ review.id }})">댓글 추가</button>
+                  </div>
+                {% endif %}
               </div>
             </div>
 

@@ -38,7 +38,7 @@
 
     <!-- 장르별 인기 영화 리스트 -->
     {% for genre, movies in genre_movies.items %}
-        <h2 class="text-center genre-title">{{ genre }} 장르</h2>
+        <h2 class="text-center genre-title">{{ genre }}</h2>
         <div id="genreCarousel{{ genre }}" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
                 {% for group in movies %}
