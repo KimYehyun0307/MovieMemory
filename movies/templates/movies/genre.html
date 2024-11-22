@@ -3,15 +3,15 @@
 {% block content %}
     <h1 class="text-center">{{ genre_name }}</h1>
 
-    {% for sort_type, movies in grouped_movies.items %}
-        <h2 class="text-center genre-title">{{ sort_type }}</h2>
-        <div id="carousel{{ sort_type }}" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-                {% for group in movies %}
-                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                        <div class="d-flex justify-content-center">
-                            {% for movie in group %}
-                                {% if forloop.counter0 < 20 %}
+    {% with counter=1 %}
+        {% for sort_type, movies in grouped_movies.items %}
+            <h2 class="text-center genre-title">{{ sort_type }}</h2>
+            <div id="carousel{{ sort_type }}" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    {% for group in movies %}
+                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                            <div class="d-flex justify-content-center">
+                                {% for movie in group %}
                                     <div class="mx-2">
                                         <a href="{% url 'movies:detail' movie.id %}">
                                             <img src="https://image.tmdb.org/t/p/w500/{{ movie.poster_path }}" 
@@ -19,23 +19,25 @@
                                                  class="movie-poster">
                                         </a>
                                         <div class="text-center mt-2">
-                                            <p>{{ forloop.counter0|add:1 }}위</p>  <!-- 순위 출력 (1부터 시작) -->
+                                            <p>{{ counter }}위</p>  <!-- 순위 출력 -->
                                         </div>
                                     </div>
-                                {% endif %}
-                            {% endfor %}
+                                    {% with counter=counter|add:1 %}
+                                    {% endwith %}
+                                {% endfor %}
+                            </div>
                         </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
+                <a class="carousel-control-prev" href="#carousel{{ sort_type }}" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carousel{{ sort_type }}" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
             </div>
-            <a class="carousel-control-prev" href="#carousel{{ sort_type }}" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#carousel{{ sort_type }}" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
-        </div>
-    {% endfor %}
+        {% endfor %}
+    {% endwith %}
 {% endblock %}

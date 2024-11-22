@@ -97,7 +97,9 @@
               <!-- 리뷰 내용 -->
               <div style="flex: 1; padding-right: 20px;">
                 <div>
+                  <a href="{% url 'movies:profile' review.user.nickname %}">
                   <strong>{{ review.user.nickname }}</strong>:
+                  </a>
                   {{ review.content }}
                   <span class="badge badge-info">평점: {{ review.rating }}점</span>
                 </div>
