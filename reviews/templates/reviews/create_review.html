@@ -1,17 +1,132 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <div class="d-flex flex-column p-5 rounded mx-auto" style="max-width: 50%; background-color: #161616; border-radius: 10px; margin-top: 20px;">
+<style>
+.rating-stars {
+  display: flex;
+  gap: 5px;
+  flex-direction: row-reverse; /* 별 순서를 오른쪽에서 왼쪽으로 설정 */
+  justify-content: center; /* 컨테이너 안에서 가운데 정렬 */
+}
+
+.rating-stars input[type="radio"] {
+  display: none; /* radio 버튼 숨김 */
+}
+
+.rating-stars label {
+  font-size: 2rem;
+  color: #ccc; /* 기본 회색 */
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.rating-stars label:hover,
+.rating-stars label:hover ~ label {
+  color: #ffcc00; /* 호버 시 선택된 별부터 왼쪽까지 노란색 */
+}
+
+.rating-stars input[type="radio"]:checked + label,
+.rating-stars input[type="radio"]:checked + label ~ label {
+  color: #ffcc00; /* 선택된 별과 왼쪽 별들 노란색 */
+}
+
+  
+
+
+
+/* 리뷰 작성 폼 스타일 */
+.review-container {
+  background-color: #2c2f36;
+  border-radius: 10px;
+  padding: 30px;
+}
+
+.review-container h1 {
+  color: white;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.review-container .form-group label {
+  font-weight: bold;
+  color: white;
+}
+
+.review-container .form-control {
+  border-radius: 10px;
+  padding: 10px;
+  border: 1px solid #444;
+  background-color: #333;
+  color: white;
+}
+
+.review-container .form-control::placeholder {
+  color: #aaa;
+}
+
+.review-container .btn {
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.review-container .btn-primary {
+  background-color: #007bff;
+  border: none;
+}
+
+.review-container .btn-secondary {
+  background-color: #6c757d;
+  border: none;
+}
+
+.review-container .btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.review-container .btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+</style>
+  <h1 class="text-center text-white mb-4">Review</h1>
+
+  <div class="review-container d-flex flex-column p-4 mx-auto" style="max-width: 60%; background-color: #2c2f36; border-radius: 10px; margin-top: 30px;">
     <form method="post">
         {% csrf_token %}
-        <!-- form.as_p로 출력하고, 중앙 정렬 적용 -->
-        <div class="form-group text-center">
-            {{ form.as_p }}
+        
+        <!-- 평점 선택 부분 -->
+        <div class="form-group">
+            <label for="rating" class="text-white">평점</label>
+            <div class="rating-stars">
+              <input type="radio" id="star5" name="rating" value="5">
+              <label for="star5">★</label>
+            
+              <input type="radio" id="star4" name="rating" value="4">
+              <label for="star4">★</label>
+            
+              <input type="radio" id="star3" name="rating" value="3">
+              <label for="star3">★</label>
+            
+              <input type="radio" id="star2" name="rating" value="2">
+              <label for="star2">★</label>
+            
+              <input type="radio" id="star1" name="rating" value="1">
+              <label for="star1">★</label>
+            </div>                 
         </div>
+
+        <!-- 내용 입력 부분 -->
+        <div class="form-group">
+            <label for="review_content" class="text-white">리뷰 내용</label>
+            <textarea id="review_content" name="content" rows="5" class="form-control" placeholder="여기에 리뷰 내용을 입력하세요"></textarea>
+        </div>
+
+        <!-- 제출 및 취소 버튼 -->
         <div class="form-group text-center">
             <button type="submit" class="btn btn-primary">작성</button>
             <a href="{% url 'movies:detail' movie_id=movie.tmdb_id %}" class="btn btn-secondary">취소</a>
         </div>
     </form>
   </div>
+
 {% endblock %}

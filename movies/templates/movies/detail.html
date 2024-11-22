@@ -1,6 +1,32 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+<style>
+  /* 별 아이콘 공통 스타일 */
+  .star-rating {
+    display: inline-block;
+    position: relative;
+    font-size: 24px;
+    color: #ccc; /* 기본 테두리 색 */
+  }
+
+  .star-rating::before {
+    content: '★★★★★'; /* 별 5개 */
+    color: #ccc; /* 기본 회색 */
+  }
+
+  .star-rating::after {
+    content: '★★★★★'; /* 별 5개 */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0%; /* 초기값: 별 채우기 없음 */
+    color: #ffcc00; /* 별 채우기 색 (노란색) */
+    overflow: hidden;
+  }
+</style>
+
   <!-- 영화 정보 섹션 -->
   <div class="d-flex flex-column p-5 rounded mx-auto" style="max-width: 50%; background-color: #161616; border-radius: 10px;">
     <!-- 첫 번째 행: 포스터와 영화 정보 -->
