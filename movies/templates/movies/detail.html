@@ -1,6 +1,32 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+<style>
+  /* 별 아이콘 공통 스타일 */
+  .star-rating {
+    display: inline-block;
+    position: relative;
+    font-size: 24px;
+    color: #ccc; /* 기본 테두리 색 */
+  }
+
+  .star-rating::before {
+    content: '★★★★★'; /* 별 5개 */
+    color: #ccc; /* 기본 회색 */
+  }
+
+  .star-rating::after {
+    content: '★★★★★'; /* 별 5개 */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0%; /* 초기값: 별 채우기 없음 */
+    color: #ffcc00; /* 별 채우기 색 (노란색) */
+    overflow: hidden;
+  }
+</style>
+
   <!-- 영화 정보 섹션 -->
   <div class="d-flex flex-column p-5 rounded mx-auto" style="max-width: 50%; background-color: #161616; border-radius: 10px;">
     <!-- 첫 번째 행: 포스터와 영화 정보 -->
@@ -71,7 +97,9 @@
               <!-- 리뷰 내용 -->
               <div style="flex: 1; padding-right: 20px;">
                 <div>
+                  <a href="{% url 'movies:profile' review.user.nickname %}">
                   <strong>{{ review.user.nickname }}</strong>:
+                  </a>
                   {{ review.content }}
                   <span class="badge badge-info">평점: {{ review.rating }}점</span>
                 </div>
@@ -88,11 +116,13 @@
 
               <!-- 댓글 작성란 -->
               <div style="flex: 0.5; text-align: right;">
-                <button class="btn btn-sm btn-primary" onclick="showCommentBox({{ review.id }})">댓글 작성</button>
-                <div id="comment-form-{{ review.id }}" style="display:none; margin-top: 10px;">
-                  <textarea id="comment-content-{{ review.id }}" class="form-control mb-2" rows="3"></textarea>
-                  <button class="btn btn-sm btn-success" onclick="addComment({{ review.id }})">댓글 추가</button>
-                </div>
+                {% if user.is_authenticated %}
+                  <button class="btn btn-sm btn-primary" onclick="showCommentBox({{ review.id }})">댓글 작성</button>
+                  <div id="comment-form-{{ review.id }}" style="display:none; margin-top: 10px;">
+                    <textarea id="comment-content-{{ review.id }}" class="form-control mb-2" rows="3"></textarea>
+                    <button class="btn btn-sm btn-success" onclick="addComment({{ review.id }})">댓글 추가</button>
+                  </div>
+                {% endif %}
               </div>
             </div>
 

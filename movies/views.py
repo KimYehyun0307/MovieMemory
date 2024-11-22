@@ -38,36 +38,35 @@ def index(request):
     # 5개씩 묶어서 처리
     grouped_movies = [top_20_movies[i:i + 5] for i in range(0, len(top_20_movies), 5)]
 
-    # 장르별로 인기 영화 리스트 가져오기
-    genre_urls = {
-        '액션': 28,  # 액션
-        '코미디': 35,  # 코미디
-        '모험': 12,  # 모험
-        '애니메이션': 16,  # 애니메이션
-        '로맨스': 10749,  # 로맨스
-        '공포': 27,  # 공포
-        '드라마': 18,  # 드라마
-        # 필요한 다른 장르 추가
-    }
-    
-    genre_movies = {}
-    for genre_name, genre_id in genre_urls.items():
-        # get_genre 함수 호출하여 장르별 영화 리스트 가져오기
-        genre_movies[genre_name] = get_genres(genre_id)
+    genre_movies = {}  # 기본값
 
-        # 장르별 영화에 순위를 매기기
-        for idx, movie in enumerate(genre_movies[genre_name]):
-            movie['rank'] = idx + 1  # 순위 1위부터 시작
+    if request.user.is_authenticated:
+        # 로그인한 사용자의 선호 장르 가져오기
+        user = request.user
+        favorite_genres = [user.genre_1, user.genre_2, user.genre_3]
+        
+        # 선호 장르별 인기 영화 리스트 가져오기
+        for genre in favorite_genres:
+            if genre:  # 장르가 설정된 경우에만 처리
+                genre_name = genre.name
+                genre_movies[genre_name] = get_genres(genre.id)
 
-        # 5개씩 묶어서 처리
-        genre_movies[genre_name] = [genre_movies[genre_name][i:i + 5] for i in range(0, len(genre_movies[genre_name]), 5)]  # 장르별로 5개씩 묶음
-    genres = Genres.objects.all()
+                # 장르별 영화에 순위를 매기기
+                for idx, movie in enumerate(genre_movies[genre_name]):
+                    movie['rank'] = idx + 1  # 순위 1위부터 시작
+
+                # 5개씩 묶어서 처리
+                genre_movies[genre_name] = [
+                    genre_movies[genre_name][i:i + 5] 
+                    for i in range(0, len(genre_movies[genre_name]), 5)
+                ]
 
     return render(request, 'movies/index.html', {
         'grouped_movies': grouped_movies,
         'genre_movies': genre_movies,
-        'genres': genres,
     })
+
+
 
 
 def genre(request, genre_id):
@@ -97,11 +96,11 @@ def genre(request, genre_id):
         '최근 출시순': sorted(movies, key=lambda x: x['release_date'], reverse=True),
     }
 
-    # 영화 목록을 5개씩 묶어서 그룹화
-    grouped_movies = {
-        key: [sorted_movies[key][i:i + 5] for i in range(0, len(sorted_movies[key]), 5)]
-        for key in sorted_movies
-    }
+    # 각 영화 데이터에 rank를 추가하고 그룹화
+    grouped_movies = {}
+    for sort_type, movie_list in sorted_movies.items():
+        # 5개씩 묶어서 그룹화
+        grouped_movies[sort_type] = [movie_list[i:i + 5] for i in range(0, len(movie_list), 5)]
 
     return render(request, 'movies/genre.html', {
         'genre_name': genre_name,  # 장르 이름 전달
@@ -109,6 +108,7 @@ def genre(request, genre_id):
         'genres': genre_data['genres'],  # TMDB에서 가져온 모든 장르 데이터를 전달
         'genre_movies': genre_movies,  # DB에서 가져온 해당 장르의 영화 목록 전달
     })
+
 
 
 def detail(request, movie_id):
