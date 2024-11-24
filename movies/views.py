@@ -13,6 +13,37 @@ from .models import Movie
 from .models import Genres
 from accounts.models import Genre
 
+def get_recommendations(user):
+    recommendations = []  # 추천 영화 목록
+    TMDB_API_KEY = settings.TMDB_API_KEY
+
+    # 1. 사용자의 생년 기준 과거 영화 가져오기
+    if user.birthdate:
+        birth_year = user.birthdate.year
+        start_year = birth_year - 10
+        end_year = birth_year + 10
+
+        # TMDB API 호출 (해당 연도 범위의 영화)
+        past_url = f"https://api.themoviedb.org/3/discover/movie?api_key={TMDB_API_KEY}&language=ko&sort_by=vote_average.desc&vote_count.gte=100&primary_release_date.gte={start_year}-01-01&primary_release_date.lte={end_year}-12-31"
+        past_response = requests.get(past_url).json()
+        past_movies = past_response.get('results', [])[:10]  # 상위 10개 가져오기
+        recommendations.extend(past_movies)
+
+    # 2. 사용자의 선호 장르 기반 현재 영화 가져오기
+    favorite_genres = [user.genre_1, user.genre_2, user.genre_3]
+    for genre in favorite_genres:
+        if genre:
+            genre_url = f"https://api.themoviedb.org/3/discover/movie?api_key={TMDB_API_KEY}&language=ko&sort_by=popularity.desc&vote_count.gte=100&with_genres={genre.id}&primary_release_date.gte=2018-01-01"
+            genre_response = requests.get(genre_url).json()
+            genre_movies = genre_response.get('results', [])[:10]  # 상위 10개 가져오기
+            recommendations.extend(genre_movies)
+
+    # 3. 추천 영화 중복 제거 및 정렬
+    unique_recommendations = {movie['id']: movie for movie in recommendations}.values()  # 중복 제거
+    sorted_recommendations = sorted(unique_recommendations, key=lambda x: x['popularity'], reverse=True)[:20]  # 상위 20개
+
+    return sorted_recommendations
+
 
 def get_genres(genre_id):
     url = f'https://api.themoviedb.org/3/discover/movie?api_key={settings.TMDB_API_KEY}&with_genres={genre_id}&language=ko'
@@ -210,6 +241,21 @@ def profile(request, user_nickname):
         'show_reviews': show_reviews,  # 리뷰 공개 여부를 템플릿에서 사용할 수 있도록 추가
     }
     return render(request, 'movies/profile.html', context)
+
+
+@login_required
+def memory(request):
+    # Memory 추천 로직
+    memory_movies = []
+    if request.user.is_authenticated:
+        memory_movies = get_recommendations(request.user)
+
+    # 5개씩 묶어서 슬라이드 형식 준비
+    grouped_memory_movies = [memory_movies[i:i + 5] for i in range(0, len(memory_movies), 5)]
+
+    return render(request, 'movies/memory.html', {
+        'grouped_memory_movies': grouped_memory_movies,
+    })
 
 
 
