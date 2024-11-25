@@ -14,7 +14,9 @@
       "is_nickname_public": true,
       "is_birthdate_public": true,
       "is_genre_public": true,
-      "is_reviews_public": true
+      "is_reviews_public": true,
+      "is_post_public": true,
+      "is_comments_public": true
     }
   },
   {
@@ -32,7 +34,9 @@
       "is_nickname_public": true,
       "is_birthdate_public": true,
       "is_genre_public": true,
-      "is_reviews_public": true
+      "is_reviews_public": true,
+      "is_post_public": true,
+      "is_comments_public": true
     }
   },
   {
@@ -50,7 +54,9 @@
       "is_nickname_public": true,
       "is_birthdate_public": false,
       "is_genre_public": true,
-      "is_reviews_public": true
+      "is_reviews_public": true,
+      "is_post_public": true,
+      "is_comments_public": true
     }
   },
   {
@@ -68,7 +74,9 @@
       "is_nickname_public": false,
       "is_birthdate_public": true,
       "is_genre_public": false,
-      "is_reviews_public": false
+      "is_reviews_public": false,
+      "is_post_public": true,
+      "is_comments_public": true
     }
   },
   {
@@ -86,7 +94,9 @@
       "is_nickname_public": true,
       "is_birthdate_public": true,
       "is_genre_public": true,
-      "is_reviews_public": true
+      "is_reviews_public": true,
+      "is_post_public": true,
+      "is_comments_public": true
     }
   },
   {
@@ -104,7 +114,9 @@
       "is_nickname_public": true,
       "is_birthdate_public": false,
       "is_genre_public": true,
-      "is_reviews_public": false
+      "is_reviews_public": false,
+      "is_post_public": true,
+      "is_comments_public": true
     }
   },
   {
@@ -122,7 +134,9 @@
       "is_nickname_public": false,
       "is_birthdate_public": true,
       "is_genre_public": true,
-      "is_reviews_public": true
+      "is_reviews_public": true,
+      "is_post_public": true,
+      "is_comments_public": true
     }
   },
   {
@@ -140,7 +154,9 @@
       "is_nickname_public": true,
       "is_birthdate_public": true,
       "is_genre_public": true,
-      "is_reviews_public": true
+      "is_reviews_public": true,
+      "is_post_public": true,
+      "is_comments_public": true
     }
   },
   {
@@ -158,7 +174,9 @@
       "is_nickname_public": true,
       "is_birthdate_public": false,
       "is_genre_public": true,
-      "is_reviews_public": true
+      "is_reviews_public": true,
+      "is_post_public": true,
+      "is_comments_public": true
     }
   },
   {
@@ -176,7 +194,9 @@
       "is_nickname_public": true,
       "is_birthdate_public": true,
       "is_genre_public": true,
-      "is_reviews_public": false
+      "is_reviews_public": false,
+      "is_post_public": true,
+      "is_comments_public": true
     }
   }
 ]

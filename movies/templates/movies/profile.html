@@ -32,6 +32,7 @@
     border-radius: 5px;
 }
 </style>
+
 <div class="profile-container">
     <div class="profile-box">
         <h2><strong>{{ user.nickname }}님의 프로필</strong></h2>
@@ -40,8 +41,7 @@
         {% if has_kakao_account %}
             <img src="{{ kakao_profile_image }}" alt="카카오 프로필 사진" class="profile-image">
         {% else %}
-            <img src="{{ user.profile_image.url }}" alt="프로필 사진" class="profile-image" 
-                onerror="this.onerror=null;this.src='{% static 'movies/images/default.png' %}'">
+            <img src="{{ user.profile_image.url }}" alt="프로필 사진" class="profile-image" onerror="this.onerror=null;this.src='{% static 'movies/images/default.png' %}'">
         {% endif %}
 
         {% if show_id %}
@@ -101,7 +101,7 @@
 
     <!-- 댓글 단 글의 목록 -->
     <div class="profile-box user-reviews">
-        <h3><strong>댓글 단 글의 목록</strong></h3>
+        <h3><strong>영화 세부창 댓글 목록</strong></h3>
     
         {% if show_reviews %}
             {% if user_reviews %}
@@ -120,6 +120,76 @@
                 </ul>
             {% else %}
                 <p>아직 댓글을 단 글이 없습니다. 재미있게 본 영화의 댓글을 달아보시는 건 어떨까요?</p>
+            {% endif %}
+        {% else %}
+            <p>댓글 목록은 비공개입니다.</p>
+        {% endif %}
+    </div>
+
+    <!-- 영화 게시판 작성글 목록 -->
+    <div class="profile-box user-reviews">
+        <h3><strong>영화 게시판 작성글</strong></h3>
+        {% if show_reviews %}
+            {% if user_reviews %}
+                <ul>
+                    {% for review in user_reviews %}
+                        <li class="review-item">
+                            <a href="{% url 'communities:post' review.movie.title review.id %}" class="review-link">
+                                <div class="review-box">
+                                    <strong>{{ review.movie.title }}</strong> - 
+                                    {{ review.content|slice:":30" }}{% if review.content|length > 30 %}...{% endif %}
+                                </div>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>아직 작성한 글이 없습니다.</p>
+            {% endif %}
+        {% else %}
+            <p>영화 게시판 글 목록은 비공개입니다.</p>
+        {% endif %}
+    </div>
+
+    <!-- 댓글 단 글의 목록 -->
+    <div class="profile-box user-comments">
+        <h3><strong>댓글 및 대댓글</strong></h3>
+        {% if show_comments %}
+            {% if user_comments %}
+                <ul>
+                    {% for comment in user_comments %}
+                        <li>
+                            <strong>
+                                {% if comment.nickname %}
+                                    {{ comment.nickname }}
+                                {% else %}
+                                    {{ comment.anonymous_name }}
+                                {% endif %}
+                            :</strong>
+                            <p>{{ comment.content }}</p>
+
+                            <!-- 대댓글 목록 -->
+                            <ul>
+                                {% for reply in comment.replies.all %}
+                                <li>
+                                    <strong>
+                                        {% if reply.nickname %}
+                                            {{ reply.nickname }}
+                                        {% else %}
+                                            {{ reply.anonymous_name }}
+                                        {% endif %}
+                                    :</strong>                                    
+                                    <p>{{ reply.content }}</p>
+                                </li>
+                                {% empty %}
+                                <p>대댓글이 없습니다.</p>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>댓글을 단 글이 없습니다.</p>
             {% endif %}
         {% else %}
             <p>댓글 목록은 비공개입니다.</p>

@@ -14,14 +14,34 @@
     </div>
     {% endif %}
 
+    <!-- 좋아요 버튼 -->
+    <div class="like-container">
+        <button 
+            id="like-button" 
+            class="btn-like {% if user in review.liked_users.all %}liked{% endif %}" 
+            data-url="{% url 'communities:like_post' movie_title=review.movie.title post_num=review.id %}">
+            좋아요 ❤️ {{ review.liked_users.count }}
+        </button>
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+    </div>
+    
+
     <h3>댓글</h3>
 
+    <!-- 댓글 박스가 비활성화된 경우, 전체 박스를 렌더링하지 않음 -->
+    {% if is_comment_enabled %}
     <div class="comment-box">
         <ul class="comment-list">
             {% for comment in comments %}
             <li class="comment-item">
                 <strong>{{ comment.nickname }}:</strong>
                 <p>{{ comment.content }}</p>
+
+                {% if comment.image %}
+                <div class="comment-image">
+                    <img src="{{ comment.image.url }}" alt="Comment Image" style="max-width: 200px; max-height: 200px;">
+                </div>
+                {% endif %}
 
                 <!-- 댓글 수정 및 삭제 버튼 -->
                 {% if comment.user == request.user or request.user.is_superuser %}
@@ -32,6 +52,7 @@
                 {% endif %}
 
                 <!-- 대댓글 작성 폼 -->
+                {% if comment.is_reply == True %} <!-- is_reply가 True일 때만 대댓글 작성 폼 보이기 -->
                 <div class="reply-form-container">
                     <button type="button" class="btn-reply" onclick="toggleReplyForm({{ comment.id }})">대댓글 작성</button>
 
@@ -45,6 +66,7 @@
                         </form>
                     </div>
                 </div>
+                {% endif %}
 
                 <!-- 대댓글 표시 -->
                 <ul class="reply-list">
@@ -52,6 +74,13 @@
                     <li class="reply-item">
                         <strong>{{ reply.nickname }}:</strong>
                         <p>{{ reply.content }}</p>
+
+                        {% if reply.image %}
+                        <div class="reply-image">
+                            <img src="{{ reply.image.url }}" alt="Reply Image" style="max-width: 200px; max-height: 200px;">
+                        </div>
+                        {% endif %}
+
                         {% if reply.user == request.user or request.user.is_superuser %}
                         <div class="reply-actions">
                             <a href="{% url 'communities:reply_edit' movie_title=review.movie.title post_num=review.id comment_id=comment.id reply_id=reply.id %}" class="edit-btn">수정</a>
@@ -76,13 +105,21 @@
             <button type="submit" name="comment_submit" class="comment-submit-btn">댓글 작성</button>
         </form>
     </div>
+    {% else %}
+    <p>댓글이 비활성화된 게시글입니다.</p>
+    {% endif %}
 
-    <!-- 수정 및 삭제 -->
+    <!-- 게시글 수정 및 삭제 버튼 (작성자 또는 관리자만 보임) -->
+    {% if review.user == request.user or request.user.is_superuser %}
     <div class="edit-delete-container">
         <a href="{% url 'communities:post_edit' movie_title=review.movie.title post_num=review.id %}" class="edit-btn">수정</a>
         <a href="{% url 'communities:post_delete' movie_title=review.movie.title post_num=review.id %}" class="delete-btn">삭제</a>
     </div>
+    {% endif %}
+
+    <a href="{% url "communities:movieboard" movie_title=review.movie.title %}" class="btn btn-info">Back</a>
 </div>
 
 <script src="{% static 'communities/js/buttontoggle.js' %}"></script>
+<script src="{% static 'communities/js/likeHandler.js' %}"></script>
 {% endblock content %}

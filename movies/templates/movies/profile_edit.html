@@ -85,9 +85,18 @@
             <div>
                 <input type="checkbox" id="reviews_visible" name="reviews_visible" 
                     {% if user.profile_visibility.reviews %}checked{% endif %}>
-                <label for="reviews_visible">댓글 공개</label>
+                <label for="reviews_visible">영화 세부 글 댓글 공개</label>
             </div>
-
+            <div>
+                <input type="checkbox" id="posts_visible" name="posts_visible" 
+                    {% if user.profile_visibility.is_post_public %}checked{% endif %}>
+                <label for="posts_visible">영화 게시판 글 공개</label>
+            </div>
+            <div>
+                <input type="checkbox" id="comments_visible" name="comments_visible" 
+                    {% if user.profile_visibility.is_comments_public %}checked{% endif %}>
+                <label for="comments_visible">댓글 및 대댓글 공개</label>
+            </div>
             <button type="submit" class="btn btn-primary">수정하기</button>
         </form>
     </div>

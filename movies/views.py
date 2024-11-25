@@ -8,6 +8,7 @@ from django.conf import settings
 from reviews.models import Review
 from accounts.forms import UserCreationForm  
 from accounts.models import User
+from communities.models import MovieReview, Comment, CommentReply
 from django.core.files.storage import default_storage
 from .models import Movie, Scrap
 from .models import Genres
@@ -239,38 +240,37 @@ def profile(request, user_nickname):
         if has_kakao_account else None
     )
 
-    user_reviews = Review.objects.filter(user=user).order_by('-created_at')
+    user_reviews = MovieReview.objects.filter(user=user).order_by('-created_at')
+    user_comments = Comment.objects.filter(user=user)
 
-    # 프로필 공개 범위 확인
     is_self = request.user == user  # 자신이 프로필을 보고 있는지 확인
     show_id = is_self or request.user.is_superuser # 프로필을 보는 사람이 자기 자신이거나 관리자일때만 id 공개
     show_birthdate = is_self or request.user.is_superuser or user.is_birthdate_public
     show_genre = is_self or request.user.is_superuser or user.is_genre_public
-
-    # 리뷰 공개 범위 확인
     show_reviews = is_self or request.user.is_superuser or user.is_reviews_public
+    show_comments = is_self or request.user.is_superuser or user.is_comments_public
 
-    # 리뷰 공개 범위가 비공개인 경우, 주인과 슈퍼유저만 볼 수 있도록 설정
+    # 비공개일 경우, 해당 목록을 비우기
     if not show_reviews:
-        user_reviews = []  # 비공개이면 리뷰는 빈 리스트로 설정
+        user_reviews = []
+    if not show_comments:
+        user_comments = []
 
     context = {
         'user': user,
         'has_kakao_account': has_kakao_account,
         'kakao_profile_image': kakao_profile_image,
         'user_reviews': user_reviews,
+        'user_comments': user_comments,
+        'scrapped_movies': scrapped_movies,
         'show_id': show_id, 
         'show_birthdate': show_birthdate,
         'show_genre': show_genre,
-        'show_reviews': show_reviews,  # 리뷰 공개 여부를 템플릿에서 사용할 수 있도록 추가
-        'scrapped_movies': scrapped_movies,
+        'show_reviews': show_reviews,
+        'show_comments': show_comments,  # 댓글 공개 여부를 템플릿에서 사용할 수 있도록 추가
     }
+
     return render(request, 'movies/profile.html', context)
-
-
-
-
-
 
 @login_required
 def profile_edit(request, user_nickname):
@@ -319,6 +319,12 @@ def profile_edit(request, user_nickname):
         user.is_genre_public = 'genres_visible' in request.POST
         user.is_reviews_public = 'reviews_visible' in request.POST
 
+        # 영화 게시판 글 목록 공개 여부 업데이트
+        user.is_post_public = 'posts_visible' in request.POST
+
+        # 댓글 및 대댓글 공개 여부 업데이트
+        user.is_comments_public = 'comments_visible' in request.POST
+
         user.save()
         return redirect('movies:profile', user_nickname=user.nickname)
 
@@ -330,6 +336,7 @@ def profile_edit(request, user_nickname):
     return render(request, 'movies/profile_edit.html', context)
 
 from django.http import JsonResponse
+
 
 @login_required
 def scrap_toggle(request, movie_id):
