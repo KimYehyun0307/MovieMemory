@@ -35,7 +35,9 @@ class User(AbstractUser):
     is_nickname_public = models.BooleanField(default=True)  # 닉네임 공개 여부
     is_birthdate_public = models.BooleanField(default=True)  # 생년월일 공개 여부
     is_genre_public = models.BooleanField(default=True)  # 좋아하는 장르 공개 여부
-    is_reviews_public = models.BooleanField(default=True)  # 댓글 목록 공개 여부
+    is_reviews_public = models.BooleanField(default=True)  # detail 댓글 목록 공개 여부
+    is_post_public = models.BooleanField(default=True) # 영화게시판 작성글 목록 공개 여부
+    is_comments_public = models.BooleanField(default=True) # 댓글, 대댓글 목록 공개 여부
 
     def save(self, *args, **kwargs):
         # 닉네임 자동 생성
