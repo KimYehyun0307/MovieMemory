@@ -17,27 +17,16 @@ class MovieReview(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     is_comment_enabled = models.BooleanField(default=True)  # 댓글 허용 여부
     rating = models.PositiveSmallIntegerField(default=5)  # 1~5점 평가
-    likes = models.PositiveIntegerField(default=0)
+    liked_users = models.ManyToManyField(User, related_name="liked_reviews", blank=True)
     image = models.ImageField(upload_to='media/movie_reviews/', blank=True, null=True)  # 영화 후기 이미지
 
     def __str__(self):
         return f"{self.title} ({self.nickname})"
-    
+
     def clean(self):
         if self.rating < 1 or self.rating > 5:
             raise ValidationError('평점은 1에서 5 사이여야 합니다.')
 
-
-# 영화 게시판에서 좋아요 모델
-class Like(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    review = models.ForeignKey(MovieReview, on_delete=models.CASCADE, related_name='like_set')  # related_name을 추가
-
-    def __str__(self):
-        return f"Like from {self.user} on {self.review.title}"
-    
-    class Meta:
-        unique_together = ('user', 'review')  # 같은 리뷰에 대해 여러 번 좋아요를 누를 수 없도록 설정
 
 
 # 대나무숲 모델
@@ -125,6 +114,17 @@ class CommentReply(models.Model):
         return f"Reply by {self.nickname}"
 
 
+# 영화 게시판에서 좋아요 모델
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    review = models.ForeignKey(MovieReview, on_delete=models.CASCADE, related_name='like_set', null=True, blank=True)  # MovieReview와 연결
+    post = models.ForeignKey(BambooPost, on_delete=models.CASCADE, related_name='like_set', null=True, blank=True)  # BambooPost와 연결
+
+    def __str__(self):
+        return f"Like from {self.user} on {self.review.title if self.review else self.post.content}"
+
+    class Meta:
+        unique_together = ('user', 'review', 'post')
 
 # 이벤트 모델
 class Event(models.Model):

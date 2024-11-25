@@ -56,7 +56,7 @@
 <h2>인기 영화 리뷰</h2>
 <ul class="review-list">
     {% for review in popular_reviews %}
-    <li>{{ review.movie.title }} - {{ review.like_count }} 좋아요</li>
+    <li>{{ review.movie.title }}: {{ review.title }} - 작성자: {{ review.user.nickname }} - 좋아요: {{ review.like_count }}</li>
     {% endfor %}
 </ul>
 
