@@ -19,7 +19,6 @@ def create_review(request, movie_id):
         tmdb_id=movie_id,
         defaults=get_movie_data_from_tmdb(movie_id)
     )
-
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         if form.is_valid():
@@ -68,18 +67,6 @@ def delete_review(request, review_id):
     review.delete()
     return redirect('movies:detail', movie_id=movie_tmdb_id)
 
-def create_comment(request, review_id):
-    review = get_object_or_404(Review, id=review_id)
-    if request.method == 'POST' and request.is_ajax():
-        content = request.POST.get('content')
-        if content:
-            comment = Comment.objects.create(
-                review=review,
-                user=request.user,
-                content=content
-            )
-            return JsonResponse({'content': comment.content, 'username': comment.user.username, 'created_at': comment.created_at.strftime('%Y-%m-%d %H:%M')}, status=200)
-    return JsonResponse({'error': '댓글 작성 실패'}, status=400)
 
 @login_required
 def add_comment(request, review_id):

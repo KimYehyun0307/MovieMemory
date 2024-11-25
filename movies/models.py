@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 class Genres(models.Model):
     name = models.CharField(max_length=100)
@@ -19,3 +20,10 @@ class Movie(models.Model):
     def __str__(self):
         return self.title
 
+class Scrap(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # 작성자
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)  # 스크랩한 영화
+    created_at = models.DateTimeField(auto_now_add=True)  # 스크랩한 날짜
+    
+    def __str__(self):
+        return f"{self.user.nickname}의 스크랩 - {self.movie.title}"
