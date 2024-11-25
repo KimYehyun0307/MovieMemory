@@ -2,29 +2,87 @@
 {% load static %}
 
 {% block content %}
-<h1>{{ review.title }}</h1>
-<p>작성자: {{ review.nickname }}</p>
-<p>작성일: {{ review.created_at }}</p>
-<p>{{ review.content }}</p>
-{% if review.image %}
-<img src="{{ review.image.url }}" alt="Review Image">
-{% endif %}
+<div class="review-container">
+    <h1>{{ review.title }}</h1>
+    <p>작성자: {{ review.nickname }}</p>
+    <p>작성일: {{ review.created_at }}</p>
+    <p>{{ review.content }}</p>
 
-<h3>댓글</h3>
-<ul>
-    {% for comment in comments %}
-    <li>{{ comment.nickname }}: {{ comment.content }}</li>
-    {% endfor %}
-</ul>
+    {% if review.image %}
+    <div class="review-image">
+        <img src="{{ review.image.url }}" alt="Review Image">
+    </div>
+    {% endif %}
 
-<!-- 댓글 작성 폼 -->
-<form method="POST">
-    {% csrf_token %}
-    {{ comment_form.as_p }}
-    <button type="submit">댓글 작성</button>
-</form>
+    <h3>댓글</h3>
 
-<!-- 수정 및 삭제 -->
-<a href="{% url 'communities.post_edit' review.movie.title review.id %}">수정</a>
-<a href="{% url 'communities.post_delete' review.movie.title review.id %}">삭제</a>
+    <div class="comment-box">
+        <ul class="comment-list">
+            {% for comment in comments %}
+            <li class="comment-item">
+                <strong>{{ comment.nickname }}:</strong>
+                <p>{{ comment.content }}</p>
+
+                <!-- 댓글 수정 및 삭제 버튼 -->
+                {% if comment.user == request.user or request.user.is_superuser %}
+                <div class="comment-actions">
+                    <a href="{% url 'communities:comment_edit' movie_title=review.movie.title post_num=review.id comment_id=comment.id %}" class="edit-btn">수정</a>
+                    <a href="{% url 'communities:comment_delete' movie_title=review.movie.title post_num=review.id comment_id=comment.id %}" class="delete-btn">삭제</a>
+                </div>
+                {% endif %}
+
+                <!-- 대댓글 작성 폼 -->
+                <div class="reply-form-container">
+                    <button type="button" class="btn-reply" onclick="toggleReplyForm({{ comment.id }})">대댓글 작성</button>
+
+                    <!-- 대댓글 폼 (기본적으로 숨김) -->
+                    <div class="reply-form hidden" id="reply-form-{{ comment.id }}">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                            {{ reply_form.as_p }}
+                            <button type="submit" name="reply_submit" class="btn-submit">대댓글 작성</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- 대댓글 표시 -->
+                <ul class="reply-list">
+                    {% for reply in comment.replies.all %}
+                    <li class="reply-item">
+                        <strong>{{ reply.nickname }}:</strong>
+                        <p>{{ reply.content }}</p>
+                        {% if reply.user == request.user or request.user.is_superuser %}
+                        <div class="reply-actions">
+                            <a href="{% url 'communities:reply_edit' movie_title=review.movie.title post_num=review.id comment_id=comment.id reply_id=reply.id %}" class="edit-btn">수정</a>
+                            <a href="{% url 'communities:reply_delete' movie_title=review.movie.title post_num=review.id comment_id=comment.id reply_id=reply.id %}" class="delete-btn">삭제</a>
+                        </div>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- 댓글 작성 폼 -->
+    <div class="comment-form-container">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ comment_form.as_p }}
+            </div>
+            <button type="submit" name="comment_submit" class="comment-submit-btn">댓글 작성</button>
+        </form>
+    </div>
+
+    <!-- 수정 및 삭제 -->
+    <div class="edit-delete-container">
+        <a href="{% url 'communities:post_edit' movie_title=review.movie.title post_num=review.id %}" class="edit-btn">수정</a>
+        <a href="{% url 'communities:post_delete' movie_title=review.movie.title post_num=review.id %}" class="delete-btn">삭제</a>
+    </div>
+</div>
+
+<script src="{% static 'communities/js/buttontoggle.js' %}"></script>
 {% endblock content %}

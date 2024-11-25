@@ -23,7 +23,7 @@ class User(AbstractUser):
     birthdate = models.DateField(blank=True, null=True)
     profile_image = models.ImageField(
         upload_to='profile/',
-        default='images/default.png',
+        default='profile/default.png',
         blank=True,
         null=True
     )

@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseForbidden
-from .models import Movie, MovieReview, BambooPost, Event
-from .forms import MovieReviewForm, CommentForm, BambooPostForm, EventParticipationForm
+from .models import Movie, MovieReview, Comment, CommentReply, BambooPost, Event
+from .forms import MovieReviewForm, CommentForm, CommentReplyForm, BambooPostForm, EventParticipationForm
 from django.contrib.auth.decorators import login_required
 from accounts.models import User
 from movies.models import Movie
@@ -11,6 +11,8 @@ from django.db.models import Count
 from datetime import datetime
 import calendar
 from django.core.paginator import Paginator
+# 대나무숲 게시글 생성
+from django.utils.crypto import get_random_string
 
 def main_community(request):
     # 현재 날짜 가져오기
@@ -86,45 +88,82 @@ def board(request, movie_title):
     }
     return render(request, 'communities/board.html', context)
 
-# 영화 게시물 보기
+@login_required
 def post(request, movie_title, post_num):
     review = get_object_or_404(MovieReview, pk=post_num)
-    # 댓글 작성 폼
-    comment_form = CommentForm()
-    comments = review.comments.all()  # 해당 리뷰의 댓글
+    comments = Comment.objects.filter(review=review)
+    comment_form = CommentForm(request.POST or None)
+    reply_form = CommentReplyForm(request.POST or None)
+    
+    if request.method == 'POST':
+        # 댓글 작성 처리
+        if 'comment_submit' in request.POST and comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.review = review  # 해당 리뷰와 댓글을 연결
+            comment.user = request.user  # 댓글 작성자 설정
+            comment.save()
+            return redirect('communities:post', movie_title=movie_title, post_num=post_num)
+
+        # 대댓글 작성 처리
+        elif 'reply_submit' in request.POST and reply_form.is_valid():
+            comment_id = request.POST.get('comment_id')  # 대댓글을 달 댓글의 ID
+            comment = get_object_or_404(Comment, pk=comment_id)
+            reply = reply_form.save(commit=False)
+            reply.comment = comment  # 댓글과 대댓글을 연결
+            reply.user = request.user  # 대댓글 작성자 설정
+            reply.save()
+            return redirect('communities:post', movie_title=movie_title, post_num=post_num)
 
     context = {
         'review': review,
+        'comments': comments,  # 해당 리뷰에 대한 댓글만 전달
         'comment_form': comment_form,
-        'comments': comments
+        'reply_form': reply_form,  # 대댓글 폼 추가
     }
+
     return render(request, 'communities/post.html', context)
 
-# 영화 게시물 수정
+
+# 영화 게시물 생성
 @login_required
-def post_edit(request, movie_title, post_num=None):
-    # post_num이 None이면 새 게시물 작성, 아니면 기존 게시물 수정
-    if post_num:
-        review = get_object_or_404(MovieReview, pk=post_num)
-        # 수정 권한 체크 (작성자 본인만 수정 가능)
-        if review.user != request.user and not request.user.is_superuser:
-            return HttpResponseForbidden("권한이 없습니다.")
+def post_create(request, movie_title):
+    movie = get_object_or_404(Movie, title=movie_title)  # 영화 정보 가져오기
+
+    if request.method == "POST":
+        form = MovieReviewForm(request.POST, request.FILES)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.user = request.user  # 작성자 설정
+            review.movie = movie  # 영화 정보 설정
+            review.nickname = request.user.nickname
+            review.save()
+            return redirect('communities:post', movie_title=movie.title, post_num=review.id)
+        else:
+            # 폼 유효성 검사 실패 시 오류 출력
+            print(form.errors)  # 오류 메시지를 출력하여 어떤 문제가 있는지 확인
     else:
-        review = None  # 새 게시물 작성
+        form = MovieReviewForm()
+
+    context = {
+        'form': form,
+        'movie_title': movie.title,
+    }
+    return render(request, 'communities/post_create.html', context)
+
+# 게시글 수정
+@login_required
+def post_edit(request, movie_title, post_num):
+    review = get_object_or_404(MovieReview, pk=post_num)
+
+    # 수정 권한 체크 (작성자 본인 또는 관리자만 가능)
+    if review.user != request.user and not request.user.is_superuser:
+        return HttpResponseForbidden("수정 권한이 없습니다.")
 
     if request.method == "POST":
         form = MovieReviewForm(request.POST, request.FILES, instance=review)
         if form.is_valid():
-            # 새 게시물인 경우
-            if not review:
-                new_review = form.save(commit=False)
-                new_review.user = request.user  # 새 게시물 작성자 설정
-                new_review.movie_title = movie_title  # 영화 제목 설정
-                new_review.save()
-            else:
-                form.save()  # 기존 게시물 수정
-
-            return redirect('communities:movieboard', movie_title=movie_title)
+            form.save()
+            return redirect('communities:post', movie_title=movie_title, post_num=post_num)
     else:
         form = MovieReviewForm(instance=review)
 
@@ -135,26 +174,35 @@ def post_edit(request, movie_title, post_num=None):
     }
     return render(request, 'communities/post_edit.html', context)
 
-
-
 # 영화 게시물 삭제
 @login_required
 def post_delete(request, movie_title, post_num):
     review = get_object_or_404(MovieReview, pk=post_num)
-    # 삭제 권한 체크 (작성자 본인 또는 슈퍼유저만 삭제 가능)
+
+    # 삭제 권한 체크 (작성자 본인 또는 관리자만 가능)
     if review.user != request.user and not request.user.is_superuser:
-        return HttpResponseForbidden("권한이 없습니다.")
-    
+        return HttpResponseForbidden("삭제 권한이 없습니다.")
+
     review.delete()
     return redirect('communities:movieboard', movie_title=movie_title)
+
 
 # 대나무숲 게시판
 def bamboo(request):
     bamboo_posts = BambooPost.objects.all()
+
+    # 게시물마다 권한에 따라 이름 표시
+    for post in bamboo_posts:
+        if request.user == post.user or request.user.is_superuser:
+            post.display_name = post.user.nickname  # 작성자 닉네임 표시
+        else:
+            post.display_name = post.anonymous_name  # 익명 이름 표시
+
     context = {
         'bamboo_posts': bamboo_posts,
     }
     return render(request, 'communities/bamboo.html', context)
+
 
 # 대나무숲 게시물 보기
 def bamboo_post(request, post_num):
@@ -165,13 +213,36 @@ def bamboo_post(request, post_num):
     }
     return render(request, 'communities/bamboo_post.html', context)
 
+
+
+@login_required
+def bamboo_post_create(request):
+    if request.method == "POST":
+        form = BambooPostForm(request.POST, request.FILES)
+        if form.is_valid():
+            bamboo_post = form.save(commit=False)
+            bamboo_post.user = request.user
+            # 익명 이름 자동 생성 (랜덤 6자)
+            bamboo_post.anonymous_name = get_random_string(6)
+            bamboo_post.save()
+            return redirect('communities:bamboo')
+    else:
+        form = BambooPostForm()
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'communities/bamboo_post_create.html', context)
+
+
 # 대나무숲 게시물 수정
 @login_required
 def bamboo_post_edit(request, post_num):
     bamboo_post = get_object_or_404(BambooPost, pk=post_num)
-    # 수정 권한 체크 (작성자 본인만 수정 가능)
+
+    # 작성자 또는 관리자만 수정 가능
     if bamboo_post.user != request.user and not request.user.is_superuser:
-        return HttpResponseForbidden("권한이 없습니다.")
+        return HttpResponseForbidden("수정 권한이 없습니다.")
     
     if request.method == "POST":
         form = BambooPostForm(request.POST, request.FILES, instance=bamboo_post)
@@ -182,10 +253,11 @@ def bamboo_post_edit(request, post_num):
         form = BambooPostForm(instance=bamboo_post)
 
     context = {
-        'form': form, 
-        'bamboo_post': bamboo_post
+        'form': form,
+        'bamboo_post': bamboo_post,
     }
     return render(request, 'communities/bamboo_post_edit.html', context)
+
 
 # 대나무숲 게시물 삭제
 @login_required
@@ -217,6 +289,28 @@ def event_section(request, eventname):
     }
     return render(request, 'communities/event_section.html', context)
 
+# 이벤트 글 작성 (관리자만 가능)
+@login_required
+def event_create(request):
+    if not request.user.is_superuser:  # 관리자 권한 체크
+        return HttpResponseForbidden("이벤트 생성 권한이 없습니다.")
+    
+    if request.method == "POST":
+        form = EventParticipationForm(request.POST, request.FILES)
+        if form.is_valid():
+            event = form.save(commit=False)
+            event.creator = request.user  # 이벤트 생성자 설정
+            event.save()
+            return redirect('communities:event')
+    else:
+        form = EventParticipationForm()
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'communities/event_create.html', context)
+
+
 # 이벤트 참여 처리
 @login_required
 def event_participation(request, eventname):
@@ -236,3 +330,77 @@ def event_participation(request, eventname):
         'participation_form': form,
     }
     return render(request, 'communities/event_section.html', context)
+
+# 댓글 수정
+@login_required
+def comment_edit(request, movie_title, post_num, comment_id):
+    comment = get_object_or_404(Comment, pk=comment_id)
+    
+    # 댓글 수정 권한 체크 (작성자 본인 또는 관리자만 수정 가능)
+    if comment.user != request.user and not request.user.is_superuser:
+        return HttpResponseForbidden("수정 권한이 없습니다.")
+    
+    if request.method == "POST":
+        form = CommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            form.save()
+            return redirect('communities:post', movie_title=movie_title, post_num=post_num)
+    else:
+        form = CommentForm(instance=comment)
+
+    context = {
+        'form': form,
+        'comment': comment,
+        'movie_title': movie_title,
+        'post_num': post_num,
+    }
+    return redirect('communities:post', movie_title=movie_title, post_num=post_num)
+
+# 댓글 삭제
+@login_required
+def comment_delete(request, movie_title, post_num, comment_id):
+    comment = get_object_or_404(Comment, pk=comment_id)
+    
+    # 댓글 삭제 권한 체크 (작성자 본인 또는 관리자만 삭제 가능)
+    if comment.user != request.user and not request.user.is_superuser:
+        return HttpResponseForbidden("삭제 권한이 없습니다.")
+    
+    comment.delete()
+    return redirect('communities:post', movie_title=movie_title, post_num=post_num)
+
+# 대댓글 수정
+@login_required
+def reply_edit(request, movie_title, post_num, comment_id, reply_id):
+    reply = get_object_or_404(CommentReply, pk=reply_id)
+    
+    # 대댓글 수정 권한 체크 (작성자 본인 또는 관리자만 수정 가능)
+    if reply.user != request.user and not request.user.is_superuser:
+        return HttpResponseForbidden("수정 권한이 없습니다.")
+    
+    if request.method == "POST":
+        form = CommentReplyForm(request.POST, instance=reply)
+        if form.is_valid():
+            form.save()
+            return redirect('communities:post', movie_title=movie_title, post_num=post_num)
+    else:
+        form = CommentReplyForm(instance=reply)
+
+    context = {
+        'form': form,
+        'reply': reply,
+        'movie_title': movie_title,
+        'post_num': post_num,
+    }
+    return redirect('communities:post', movie_title=movie_title, post_num=post_num)
+
+# 대댓글 삭제
+@login_required
+def reply_delete(request, movie_title, post_num, comment_id, reply_id):
+    reply = get_object_or_404(CommentReply, pk=reply_id)
+    
+    # 대댓글 삭제 권한 체크 (작성자 본인 또는 관리자만 삭제 가능)
+    if reply.user != request.user and not request.user.is_superuser:
+        return HttpResponseForbidden("삭제 권한이 없습니다.")
+    
+    reply.delete()
+    return redirect('communities:post', movie_title=movie_title, post_num=post_num)

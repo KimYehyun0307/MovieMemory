@@ -3,9 +3,9 @@
 
 {% block content %}
 <div class="profile-container">
-    <h1>{{ review.id|yesno:"글 수정하기,새 글 작성하기" }}</h1>
+    <h1>게시글 작성</h1>
     <div class="profile-box">
-        <h2>{{ review.id|yesno:"글 수정하기,새 글 작성하기" }}</h2>
+        <h2>영화 리뷰 작성</h2>
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group">
@@ -28,11 +28,9 @@
                 <label for="id_is_comment_enabled">댓글 허용</label>
                 {{ form.is_comment_enabled }}
             </div>
-            <button type="submit" class="btn-submit">저장</button>
+            <button type="submit" class="btn-submit">작성하기</button>
         </form>
     </div>
-
-    <a href="{% url 'communities:movieboard' review.movie.title %}" class="btn-back">돌아가기</a>
 </div>
 
 {% endblock content %}

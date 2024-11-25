@@ -1,0 +1,384 @@
+/* 기본 스타일 */
+body {
+  background-color: #000;
+  color: #fff;
+  background-image: url("{% static 'movies/images/background.webp' %}");
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+  margin: 0;
+  padding: 0;
+  z-index: -1;
+}
+
+/* 제목 스타일 */
+h1, h2 {
+  text-align: center;
+  color: #fff;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+/* 네비게이션 스타일 */
+.navbar a, .navbar .navbar-text {
+  color: #fff;
+}
+
+.navbar .form-control, .navbar .btn {
+  color: #000;
+  background-color: #fff;
+}
+
+/* 영화 게시물 */
+.carousel-item {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.movie-poster {
+  width: 150px;
+  height: 225px;
+  object-fit: cover;
+}
+
+/* 장르 제목 스타일 */
+.genre-title {
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  padding: 10px;
+  margin-top: 20px;
+}
+
+/* 댓글 작성 폼 */
+.comment-form-container {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 15px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.comment-submit-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.comment-submit-btn:hover {
+  background-color: #0056b3;
+}
+
+/* 댓글 영역 스타일 */
+.comment-box {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 20px;
+  border-radius: 8px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.comment-item {
+  background-color: #f4f4f4;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.comment-item strong {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.comment-actions, .reply-actions {
+  margin-top: 5px;
+}
+
+.edit-btn, .delete-btn {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  margin-right: 10px;
+}
+
+.edit-btn:hover, .delete-btn:hover {
+  background-color: #218838;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
+}
+
+/* 대댓글 스타일 */
+.reply-form-container {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.reply-form {
+  margin-top: 10px;
+}
+
+.btn-reply {
+  padding: 5px 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.btn-reply:hover {
+  background-color: #45a049;
+}
+
+.reply-item {
+  margin-left: 20px;
+  padding: 5px;
+  border: 1px solid #e0e0e0;
+  margin-bottom: 10px;
+}
+
+.hidden {
+  display: none;
+}
+
+/* 프로필 및 로그인 스타일 */
+.login-container {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: rgba(128, 128, 128, 0.9);
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  color: #000;
+}
+
+.profile-box {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 500px;
+  width: 100%;
+  color: #000;
+  margin-bottom: 20px;
+}
+
+.profile-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin-bottom: 15px;
+}
+
+.profile-box p {
+  margin: 10px 0;
+  font-size: 18px;
+  color: #000;
+}
+
+.profile-box h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #000;
+}
+
+/* 댓글 목록 박스 */
+.user-reviews {
+  border-radius: 10px;
+  width: 100%;
+  color: #000;
+  margin-top: 20px;
+  max-width: 500px;
+}
+
+.user-reviews h3 {
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+
+.user-reviews ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.user-reviews li {
+  margin-bottom: 10px;
+  font-size: 16px;
+  text-align: left;
+}
+
+.user-reviews li strong {
+  font-weight: bold;
+}
+
+.user-reviews li:hover {
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+/* 버튼 스타일 */
+.btn-sky {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-sky:hover {
+  background-color: #2980b9;
+}
+
+.btn-gold {
+  background-color: #f39c12;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.btn-gold:hover {
+  background-color: #e67e22;
+}
+
+.btn-silver {
+  background-color: #95a5a6;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.btn-silver:hover {
+  background-color: #7f8c8d;
+}
+
+.btn-bronze {
+  background-color: #cd7f32;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.btn-bronze:hover {
+  background-color: #9e6f27;
+}
+
+.btn-kakao {
+  background-color: #FFEB00;
+  color: #3C1E1E;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-align: center;
+  display: inline-block;
+  width: 100%;
+  text-decoration: none;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.btn-kakao:hover {
+  background-color: #F8D400;
+}
+
+/* 달력 스타일링 */
+/* 달력 전체 스타일 */
+.calendar {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+/* 테이블 헤더(th)와 데이터 셀(td) 공통 스타일 */
+.calendar th, .calendar td {
+  padding: 15px;
+  text-align: center;
+  font-size: 1.2em;
+  border: 1px solid #ccc; /* 공통 테두리 스타일 */
+}
+
+/* 헤더 스타일 */
+.calendar th {
+  background-color: #f0f0f0;
+}
+
+/* 날짜 셀의 기본 스타일 */
+.calendar td {
+  width: 14.2%; /* 7열 균등 */
+  height: 120px; /* 고정 높이 */
+  background-color: #fafafa;  /* 배경색 설정 */
+  vertical-align: top;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 날짜 숫자 스타일 */
+.calendar .day-number {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 5px 0;
+  color: #000;
+}
+
+/* 영화 리스트 스타일 */
+.calendar .movie-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 5px 0 0 0;
+  font-size: 12px;
+  color: #333;
+  text-align: left;
+  max-height: 80px; /* 영화 목록 최대 높이 */
+  overflow-y: auto; /* 스크롤 표시 */
+}
+
+/* 영화 제목 스타일 (긴 제목을 ...으로 표시) */
+.calendar .movie-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* 내용이 넘치면 "..." 표시 */
+  margin: 2px 0;
+}
+
+/* 날짜 셀의 배경과 관련된 스타일은 제거하고, 더 간결하게 조정함 */
+.calendar .calendar-day {
+  background-color: #fff; /* 날짜 셀 배경색 */
+  position: relative;
+  height: 100px; /* 고정 높이 */
+  border: 1px solid #ddd; /* 테두리 */
+}
