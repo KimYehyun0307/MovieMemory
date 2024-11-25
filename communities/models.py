@@ -33,18 +33,20 @@ class MovieReview(models.Model):
 class BambooPost(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bamboo_posts")
     anonymous_name = models.CharField(max_length=20)  # 익명 + 랜덤 숫자
+    title = models.CharField(max_length=100)  # 제목 필드 추가
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     image = models.ImageField(upload_to='media/bamboo_posts/', blank=True, null=True)  # 대나무숲 이미지
 
     def __str__(self):
-        return f"Anonymous ({self.anonymous_name})"
+        return f"Anonymous ({self.anonymous_name}) - {self.title}"  # 제목도 반환하도록 수정
     
     def save(self, *args, **kwargs):
         if not self.anonymous_name:
             self.anonymous_name = ''.join(random.choices(string.ascii_letters + string.digits, k=6))  # 랜덤 이름
         super().save(*args, **kwargs)
+
 
 # 댓글 모델
 class Comment(models.Model):

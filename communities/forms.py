@@ -22,7 +22,7 @@ class CommentReplyForm(forms.ModelForm):
 class BambooPostForm(forms.ModelForm):
     class Meta:
         model = BambooPost
-        fields = ['content', 'image']  # image 필드 추가
+        fields = ['title', 'content', 'image']  # image 필드 추가
 
 
 class EventParticipationForm(forms.ModelForm):

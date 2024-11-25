@@ -3,6 +3,15 @@
 {% load customfilter %}
 
 {% block content %}
+<!-- 메시지 출력 -->
+{% if messages %}
+<div class="alert-messages">
+    {% for message in messages %}
+        <div class="alert alert-danger">{{ message }}</div>  <!-- 오류 메시지 -->
+    {% endfor %}
+</div>
+{% endif %}
+
 <h1>{{ current_year }}년 {{ current_month }}월 개봉 예정작 일정</h1>
 
 <table class="calendar">
@@ -56,7 +65,11 @@
 <h2>인기 영화 리뷰</h2>
 <ul class="review-list">
     {% for review in popular_reviews %}
-    <li>{{ review.movie.title }}: {{ review.title }} - 작성자: {{ review.user.nickname }} - 좋아요: {{ review.like_count }}</li>
+    <li>
+        <a href="{% url 'communities:post' movie_title=review.movie.title post_num=review.id %}">
+            {{ review.movie.title }}: {{ review.title }} - 작성자: {{ review.user.nickname }} - 좋아요: {{ review.like_count }}
+        </a>
+    </li>
     {% endfor %}
 </ul>
 
@@ -68,4 +81,17 @@
     {% endfor %}
 </ul>
 
+<!-- 이동 버튼들 -->
+<div class="navigation-buttons">
+    <!-- 영화 게시판으로 이동 -->
+    <form action="{% url 'communities:search_movie' %}" method="GET">
+        {% csrf_token %}
+        <input type="text" name="movie_title" id="movie-title" placeholder="영화 제목을 입력하세요" required>
+        <button type="submit">영화 게시판으로 이동</button>
+    </form>
+
+    <!-- 대나무 숲으로 이동 -->
+    <a href="{% url 'communities:bamboo' %}" class="btn btn-primary">대나무숲으로 이동</a>
+</div>
 {% endblock content %}
+

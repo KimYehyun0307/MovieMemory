@@ -22,6 +22,8 @@ def main_community(request):
     current_month = today.month  # 현재 월
     current_day = today.day  # 현재 일
 
+    movies = Movie.objects.all()
+
     # 상영 예정 영화 데이터를 날짜별로 가져오기 (이미 DB에 저장된 데이터 사용)
     upcoming_schedules = ScreeningSchedule.objects.all().order_by('screening_date')
 
@@ -65,11 +67,30 @@ def main_community(request):
         'active_events': active_events,
         'popular_reviews': popular_reviews,
         'popular_bamboo_posts': popular_bamboo_posts,
+        'movies': movies,
     }
 
     return render(request, 'communities/main_community.html', context)
 
+def search_movie(request):
+    # GET 요청으로 영화 제목을 받아옴
+    movie_title = request.GET.get('movie_title', '').strip()
 
+    if movie_title:
+        try:
+            # 영화 제목을 찾기
+            movie = Movie.objects.get(title=movie_title)
+            return redirect('communities:movieboard', movie_title=movie.title)  # 해당 영화의 게시판으로 리디렉션
+        except Movie.DoesNotExist:
+            # 영화가 존재하지 않으면 오류 메시지 출력 후 메인 페이지로 리디렉션
+            messages.error(request, "영화 제목을 정확하게 입력해주세요!")
+            return redirect('communities:main_community')  # 메인 커뮤니티 페이지로 리디렉션
+    else:
+        # 제목이 비어있으면 메시지 출력 후 메인 페이지로 리디렉션
+        messages.error(request, "영화 제목을 입력해주세요!")
+        return redirect('communities:main_community')  # 메인 커뮤니티 페이지로 리디렉션
+
+    
 # 영화 게시판
 def board(request, movie_title):
     movie = get_object_or_404(Movie, title=movie_title)
@@ -253,14 +274,43 @@ def bamboo(request):
     }
     return render(request, 'communities/bamboo.html', context)
 
-
-# 대나무숲 게시물 보기
+@login_required
 def bamboo_post(request, post_num):
     bamboo_post = get_object_or_404(BambooPost, pk=post_num)
+    comment_form = CommentForm(request.POST or None)
+    reply_form = CommentReplyForm(request.POST or None)
+
+    # 댓글과 대댓글 작성 처리
+    if request.method == 'POST':
+        # 댓글 작성 처리
+        if 'comment_submit' in request.POST and comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.post = bamboo_post
+            comment.user = request.user
+            comment.save()
+            return redirect('communities:bamboo_post', post_num=post_num)
+
+        # 대댓글 작성 처리
+        elif 'reply_submit' in request.POST and reply_form.is_valid():
+            comment_id = request.POST.get('comment_id')  # 대댓글을 달 댓글의 ID
+            comment = get_object_or_404(Comment, pk=comment_id)
+
+            reply = reply_form.save(commit=False)
+            reply.comment = comment  # 댓글과 대댓글을 연결
+            reply.user = request.user  # 대댓글 작성자 설정
+            reply.save()
+            return redirect('communities:bamboo_post', post_num=post_num)
+
+    # 댓글 가져오기
+    comments = bamboo_post.comments.all()
 
     context = {
         'bamboo_post': bamboo_post,
+        'comments': comments,
+        'comment_form': comment_form,
+        'reply_form': reply_form,
     }
+
     return render(request, 'communities/bamboo_post.html', context)
 
 
@@ -283,6 +333,38 @@ def bamboo_post_create(request):
         'form': form,
     }
     return render(request, 'communities/bamboo_post_create.html', context)
+
+@login_required
+def bamboo_post_edit(request, post_num):
+    bamboo_post = get_object_or_404(BambooPost, pk=post_num)
+
+    # 작성자 또는 관리자만 수정 가능
+    if bamboo_post.user != request.user and not request.user.is_superuser:
+        return HttpResponseForbidden("수정 권한이 없습니다.")
+    
+    if request.method == "POST":
+        form = BambooPostForm(request.POST, request.FILES, instance=bamboo_post)
+        if form.is_valid():
+            form.save()
+            return redirect('communities:bamboo')
+    else:
+        form = BambooPostForm(instance=bamboo_post)
+
+    context = {
+        'form': form,
+        'bamboo_post': bamboo_post,
+    }
+    return render(request, 'communities/bamboo_post_edit.html', context)
+
+@login_required
+def bamboo_post_delete(request, post_num):
+    bamboo_post = get_object_or_404(BambooPost, pk=post_num)
+    # 삭제 권한 체크 (작성자 본인 또는 슈퍼유저만 삭제 가능)
+    if bamboo_post.user != request.user and not request.user.is_superuser:
+        return HttpResponseForbidden("권한이 없습니다.")
+    
+    bamboo_post.delete()
+    return redirect('communities:bamboo')
 
 
 # 대나무숲 게시물 수정
@@ -343,6 +425,7 @@ def like_post_bamboo(request, post_num):
         "likes_count": bamboo_post.liked_users.count(),
         "liked": liked,
     })
+
 
 # 이벤트 페이지
 def event(request):
