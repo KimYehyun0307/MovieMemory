@@ -3,9 +3,9 @@
 
 {% block content %}
 <div class="profile-container">
-    <h1>{{ review.id|yesno:"글 수정하기,새 글 작성하기" }}</h1>
+    <h1 class="page-title">{{ review.id|yesno:"글 수정하기,새 글 작성하기" }}</h1>
     <div class="profile-box">
-        <h2>{{ review.id|yesno:"글 수정하기,새 글 작성하기" }}</h2>
+        <h2 class="form-title">{{ review.id|yesno:"글 수정하기,새 글 작성하기" }}</h2>
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group">

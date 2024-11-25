@@ -1,38 +1,40 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>{{ movie.title }} 대나무숲</h1>
+<div class="section-container">
+    <h1>{{ movie.title }} 대나무숲</h1>
 
-<!-- 인기 대나무숲 게시물 -->
-<h2>인기 게시물</h2>
-<ul>
-    {% for post in popular_bamboo_posts %}
-    <li>
-        <a href="{% url 'communities:bamboo_post' post.id %}">{{ post.title }}</a> (작성자: {{ post.display_name }}) - 댓글: {{ post.comment_count }}
-    </li>
-    {% endfor %}
-</ul>
+    <!-- 인기 대나무숲 게시물 -->
+    <h2>인기 게시물</h2>
+    <ul class="bamboo-post-list">
+        {% for post in popular_bamboo_posts %}
+        <li>
+            <a href="{% url 'communities:bamboo_post' post.id %}">{{ post.title }}</a> (작성자: {{ post.display_name }}) - 댓글: {{ post.comment_count }}
+        </li>
+        {% endfor %}
+    </ul>
 
-<!-- 대나무숲 게시물 목록 -->
-<h2>게시물 목록</h2>
-<ul>
-    {% for post in bamboo_posts %}
-    <li>
-        <a href="{% url 'communities:bamboo_post' post.id %}">{{ post.title }}</a> (작성자: {{ post.display_name }}) - 댓글: {{ post.comment_count }}
-    </li>
-    {% endfor %}
-</ul>
+    <!-- 대나무숲 게시물 목록 -->
+    <h2>게시물 목록</h2>
+    <ul class="bamboo-post-list">
+        {% for post in bamboo_posts %}
+        <li>
+            <a href="{% url 'communities:bamboo_post' post.id %}">{{ post.title }}</a> (작성자: {{ post.display_name }}) - 댓글: {{ post.comment_count }}
+        </li>
+        {% endfor %}
+    </ul>
 
-<!-- 페이지네이션 -->
-<div class="pagination">
-    {% if bamboo_posts.has_previous %}
-    <a href="?page={{ bamboo_posts.previous_page_number }}">이전</a>
-    {% endif %}
-    <span>페이지 {{ bamboo_posts.number }} / {{ bamboo_posts.paginator.num_pages }}</span>
-    {% if bamboo_posts.has_next %}
-    <a href="?page={{ bamboo_posts.next_page_number }}">다음</a>
-    {% endif %}
+    <!-- 페이지네이션 -->
+    <div class="pagination">
+        {% if bamboo_posts.has_previous %}
+        <a href="?page={{ bamboo_posts.previous_page_number }}">이전</a>
+        {% endif %}
+        <span>페이지 {{ bamboo_posts.number }} / {{ bamboo_posts.paginator.num_pages }}</span>
+        {% if bamboo_posts.has_next %}
+        <a href="?page={{ bamboo_posts.next_page_number }}">다음</a>
+        {% endif %}
+    </div>
+
+    <a href="{% url 'communities:bamboo_post_create' %}">새 게시물 작성하기</a>
 </div>
-
-<a href="{% url 'communities:bamboo_post_create' %}">새 게시물 작성하기</a>
 {% endblock %}

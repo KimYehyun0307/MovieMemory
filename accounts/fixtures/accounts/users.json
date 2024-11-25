@@ -1,7 +1,7 @@
 [
   {
     "model": "accounts.user",
-    "pk": 11,
+    "pk": 1,
     "fields": {
       "username": "user1",
       "password": "password1",

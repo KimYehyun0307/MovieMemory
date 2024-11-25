@@ -316,38 +316,70 @@ h1, h2 {
   background-color: #F8D400;
 }
 
-/* 달력 스타일링 */
-/* 달력 전체 스타일 */
-.calendar {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
+/* 공통 배경 스타일 */
+.section-container {
+  max-width: 800px; /* 모든 섹션 너비를 통일 */
+  margin: 20px auto; /* 중앙 정렬 */
+  background-color: rgba(255, 255, 255, 0.8); /* 투명한 하얀색 배경 */
+  border-radius: 10px; /* 모서리를 둥글게 */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* 박스 그림자 */
+  padding: 20px;
+  color: #000; /* 텍스트 색상을 검정으로 */
 }
 
-/* 테이블 헤더(th)와 데이터 셀(td) 공통 스타일 */
+/* 메시지 출력 영역 */
+.alert-messages {
+  max-width: 800px; /* 달력 크기와 동일 */
+  margin: 20px auto;
+  padding: 10px;
+}
+
+.alert {
+  padding: 10px;
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+/* 달력 스타일링 */
+.calendar-container {
+  max-width: 800px; /* 달력 최대 너비 */
+  margin: 30px auto; /* 중앙 정렬 */
+  background-color: rgba(255, 255, 255, 0.8); /* 투명한 하얀색 배경 */
+  border-radius: 10px; /* 모서리 둥글게 */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* 박스 그림자 */
+  padding: 20px;
+}
+
+.calendar {
+  width: 100%; /* 테이블을 섹션에 맞게 */
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
 .calendar th, .calendar td {
-  padding: 15px;
+  padding: 10px;
   text-align: center;
   font-size: 1.2em;
-  border: 1px solid #ccc; /* 공통 테두리 스타일 */
+  border: 1px solid #ccc;
+  background-color: rgba(255, 255, 255, 0.9); /* 투명한 하얀색 */
 }
 
-/* 헤더 스타일 */
 .calendar th {
-  background-color: #f0f0f0;
+  background-color: #f4f4f4; /* 헤더 배경 */
+  font-weight: bold;
 }
 
-/* 날짜 셀의 기본 스타일 */
 .calendar td {
-  width: 14.2%; /* 7열 균등 */
-  height: 120px; /* 고정 높이 */
-  background-color: #fafafa;  /* 배경색 설정 */
+  height: 100px;
   vertical-align: top;
   position: relative;
   overflow: hidden;
 }
 
-/* 날짜 숫자 스타일 */
 .calendar .day-number {
   font-size: 14px;
   font-weight: bold;
@@ -355,7 +387,6 @@ h1, h2 {
   color: #000;
 }
 
-/* 영화 리스트 스타일 */
 .calendar .movie-list {
   list-style-type: none;
   padding: 0;
@@ -363,35 +394,195 @@ h1, h2 {
   font-size: 12px;
   color: #333;
   text-align: left;
-  max-height: 80px; /* 영화 목록 최대 높이 */
-  overflow-y: auto; /* 스크롤 표시 */
+  max-height: 80px;
+  overflow-y: auto;
 }
 
-/* 영화 제목 스타일 (긴 제목을 ...으로 표시) */
 .calendar .movie-title {
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; /* 내용이 넘치면 "..." 표시 */
+  text-overflow: ellipsis;
   margin: 2px 0;
 }
 
-/* 날짜 셀의 배경과 관련된 스타일은 제거하고, 더 간결하게 조정함 */
-.calendar .calendar-day {
-  background-color: #fff; /* 날짜 셀 배경색 */
-  position: relative;
-  height: 100px; /* 고정 높이 */
-  border: 1px solid #ddd; /* 테두리 */
+/* 진행 중인 이벤트 섹션 */
+.event-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 10px 0;
 }
 
-.alert-messages {
-    margin-top: 20px;
+.event-list li {
+  font-size: 14px;
+  margin-bottom: 5px;
 }
 
-.alert {
-    padding: 10px;
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-    border-radius: 5px;
-    margin-bottom: 10px;
+/* 인기 영화 리뷰 섹션 */
+.review-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 10px 0;
+}
+
+.review-list li {
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.review-list li a {
+  text-decoration: none;
+  color: #007bff;
+}
+
+.review-list li a:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
+
+/* 인기 대나무숲 게시물 섹션 */
+.bamboo-post-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 10px 0;
+}
+
+.bamboo-post-list li {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+/* 검색 및 이동 버튼 섹션 */
+.navigation-buttons {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.navigation-buttons form {
+  margin-bottom: 10px;
+}
+
+.navigation-buttons input[type="text"] {
+  width: 70%;
+  padding: 8px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.navigation-buttons button,
+.navigation-buttons a {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  text-decoration: none;
+  background-color: #007bff;
+  cursor: pointer;
+}
+
+.navigation-buttons button:hover,
+.navigation-buttons a:hover {
+  background-color: #0056b3;
+}
+
+/* 공통 섹션 배경 */
+.section-container {
+  max-width: 800px;
+  margin: 30px auto;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  color: #000;
+}
+
+/* 제목 및 작성자 스타일 */
+.post-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.post-content {
+  font-size: 18px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.post-author {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* 댓글 작성 폼 */
+.comment-form-container {
+  margin-bottom: 30px;
+}
+
+.comment-form textarea,
+.comment-form input {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* 댓글 박스 */
+.comment-box {
+  list-style-type: none;
+  padding: 0;
+}
+
+.comment-item {
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.comment-item strong {
+  font-weight: bold;
+}
+
+/* 대댓글 섹션 */
+.reply-form-container {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f4f4f4;
+  border-radius: 5px;
+}
+
+.reply-list {
+  list-style-type: none;
+  padding-left: 20px;
+  margin: 10px 0;
+}
+
+.reply-item {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+/* 버튼 스타일 */
+.btn-submit, .btn-primary {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-submit:hover, .btn-primary:hover {
+  background-color: #0056b3;
 }

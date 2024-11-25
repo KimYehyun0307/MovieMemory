@@ -38,7 +38,8 @@ class User(AbstractUser):
     is_reviews_public = models.BooleanField(default=True)  # detail 댓글 목록 공개 여부
     is_post_public = models.BooleanField(default=True) # 영화게시판 작성글 목록 공개 여부
     is_comments_public = models.BooleanField(default=True) # 댓글, 대댓글 목록 공개 여부
-
+    visited_at = models.DateTimeField(null=True, blank=True) # 마지막 접속 시간
+    
     def save(self, *args, **kwargs):
         # 닉네임 자동 생성
         if not self.nickname:

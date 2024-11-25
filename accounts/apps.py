@@ -41,3 +41,10 @@ def hash_user_passwords():
                 print(f"Hashing password for user: {user.username}")
                 user.set_password(user.password)  # 비밀번호 해시 처리
                 user.save()
+
+class AccountsConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'accounts'
+
+    def ready(self):
+        import accounts.signals

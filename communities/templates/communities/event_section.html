@@ -2,4 +2,12 @@
 {% load static %}
 
 {% block content %}
-{% endblock content %}
+<div class="section-container">
+    <h1>진행 중인 이벤트</h1>
+    <ul class="event-list">
+        {% for event in events %}
+        <li>{{ event.title }} - {{ event.description }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

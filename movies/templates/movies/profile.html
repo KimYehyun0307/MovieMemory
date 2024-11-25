@@ -126,14 +126,16 @@
         {% endif %}
     </div>
 
+    <p>{{ review.movie.title }} - {{ review.id }}</p>
+
     <!-- 영화 게시판 작성글 목록 -->
-    <div class="profile-box user-reviews">
+    {% comment %} <div class="profile-box user-reviews">
         <h3><strong>영화 게시판 작성글</strong></h3>
-        {% if show_reviews %}
-            {% if user_reviews %}
+        {% if show_posts %}
+            {% if user_posts %}
                 <ul>
-                    {% for review in user_reviews %}
-                        <li class="review-item">
+                    {% for post in user_posts %}
+                        <li class="review-item">                           
                             <a href="{% url 'communities:post' review.movie.title review.id %}" class="review-link">
                                 <div class="review-box">
                                     <strong>{{ review.movie.title }}</strong> - 
@@ -149,7 +151,7 @@
         {% else %}
             <p>영화 게시판 글 목록은 비공개입니다.</p>
         {% endif %}
-    </div>
+    </div> {% endcomment %}
 
     <!-- 댓글 단 글의 목록 -->
     <div class="profile-box user-comments">
