@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1 class="text-center">{{ genre_name }}</h1>
+    <h1 class="text-center genre-title">{{ genre_name }}</h1>
 
     {% with counter=1 %}
         {% for sort_type, movies in grouped_movies.items %}
             <h2 class="text-center genre-title">{{ sort_type }}</h2>
-            <div id="carousel{{ sort_type }}" class="carousel slide" data-ride="carousel">
+            <!-- 슬라이드 ID를 forloop.counter로 고유화 -->
+            <div id="carousel-{{ forloop.counter }}" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
                     {% for group in movies %}
                         <div class="carousel-item {% if forloop.first %}active{% endif %}">
@@ -18,9 +19,6 @@
                                                  alt="{{ movie.title }} 포스터" 
                                                  class="movie-poster">
                                         </a>
-                                        <div class="text-center mt-2">
-                                            <p>{{ counter }}위</p>  <!-- 순위 출력 -->
-                                        </div>
                                     </div>
                                     {% with counter=counter|add:1 %}
                                     {% endwith %}
@@ -29,11 +27,12 @@
                         </div>
                     {% endfor %}
                 </div>
-                <a class="carousel-control-prev" href="#carousel{{ sort_type }}" role="button" data-slide="prev">
+                <!-- 좌우 화살표 -->
+                <a class="carousel-control-prev" href="#carousel-{{ forloop.counter }}" role="button" data-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="sr-only">Previous</span>
                 </a>
-                <a class="carousel-control-next" href="#carousel{{ sort_type }}" role="button" data-slide="next">
+                <a class="carousel-control-next" href="#carousel-{{ forloop.counter }}" role="button" data-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="sr-only">Next</span>
                 </a>
