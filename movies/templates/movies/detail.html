@@ -38,6 +38,9 @@
         {% else %}
           <p>포스터가 없습니다.</p>
         {% endif %}
+        {% if user.is_authenticated %}
+          <button class="btn btn-sm btn-success" onclick="scrapMovie({{ movie.id }})">스크랩하기</button>
+        {% endif %}
       </div>
 
       <!-- 영화 정보 -->
@@ -207,6 +210,18 @@
       .catch(error => {
           console.error("오류 발생:", error.response?.data); // 오류 로그 출력
           alert('댓글 삭제에 실패했습니다.');
+      });
+    }
+    function scrapMovie(movieId) {
+      axios.post('/movies/scrap_movie/' + movieId + '/', {
+        csrfmiddlewaretoken: csrfToken
+      })
+      .then(response => {
+        alert('영화가 스크랩되었습니다!');
+      })
+      .catch(error => {
+        console.error('스크랩 실패:', error);
+        alert('스크랩 실패!');
       });
     }
   

@@ -1,19 +1,58 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>검색 결과</h1>
-    
-    {% if movies %}
-        <div class="row">
-            {% for movie in movies %}
-                <div class="col-md-3">
-                      <a href="{% url 'movies:detail' movie.id %}">
-                        <img class="card-img-top" src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">                       
-                      </a>                        
-                </div>
-            {% endfor %}
-        </div>
-    {% else %}
-        <p>검색 결과가 없습니다.</p>
-    {% endif %}
+<style>
+/* 영화 포스터 스타일 */
+.movie-poster {
+    border-radius: 8px; /* 포스터의 모서리를 둥글게 */
+    max-height: 350px; /* 최대 높이 제한 */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    object-fit: cover; /* 이미지 비율 유지 */
+}
+
+.movie-poster:hover {
+    transform: scale(1.05); /* 호버 시 살짝 확대 */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 */
+}
+
+/* 링크 스타일 초기화 */
+.movie-link {
+    text-decoration: none;
+}
+
+/* 반응형 그리드 */
+.row-cols-1 .col,
+.row-cols-sm-2 .col,
+.row-cols-md-3 .col,
+.row-cols-lg-4 .col {
+    padding: 10px; /* 포스터 간격 */
+}
+
+/* 검색 결과 컨테이너 */
+.container {
+    max-width: 1200px; /* 전체 폭 제한 */
+}
+
+</style>
+    <div class="container my-4">
+        <h1 class="text-center genre-title">검색 결과</h1>
+
+        {% if movies %}
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+                {% for movie in movies %}
+                    <div class="col d-flex justify-content-center">
+                        <a href="{% url 'movies:detail' movie.id %}" class="movie-link">
+                            <img 
+                                src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" 
+                                alt="{{ movie.title }}" 
+                                class="img-fluid movie-poster"
+                            >
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+                <p>검색 결과가 없습니다. 다른 키워드로 검색해 보세요!</p>
+        {% endif %}
+    </div>
 {% endblock %}

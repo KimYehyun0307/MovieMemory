@@ -2,6 +2,36 @@
 {% load static %}
 
 {% block content %}
+<style>
+/* 프로필 박스 안에 스크랩한 영화 리스트 스타일 */
+.profile-box {
+    background-color: #f8f9fa;  /* 배경색을 연한 회색으로 */
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;  /* 박스 간격을 주기 위해 추가 */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);  /* 살짝 그림자 효과 */
+}
+
+/* 스크랩한 영화들을 가로로 나열 */
+.scrap-list {
+    display: flex;
+    overflow-x: scroll;  /* 가로로 스크롤 가능 */
+    gap: 15px; /* 영화들 간의 간격 */
+    padding-bottom: 10px; /* 아래쪽 여백 */
+}
+
+.scrap-item {
+    flex-shrink: 0;  /* 크기 고정 */
+    width: 120px;  /* 포스터 크기 조정 */
+    text-align: center;
+}
+
+.scrap-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+</style>
 <div class="profile-container">
     <div class="profile-box">
         <h2><strong>{{ user.nickname }}님의 프로필</strong></h2>
@@ -52,8 +82,25 @@
         {% endif %}
     </div>
 
+    <div class="profile-box">
+        <h3><strong>스크랩한 영화들</strong></h3>
+        {% if scrapped_movies %}
+            <div class="scrap-list">
+                {% for scrap in scrapped_movies %}
+                    <div class="scrap-item">
+                        <a href="{% url 'movies:detail' movie_id=scrap.movie.id %}">
+                            <img src="https://image.tmdb.org/t/p/w500{{ scrap.movie.poster_path }}" alt="{{ scrap.movie.title }}" class="img-fluid rounded" />
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>스크랩한 영화가 없습니다.</p>
+        {% endif %}
+    </div>
+
     <!-- 댓글 단 글의 목록 -->
-    <div class="user-reviews profile-box">
+    <div class="profile-box user-reviews">
         <h3><strong>댓글 단 글의 목록</strong></h3>
     
         {% if show_reviews %}

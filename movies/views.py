@@ -9,77 +9,30 @@ from reviews.models import Review
 from accounts.forms import UserCreationForm  
 from accounts.models import User
 from django.core.files.storage import default_storage
-from .models import Movie
+from .models import Movie, Scrap
 from .models import Genres
 from accounts.models import Genre
-
-def get_recommendations(user):
-    recommendations = []  # 추천 영화 목록
-    TMDB_API_KEY = settings.TMDB_API_KEY
-
-    # 1. 사용자의 생년 기준 과거 영화 가져오기
-    if user.birthdate:
-        birth_year = user.birthdate.year
-        start_year = birth_year - 10
-        end_year = birth_year + 10
-
-        # TMDB API 호출 (해당 연도 범위의 영화)
-        past_url = f"https://api.themoviedb.org/3/discover/movie?api_key={TMDB_API_KEY}&language=ko&sort_by=vote_average.desc&vote_count.gte=100&primary_release_date.gte={start_year}-01-01&primary_release_date.lte={end_year}-12-31"
-        past_response = requests.get(past_url).json()
-        past_movies = past_response.get('results', [])[:10]  # 상위 10개 가져오기
-        recommendations.extend(past_movies)
-
-    # 2. 사용자의 선호 장르 기반 현재 영화 가져오기
-    favorite_genres = [user.genre_1, user.genre_2, user.genre_3]
-    for genre in favorite_genres:
-        if genre:
-            genre_url = f"https://api.themoviedb.org/3/discover/movie?api_key={TMDB_API_KEY}&language=ko&sort_by=popularity.desc&vote_count.gte=100&with_genres={genre.id}&primary_release_date.gte=2018-01-01"
-            genre_response = requests.get(genre_url).json()
-            genre_movies = genre_response.get('results', [])[:10]  # 상위 10개 가져오기
-            recommendations.extend(genre_movies)
-
-    # 3. 추천 영화 중복 제거 및 정렬
-    unique_recommendations = {movie['id']: movie for movie in recommendations}.values()  # 중복 제거
-    sorted_recommendations = sorted(unique_recommendations, key=lambda x: x['popularity'], reverse=True)[:20]  # 상위 20개
-
-    return sorted_recommendations
-
-
-def get_genres(genre_id):
-    url = f'https://api.themoviedb.org/3/discover/movie?api_key={settings.TMDB_API_KEY}&with_genres={genre_id}&language=ko'
-    response = requests.get(url)
-    return response.json().get('results', [])[:20]  # top 20 영화만 가져오기
-
 
 def index(request):
     # 인기 영화 목록 (전체 top 20)
     url = f'https://api.themoviedb.org/3/movie/popular?api_key={settings.TMDB_API_KEY}&language=ko'
     response = requests.get(url)
     movies = response.json().get('results', [])
-
-    genres = Genres.objects.all()  # 모든 장르 데이터 로드
-    
     # 인기 영화 순위 내림차순 정렬
     movies_sorted = sorted(movies, key=lambda x: x['popularity'], reverse=True)
-    
     # 1위부터 20위까지 영화만 가져오기
     top_20_movies = movies_sorted[:20]
-    
     # 순위를 매기기 위해 영화에 인덱스를 추가
     for idx, movie in enumerate(top_20_movies):
         movie['rank'] = idx + 1  # 순위 1위부터 시작
-
     # 5개씩 묶어서 처리
     grouped_movies = [top_20_movies[i:i + 5] for i in range(0, len(top_20_movies), 5)]
-
     genre_movies = {}  # 기본값
     show_genre_message = False  # 선호 장르 메시지를 표시할지 여부
-
     if request.user.is_authenticated:
         # 로그인한 사용자의 선호 장르 가져오기
         user = request.user
         favorite_genres = [user.genre_1, user.genre_2, user.genre_3]
-
         # 선호 장르가 하나도 설정되지 않은 경우 메시지 표시
         if not any(favorite_genres):  # 모든 장르가 None인 경우
             show_genre_message = True
@@ -89,17 +42,12 @@ def index(request):
                 if genre:  # 장르가 설정된 경우에만 처리
                     genre_name = genre.name
                     genre_movies[genre_name] = get_genres(genre.id)
-
-                    # 장르별 영화에 순위를 매기기
-                    for idx, movie in enumerate(genre_movies[genre_name]):
-                        movie['rank'] = idx + 1  # 순위 1위부터 시작
-
                     # 5개씩 묶어서 처리
                     genre_movies[genre_name] = [
                         genre_movies[genre_name][i:i + 5] 
                         for i in range(0, len(genre_movies[genre_name]), 5)
                     ]
-
+    genres = Genres.objects.all()  # 모든 장르 데이터 로드
     return render(request, 'movies/index.html', {
         'grouped_movies': grouped_movies,
         'genre_movies': genre_movies,
@@ -107,8 +55,10 @@ def index(request):
         'show_genre_message': show_genre_message,  # 메시지 여부 전달
     })
 
-
-
+def get_genres(genre_id):
+    url = f'https://api.themoviedb.org/3/discover/movie?api_key={settings.TMDB_API_KEY}&with_genres={genre_id}&language=ko'
+    response = requests.get(url)
+    return response.json().get('results', [])[:20]  # top 20 영화만 가져오기
 
 def genre(request, genre_id):
     # TMDB API에서 장르 ID와 해당 장르에 대한 영화 데이터를 가져오기
@@ -136,7 +86,6 @@ def genre(request, genre_id):
         '평점순': sorted(movies, key=lambda x: x['vote_average'], reverse=True),
         '최근 출시순': sorted(movies, key=lambda x: x['release_date'], reverse=True),
     }
-
     # 각 영화 데이터에 rank를 추가하고 그룹화
     grouped_movies = {}
     for sort_type, movie_list in sorted_movies.items():
@@ -205,10 +154,66 @@ def search(request):
 
     return render(request, 'movies/search.html', {'movies': movies})
 
+import random
+
+def get_recommendations(user):
+    TMDB_API_KEY = settings.TMDB_API_KEY
+    recommendations = {}  # 장르별 추천 영화 저장
+    favorite_genres = [user.genre_1, user.genre_2, user.genre_3]
+
+    if not user.birthdate:
+        return recommendations  # 생년 정보가 없으면 빈 추천 목록 반환
+
+    # 생년 기준 필터링 범위
+    start_year = user.birthdate.year
+    end_year = start_year + 19
+
+    for genre in favorite_genres:
+        if genre:  # 선호 장르가 설정된 경우에만 처리
+            genre_id = genre.id
+            genre_name = genre.name
+
+            # TMDB API 호출 (해당 장르 및 연도 범위, 평점 8점 이상)
+            url = (
+                f"https://api.themoviedb.org/3/discover/movie?"
+                f"api_key={TMDB_API_KEY}&language=ko"
+                f"&sort_by=vote_average.desc&vote_count.gte=100"
+                f"&primary_release_date.gte={start_year}-01-01"
+                f"&primary_release_date.lte={end_year}-12-31"
+                f"&vote_average.gte=7"
+                f"&with_genres={genre_id}"
+            )
+            response = requests.get(url).json()
+            movies = response.get('results', [])
+
+            # 랜덤으로 20개 선택
+            if movies:
+                recommendations[genre_name] = random.sample(movies, min(len(movies), 20))
+
+    return recommendations
+
+@login_required
+def memory(request):
+    # Memory 추천 로직
+    genre_recommendations = get_recommendations(request.user)
+
+    # 슬라이드 형식으로 묶기 (5개씩)
+    grouped_recommendations = {
+        genre: [movies[i:i + 5] for i in range(0, len(movies), 5)]
+        for genre, movies in genre_recommendations.items()
+    }
+
+    genres = Genres.objects.all()  # 모든 장르 데이터 로드
+
+    return render(request, 'movies/memory.html', {
+        'grouped_recommendations': grouped_recommendations,
+        'genres': genres
+    })
+
 def profile(request, user_nickname):
     user_nickname = urllib.parse.unquote(user_nickname)
     user = get_object_or_404(User, nickname=user_nickname)
-
+    scrapped_movies = Scrap.objects.filter(user=user)
     has_kakao_account = SocialAccount.objects.filter(user=user, provider='kakao').exists()
     kakao_profile_image = (
         SocialAccount.objects.get(user=user, provider='kakao').get_avatar_url()
@@ -239,23 +244,12 @@ def profile(request, user_nickname):
         'show_birthdate': show_birthdate,
         'show_genre': show_genre,
         'show_reviews': show_reviews,  # 리뷰 공개 여부를 템플릿에서 사용할 수 있도록 추가
+        'scrapped_movies': scrapped_movies,
     }
     return render(request, 'movies/profile.html', context)
 
 
-@login_required
-def memory(request):
-    # Memory 추천 로직
-    memory_movies = []
-    if request.user.is_authenticated:
-        memory_movies = get_recommendations(request.user)
 
-    # 5개씩 묶어서 슬라이드 형식 준비
-    grouped_memory_movies = [memory_movies[i:i + 5] for i in range(0, len(memory_movies), 5)]
-
-    return render(request, 'movies/memory.html', {
-        'grouped_memory_movies': grouped_memory_movies,
-    })
 
 
 
@@ -315,4 +309,12 @@ def profile_edit(request, user_nickname):
         'genres': Genre.objects.all(),
     }
     return render(request, 'movies/profile_edit.html', context)
+
+
+@login_required
+def scrap_movie(request, movie_id):
+    movie = get_object_or_404(Movie, id=movie_id)  # 영화가 존재하는지 확인
+    scrap, created = Scrap.objects.get_or_create(user=request.user, movie=movie)
+    
+    return redirect('movies:detail', movie_id=movie.id)
 
