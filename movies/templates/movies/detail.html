@@ -39,7 +39,15 @@
           <p>포스터가 없습니다.</p>
         {% endif %}
         {% if user.is_authenticated %}
-          <button class="btn btn-sm btn-success" onclick="scrapMovie({{ movie.id }})">스크랩하기</button>
+        <button id="scrapButton" class="btn btn-outline-primary" 
+        data-movie-id="{{ movie.id }}"
+        data-scrapped="{{ movie.is_scrapped }}">
+        {% if movie.is_scrapped %}
+          스크랩 취소
+        {% else %}
+          스크랩하기
+        {% endif %}
+</button>
         {% endif %}
       </div>
 
@@ -153,6 +161,7 @@
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script>
     const csrfToken = '{{ csrf_token }}'
+    console.log(csrfToken)
     function showCommentBox(reviewId) {
       document.getElementById('comment-form-' + reviewId).style.display = 'block'
     }
@@ -212,18 +221,40 @@
           alert('댓글 삭제에 실패했습니다.');
       });
     }
-    function scrapMovie(movieId) {
-      axios.post('/movies/scrap_movie/' + movieId + '/', {
-        csrfmiddlewaretoken: csrfToken
-      })
-      .then(response => {
-        alert('영화가 스크랩되었습니다!');
-      })
-      .catch(error => {
-        console.error('스크랩 실패:', error);
-        alert('스크랩 실패!');
+    document.addEventListener('DOMContentLoaded', function() {
+      const scrapButton = document.getElementById('scrapButton');
+      
+      scrapButton.addEventListener('click', function() {
+          const movieId = scrapButton.getAttribute('data-movie-id');
+          const isScrapped = scrapButton.getAttribute('data-scrapped') === 'true';
+
+          // AJAX 요청을 통해 서버에 스크랩 상태를 업데이트
+          fetch(`/movies/scrap_toggle/${movieId}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken  // 이미 정의된 csrfToken 변수 사용
+            },
+            body: JSON.stringify({
+                is_scrapped: !isScrapped
+            })
+          })
+          .then(response => response.json())
+          .then(data => {
+              // 스크랩 상태에 따라 버튼 텍스트 변경
+              if (data.is_scrapped) {
+                  scrapButton.textContent = '스크랩 취소';
+                  scrapButton.setAttribute('data-scrapped', 'true');
+              } else {
+                  scrapButton.textContent = '스크랩하기';
+                  scrapButton.setAttribute('data-scrapped', 'false');
+              }
+          })
+          .catch(error => {
+              console.error('Error:', error);
+          });
       });
-    }
+  });
   
   
   </script>

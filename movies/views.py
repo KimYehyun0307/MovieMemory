@@ -310,11 +310,23 @@ def profile_edit(request, user_nickname):
     }
     return render(request, 'movies/profile_edit.html', context)
 
+from django.http import JsonResponse
 
 @login_required
-def scrap_movie(request, movie_id):
-    movie = get_object_or_404(Movie, id=movie_id)  # 영화가 존재하는지 확인
-    scrap, created = Scrap.objects.get_or_create(user=request.user, movie=movie)
+def scrap_toggle(request, movie_id):
+    movie = Movie.objects.get(id=movie_id)
+    user = request.user
     
-    return redirect('movies:detail', movie_id=movie.id)
+    # 기존에 스크랩된 상태가 있으면 삭제, 없으면 추가
+    scrap, created = Scrap.objects.get_or_create(user=user, movie=movie)
+    if created:
+        # 새로 스크랩 추가
+        scrap.save()
+        is_scrapped = True
+    else:
+        # 기존 스크랩 취소
+        scrap.delete()
+        is_scrapped = False
+    
+    return JsonResponse({'is_scrapped': is_scrapped})
 
