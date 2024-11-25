@@ -117,10 +117,6 @@ def genre(request, genre_id):
     })
 
 
-
-
-
-
 def detail(request, movie_id):
     # 특정 영화의 세부 정보 가져오기
     url = f'https://api.themoviedb.org/3/movie/{movie_id}?api_key={settings.TMDB_API_KEY}&language=ko'
@@ -145,13 +141,22 @@ def detail(request, movie_id):
             'poster_path': movie_data.get('poster_path', ''),
         }
     )
-    genres = Genres.objects.all()  # 장르 데이터 가져오기
+    
+    # 스크랩 상태를 movie_data에 추가
+    movie_data['is_scrapped'] = movie.is_scrapped
+
+    # movie 인스턴스에 연결된 장르들을 가져오기
+    genres = movie.genres.all()  # ManyToMany 관계로 연결된 장르들 가져오기
 
     # 영화에 대한 리뷰 가져오기
     reviews = Review.objects.filter(movie=movie).order_by('-created_at')
 
     # 영화 세부 정보와 리뷰를 전달
     return render(request, 'movies/detail.html', {'movie': movie_data, 'reviews': reviews, 'trailer': trailer, 'genres': genres})
+
+
+
+
 
 
 def search(request):
@@ -347,12 +352,16 @@ def scrap_toggle(request, movie_id):
     scrap, created = Scrap.objects.get_or_create(user=user, movie=movie)
     if created:
         # 새로 스크랩 추가
-        scrap.save()
         is_scrapped = True
     else:
         # 기존 스크랩 취소
         scrap.delete()
         is_scrapped = False
     
+    # movie 객체의 is_scrapped 상태를 갱신
+    movie.is_scrapped = is_scrapped
+    movie.save()
+
     return JsonResponse({'is_scrapped': is_scrapped})
+
 

@@ -31,15 +31,15 @@
   <div class="d-flex flex-column p-5 rounded mx-auto" style="max-width: 50%; background-color: #161616; border-radius: 10px;">
     <!-- 첫 번째 행: 포스터와 영화 정보 -->
     <div class="d-flex align-items-center mb-4">
-      <!-- 영화 포스터 -->
-      <div style="max-width: 150px;" class="mr-4">
-        {% if movie.poster_path %}
-          <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}" class="img-fluid rounded" />
-        {% else %}
-          <p>포스터가 없습니다.</p>
-        {% endif %}
-        {% if user.is_authenticated %}
-        <button id="scrapButton" class="btn btn-outline-primary" 
+<!-- 영화 포스터 -->
+    <div style="max-width: 150px;" class="mr-4">
+      {% if movie.poster_path %}
+        <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}" class="img-fluid rounded" />
+      {% else %}
+        <p>포스터가 없습니다.</p>
+      {% endif %}
+      {% if user.is_authenticated %}
+      <button id="scrapButton" class="btn btn-outline-primary" 
         data-movie-id="{{ movie.id }}"
         data-scrapped="{{ movie.is_scrapped }}">
         {% if movie.is_scrapped %}
@@ -47,9 +47,10 @@
         {% else %}
           스크랩하기
         {% endif %}
-</button>
-        {% endif %}
-      </div>
+      </button>
+      {% endif %}
+    </div>
+
 
       <!-- 영화 정보 -->
       <div class="text-left">
