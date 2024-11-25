@@ -16,7 +16,8 @@ def load_fixtures(sender, **kwargs):
     fixtures.json 데이터를 로드합니다.
     """
     try:
-        call_command('loaddata', 'accounts/fixtures/accounts/genre.json')  
-        print("Genres fixtures loaded successfully.")
+        call_command('loaddata', 'accounts/fixtures/accounts/genre.json')
+        call_command('loaddata', 'accounts/fixtures/accounts/users.json')
+        print("Genres fixtures and Users samples loaded successfully.")
     except Exception as e:
         print(f"Error loading fixtures: {e}")

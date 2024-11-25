@@ -11,7 +11,7 @@
             <img src="{{ kakao_profile_image }}" alt="카카오 프로필 사진" class="profile-image">
         {% else %}
             <img src="{{ user.profile_image.url }}" alt="프로필 사진" class="profile-image" 
-                onerror="this.onerror=null;this.src='{% static 'movies/default.png' %}'">
+                onerror="this.onerror=null;this.src='{% static 'movies/images/default.png' %}'">
         {% endif %}
 
         {% if show_id %}

@@ -12,7 +12,7 @@
             {% if user.profile_image %}
                 <img src="{{ user.profile_image.url }}" alt="현재 프로필 사진" class="profile-image">
             {% else %}
-                <img src="{% static 'movies/default.png' %}" alt="기본 프로필 사진" class="profile-image">
+                <img src="{% static 'movies/images/default.png' %}" alt="기본 프로필 사진" class="profile-image">
             {% endif %}
         </div>
 
@@ -92,7 +92,7 @@
         </form>
     </div>
 </div>
-{% endblock %}
 
 <!-- 자바스크립트 코드 -->
-<script src="{% static 'js/button_event.js' %}" defer></script>
+<script src="{% static 'movies/js/button_event.js' %}" defer></script>
+{% endblock %}

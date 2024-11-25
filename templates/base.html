@@ -10,13 +10,13 @@
 
     <!-- Bootstrap CSS 추가 -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'movies/css/style.css' %}">
 
     <style>
         body {
             background-color: #000;
             color: #fff;
-            background-image: url("{% static 'images/background.webp' %}");
+            background-image: url("{% static 'movies/images/background.webp' %}");
             background-size: cover;
             background-position: center center;
             background-attachment: fixed;
@@ -90,7 +90,7 @@
 
         <!-- Movie 제목 -->
         <a class="navbar-brand" href="{% url 'movies:index' %}">
-            <img src="{% static 'images/moviememory.png' %}" alt="MovieMemory Logo" style="height: 40px;">
+            <img src="{% static 'movies/images/moviememory.png' %}" alt="MovieMemory Logo" style="height: 40px;">
         </a>
 
         <!-- 커뮤니티 -->
@@ -108,7 +108,7 @@
                                 <img src="{{ request.user.profile_image.url }}" alt="프로필 사진" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
                             {% else %}
                                 <!-- 프로필 사진이 없으면 기본 이미지 -->
-                                <img src="{% static 'movies/default.png' %}" alt="기본 프로필 사진" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
+                                <img src="{{ MEDIA_URL }} movies/profile/default.png" alt="기본 이미지" style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">
                             {% endif %}
                             {{ request.user.nickname }}  <!-- 로그인한 유저의 이름 -->
                         </a>
@@ -152,7 +152,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <!-- 페이지 하단에서 JavaScript 파일 추가 (defer 속성으로 로딩 지연) -->
-<script src="{% static 'js/button_event.js' %}" defer></script>
 
 </body>
 </html>

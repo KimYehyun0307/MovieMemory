@@ -33,5 +33,5 @@
     {% endif %}
 </div>
 
-<a href="{% url 'communities:post_edit' movie.title 0 %}">새 글 작성하기</a>
+<a href="{% url 'communities:post_create' movie.title %}">새 글 작성하기</a>
 {% endblock %}
