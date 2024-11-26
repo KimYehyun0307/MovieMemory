@@ -1,7 +1,6 @@
 MovieMemory README
 ---
 
-관통 영화 프로젝트
 ![001](https://github.com/user-attachments/assets/caebfe7f-ad9c-4be3-b339-b440cbeb3230)
 ![002](https://github.com/user-attachments/assets/e02eb3a4-2624-47ce-bd03-3ca6965fe943)
 ![003](https://github.com/user-attachments/assets/fcd237d8-4d1c-4c76-a40c-89b0f054d235)
