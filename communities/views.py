@@ -119,12 +119,11 @@ def post(request, movie_title, post_num):
     # 리뷰에서 댓글이 막혔을 경우
     if not review.is_comment_enabled:
         messages.error(request, "이 게시글에는 댓글 작성이 허용되지 않았습니다.")
-        # 댓글 폼은 보여주지 않거나 비활성화
-        comment_form = None  # 댓글 폼을 비활성화
-        reply_form = None    # 대댓글 폼도 비활성화
+        comment_form = None  # 댓글 폼 비활성화
+        reply_form = None    # 대댓글 폼 비활성화
     else:
-        comment_form = CommentForm(request.POST or None)
-        reply_form = CommentReplyForm(request.POST or None)
+        comment_form = CommentForm(request.POST or None, request.FILES or None)  # request.FILES 포함
+        reply_form = CommentReplyForm(request.POST or None, request.FILES or None)  # 대댓글 폼에도 request.FILES 포함
 
     comments = Comment.objects.filter(review=review)
 
@@ -162,6 +161,7 @@ def post(request, movie_title, post_num):
     }
 
     return render(request, 'communities/post.html', context)
+
 
 # MovieReview 모델에서 liked_users를 사용하여 좋아요 처리
 @login_required
@@ -259,7 +259,8 @@ def post_delete(request, movie_title, post_num):
 
 
 def bamboo(request):
-    bamboo_posts = BambooPost.objects.all()
+    # 게시글을 생성된 시간 순으로 정렬 (내림차순)
+    bamboo_posts = BambooPost.objects.all().order_by('-created_at')
 
     # 인기 대나무숲 게시물 (좋아요 수가 많은 게시물)
     popular_bamboo_posts = bamboo_posts.annotate(like_count=Count('liked_users')).order_by('-like_count')[:5]  # 좋아요가 많은 게시물 상위 5개
@@ -286,8 +287,8 @@ def bamboo(request):
 @login_required
 def bamboo_post(request, post_num):
     bamboo_post = get_object_or_404(BambooPost, pk=post_num)
-    comment_form = CommentForm(request.POST or None)
-    reply_form = CommentReplyForm(request.POST or None)
+    comment_form = CommentForm(request.POST or None, request.FILES or None)  # 이미지 처리 위해 request.FILES 추가
+    reply_form = CommentReplyForm(request.POST or None, request.FILES or None)  # 이미지 처리 위해 request.FILES 추가
 
     # 댓글과 대댓글 작성 처리
     if request.method == 'POST':
@@ -358,7 +359,7 @@ def bamboo_post_edit(request, post_num):
         form = BambooPostForm(request.POST, request.FILES, instance=bamboo_post)
         if form.is_valid():
             form.save()
-            return redirect('communities:bamboo')
+            return redirect('communities:bamboo_post', post_num=bamboo_post.id)  # 수정된 게시글 상세 페이지로 리다이렉트
     else:
         form = BambooPostForm(instance=bamboo_post)
 
@@ -367,6 +368,7 @@ def bamboo_post_edit(request, post_num):
         'bamboo_post': bamboo_post,
     }
     return render(request, 'communities/bamboo_post_edit.html', context)
+
 
 
 # 대나무숲 게시물 삭제
@@ -471,76 +473,47 @@ def event_participation(request, eventname):
     }
     return render(request, 'communities/event_section.html', context)
 
-# 댓글 수정
-@login_required
-def comment_edit(request, movie_title, post_num, comment_id):
-    comment = get_object_or_404(Comment, pk=comment_id)
-    
-    # 댓글 수정 권한 체크 (작성자 본인 또는 관리자만 수정 가능)
-    if comment.user != request.user and not request.user.is_superuser:
-        return HttpResponseForbidden("수정 권한이 없습니다.")
-    
-    if request.method == "POST":
-        form = CommentForm(request.POST, instance=comment)
-        if form.is_valid():
-            form.save()
-            return redirect('communities:post', movie_title=movie_title, post_num=post_num)
-    else:
-        form = CommentForm(instance=comment)
-
-    context = {
-        'form': form,
-        'comment': comment,
-        'movie_title': movie_title,
-        'post_num': post_num,
-    }
-    return redirect('communities:post', movie_title=movie_title, post_num=post_num)
-
 # 댓글 삭제
 @login_required
-def comment_delete(request, movie_title, post_num, comment_id):
+def comment_delete(request, post_num, comment_id):
     comment = get_object_or_404(Comment, pk=comment_id)
     
     # 댓글 삭제 권한 체크 (작성자 본인 또는 관리자만 삭제 가능)
     if comment.user != request.user and not request.user.is_superuser:
         return HttpResponseForbidden("삭제 권한이 없습니다.")
     
+    # 해당 게시물 가져오기
+    bamboo_post = get_object_or_404(BambooPost, pk=post_num)
+    
+    # 댓글 삭제
     comment.delete()
-    return redirect('communities:post', movie_title=movie_title, post_num=post_num)
-
-# 대댓글 수정
-@login_required
-def reply_edit(request, movie_title, post_num, comment_id, reply_id):
-    reply = get_object_or_404(CommentReply, pk=reply_id)
     
-    # 대댓글 수정 권한 체크 (작성자 본인 또는 관리자만 수정 가능)
-    if reply.user != request.user and not request.user.is_superuser:
-        return HttpResponseForbidden("수정 권한이 없습니다.")
-    
-    if request.method == "POST":
-        form = CommentReplyForm(request.POST, instance=reply)
-        if form.is_valid():
-            form.save()
-            return redirect('communities:post', movie_title=movie_title, post_num=post_num)
+    # bamboo_post에 anonymous_name이 있으면 대나무숲으로 리다이렉트
+    if bamboo_post.anonymous_name:
+        return redirect('communities:bamboo_post', post_num=bamboo_post.id)
     else:
-        form = CommentReplyForm(instance=reply)
+        # 아니면 기존 게시물로 리다이렉트
+        return redirect('communities:post', movie_title=bamboo_post.title, post_num=bamboo_post.id)
 
-    context = {
-        'form': form,
-        'reply': reply,
-        'movie_title': movie_title,
-        'post_num': post_num,
-    }
-    return redirect('communities:post', movie_title=movie_title, post_num=post_num)
 
 # 대댓글 삭제
 @login_required
-def reply_delete(request, movie_title, post_num, comment_id, reply_id):
+def reply_delete(request, post_num, comment_id, reply_id):
     reply = get_object_or_404(CommentReply, pk=reply_id)
     
     # 대댓글 삭제 권한 체크 (작성자 본인 또는 관리자만 삭제 가능)
     if reply.user != request.user and not request.user.is_superuser:
         return HttpResponseForbidden("삭제 권한이 없습니다.")
     
+    # 해당 게시물 가져오기
+    bamboo_post = get_object_or_404(BambooPost, pk=post_num)
+    
+    # 대댓글 삭제
     reply.delete()
-    return redirect('communities:post', movie_title=movie_title, post_num=post_num)
+    
+    # bamboo_post에 anonymous_name이 있으면 대나무숲으로 리다이렉트
+    if bamboo_post.anonymous_name:
+        return redirect('communities:bamboo_post', post_num=bamboo_post.id)
+    else:
+        # 아니면 기존 게시물로 리다이렉트
+        return redirect('communities:post', movie_title=bamboo_post.title, post_num=bamboo_post.id)
