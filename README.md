@@ -1,5 +1,22 @@
 # project1
+---
+
 관통 영화 프로젝트
+![001](https://github.com/user-attachments/assets/caebfe7f-ad9c-4be3-b339-b440cbeb3230)
+![002](https://github.com/user-attachments/assets/e02eb3a4-2624-47ce-bd03-3ca6965fe943)
+![003](https://github.com/user-attachments/assets/fcd237d8-4d1c-4c76-a40c-89b0f054d235)
+![004](https://github.com/user-attachments/assets/342a9916-1f1f-46cd-a1f9-80f1dddc55c2)
+![005](https://github.com/user-attachments/assets/84b91265-2d1d-4e36-ac92-95989108d25c)
+![006](https://github.com/user-attachments/assets/bb5200df-1c35-4e6d-8e45-3ee453c2e6c6)
+![007](https://github.com/user-attachments/assets/ebc12ff8-2df5-417f-aebd-7c9b62c9befe)
+![008](https://github.com/user-attachments/assets/78e3a48c-cd9f-4a98-96b0-5084285620b8)
+![009](https://github.com/user-attachments/assets/f9ac5f92-d899-4873-b597-d358d74239d0)
+![010](https://github.com/user-attachments/assets/85ceb89f-ef8a-496f-bc0f-4efd351f15c7)
+![011](https://github.com/user-attachments/assets/e812e683-8413-4778-9d52-45625ad3316c)
+![012](https://github.com/user-attachments/assets/39d7056e-83b7-4f80-937e-9106dcd06ee3)
+![013](https://github.com/user-attachments/assets/c55ad965-d9bf-436d-85e2-1377de5ca7f7)
+
+---
 
 # 작업 log
 
