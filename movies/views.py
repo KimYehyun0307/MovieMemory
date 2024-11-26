@@ -14,6 +14,11 @@ from .models import Movie, Scrap
 from .models import Genres
 from accounts.models import Genre
 
+def get_genres(genre_id):
+    url = f'https://api.themoviedb.org/3/discover/movie?api_key={settings.TMDB_API_KEY}&with_genres={genre_id}&language=ko'
+    response = requests.get(url)
+    return response.json().get('results', [])[:20]  # top 20 영화만 가져오기
+
 def index(request):
     # 인기 영화 목록 (전체 top 20)
     url = f'https://api.themoviedb.org/3/movie/popular?api_key={settings.TMDB_API_KEY}&language=ko'
@@ -56,10 +61,24 @@ def index(request):
         'show_genre_message': show_genre_message,  # 메시지 여부 전달
     })
 
-def get_genres(genre_id):
-    url = f'https://api.themoviedb.org/3/discover/movie?api_key={settings.TMDB_API_KEY}&with_genres={genre_id}&language=ko'
+from datetime import datetime
+
+# 각 API를 별도로 호출하는 함수
+def get_popular_movies(genre_id):
+    url = f'https://api.themoviedb.org/3/discover/movie?api_key={settings.TMDB_API_KEY}&with_genres={genre_id}&sort_by=popularity.desc&language=ko'
     response = requests.get(url)
-    return response.json().get('results', [])[:20]  # top 20 영화만 가져오기
+    return response.json().get('results', [])[:20]  # 인기순 20개 영화 반환
+
+def get_top_rated_movies(genre_id):
+    url = f'https://api.themoviedb.org/3/discover/movie?api_key={settings.TMDB_API_KEY}&with_genres={genre_id}&sort_by=vote_average.desc&vote_count.gte=200&language=ko'
+    response = requests.get(url)
+    return response.json().get('results', [])[:20]  # 평점순 20개 영화 반환
+
+def get_upcoming_movies(genre_id):
+    url = f'https://api.themoviedb.org/3/discover/movie?api_key={settings.TMDB_API_KEY}&with_genres={genre_id}&sort_by=release_date.desc&vote_count.gte=5&language=ko&release_date.lte=2024-11-25'
+    response = requests.get(url)
+    return response.json().get('results', [])[:20]
+
 
 def genre(request, genre_id):
     # TMDB API에서 장르 ID와 해당 장르에 대한 영화 데이터를 가져오기
@@ -74,32 +93,28 @@ def genre(request, genre_id):
     if not genre_name:
         return render(request, 'movies/genre.html', {'error_message': f"ID '{genre_id}'에 해당하는 장르를 찾을 수 없습니다."})
 
-    # TMDB에서 해당 장르의 영화 데이터를 가져오기
-    movies = get_genres(genre_id)  # get_genres 함수는 TMDB API에서 해당 장르의 영화 목록을 가져오는 함수입니다.
+    # 각 기준에 따른 영화 데이터 호출
+    movies_popularity = get_popular_movies(genre_id)  # 인기순
+    movies_vote_average = get_top_rated_movies(genre_id)  # 평점순
+    movies_release_date = get_upcoming_movies(genre_id)  # 최근 출시순
 
-    # DB에서 해당 장르의 영화 목록을 가져오기
-    genre_obj = get_object_or_404(Genres, tmdb_id=genre_id)  # 수정된 부분: genre_id를 기준으로 Genres 테이블에서 찾기
-    genre_movies = Movie.objects.filter(genres=genre_obj)
-
-    # 인기순, 평점순, 최근 출시순으로 영화 정렬
+    # 각 정렬된 영화들을 5개씩 그룹화
     sorted_movies = {
-        '인기순': sorted(movies, key=lambda x: x['popularity'], reverse=True),
-        '평점순': sorted(movies, key=lambda x: x['vote_average'], reverse=True),
-        '최근 출시순': sorted(movies, key=lambda x: x['release_date'], reverse=True),
+        '인기순': movies_popularity,
+        '평점순': movies_vote_average,
+        '최근 출시순': movies_release_date,
     }
-    # 각 영화 데이터에 rank를 추가하고 그룹화
+    
+    # 각 정렬된 영화들을 5개씩 그룹화
     grouped_movies = {}
     for sort_type, movie_list in sorted_movies.items():
-        # 5개씩 묶어서 그룹화
         grouped_movies[sort_type] = [movie_list[i:i + 5] for i in range(0, len(movie_list), 5)]
 
     return render(request, 'movies/genre.html', {
         'genre_name': genre_name,  # 장르 이름 전달
         'grouped_movies': grouped_movies,  # 영화 데이터를 그룹화하여 전달
         'genres': genre_data['genres'],  # TMDB에서 가져온 모든 장르 데이터를 전달
-        'genre_movies': genre_movies,  # DB에서 가져온 해당 장르의 영화 목록 전달
     })
-
 
 
 def detail(request, movie_id):
@@ -126,13 +141,22 @@ def detail(request, movie_id):
             'poster_path': movie_data.get('poster_path', ''),
         }
     )
-    genres = Genres.objects.all()  # 장르 데이터 가져오기
+    
+    # 스크랩 상태를 movie_data에 추가
+    movie_data['is_scrapped'] = movie.is_scrapped
+
+    # movie 인스턴스에 연결된 장르들을 가져오기
+    genres = movie.genres.all()  # ManyToMany 관계로 연결된 장르들 가져오기
 
     # 영화에 대한 리뷰 가져오기
     reviews = Review.objects.filter(movie=movie).order_by('-created_at')
 
     # 영화 세부 정보와 리뷰를 전달
     return render(request, 'movies/detail.html', {'movie': movie_data, 'reviews': reviews, 'trailer': trailer, 'genres': genres})
+
+
+
+
 
 
 def search(request):
@@ -330,12 +354,28 @@ def profile_edit(request, user_nickname):
     }
     return render(request, 'movies/profile_edit.html', context)
 
+from django.http import JsonResponse
 
 
 @login_required
-def scrap_movie(request, movie_id):
-    movie = get_object_or_404(Movie, id=movie_id)  # 영화가 존재하는지 확인
-    scrap, created = Scrap.objects.get_or_create(user=request.user, movie=movie)
+def scrap_toggle(request, movie_id):
+    movie = Movie.objects.get(id=movie_id)
+    user = request.user
     
-    return redirect('movies:detail', movie_id=movie.id)
+    # 기존에 스크랩된 상태가 있으면 삭제, 없으면 추가
+    scrap, created = Scrap.objects.get_or_create(user=user, movie=movie)
+    if created:
+        # 새로 스크랩 추가
+        is_scrapped = True
+    else:
+        # 기존 스크랩 취소
+        scrap.delete()
+        is_scrapped = False
+    
+    # movie 객체의 is_scrapped 상태를 갱신
+    movie.is_scrapped = is_scrapped
+    movie.save()
+
+    return JsonResponse({'is_scrapped': is_scrapped})
+
 
