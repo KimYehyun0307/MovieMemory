@@ -6,7 +6,6 @@ from allauth.socialaccount.models import SocialAccount
 import urllib.parse
 from django.conf import settings
 from reviews.models import Review
-from reviews.models import Comment as ReviewComment
 from accounts.forms import UserCreationForm  
 from accounts.models import User
 from communities.models import MovieReview, Comment, CommentReply, BambooPost
@@ -243,7 +242,7 @@ def profile(request, user_nickname):
     )
 
     # 영화 리뷰에 대한 댓글만 필터링
-    user_reviews = ReviewComment.objects.filter(user=user).order_by('-created_at')
+    user_reviews = Review.objects.filter(user=user).order_by('-created_at')
 
     # 해당 유저가 작성한 대나무 글/댓글 모아보기
     user_bamboo_posts = BambooPost.objects.filter(user=user)

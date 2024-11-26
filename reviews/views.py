@@ -6,10 +6,10 @@ from .forms import ReviewForm
 from movies.models import Movie  # Movie 모델이 있다고 가정
 from django.conf import settings
 from django.http import JsonResponse, HttpResponse
-from .models import Comment
+from .models import ReviewComment
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-from .models import Review, Comment
+from .models import Review, ReviewComment
 from django.contrib.auth.decorators import login_required
 import json
 
@@ -72,7 +72,7 @@ def create_comment(request, review_id):
     if request.method == 'POST' and request.is_ajax():
         content = request.POST.get('content')
         if content:
-            comment = Comment.objects.create(
+            comment = ReviewComment.objects.create(
                 review=review,
                 user=request.user,
                 content=content
@@ -94,7 +94,7 @@ def add_comment(request, review_id):
             return JsonResponse({'error': '댓글 내용을 입력하세요.'}, status=400)
 
         # 댓글 생성
-        comment = Comment.objects.create(
+        comment = ReviewComment.objects.create(
             review=review,
             user=request.user,  # 현재 로그인한 사용자
             content=content,
@@ -113,7 +113,7 @@ def add_comment(request, review_id):
 
 @login_required
 def delete_comment(request, comment_id):
-    comment = get_object_or_404(Comment, id=comment_id)
+    comment = get_object_or_404(ReviewComment, id=comment_id)
     if comment.user == request.user:  # 본인 댓글인지 확인
         comment.delete()
         return JsonResponse({'status': 'success'}, status=200)

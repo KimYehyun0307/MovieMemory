@@ -670,4 +670,16 @@ h1, h2 {
 /* 레이블과 체크박스 사이의 여백 */
 .form-check-label {
   margin-left: 8px;
+  font-size: 14px;
+  white-space: nowrap;  /* 레이블 텍스트가 한 줄로 유지되도록 */
+}
+
+.form-check-input {
+  margin-right: 10px;  /* 체크박스와 레이블 사이 간격 조정 */
+}
+
+.form-check-inline {
+  display: flex;
+  align-items: center;  /* 체크박스와 레이블을 수직 중앙 정렬 */
+  margin-left: 0;  /* 왼쪽 여백 제거 */
 }

@@ -19,7 +19,6 @@ class MovieReviewForm(forms.ModelForm):
             'rating': 5,  # rating 필드의 기본값을 5로 설정
         }
 
-
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
@@ -29,6 +28,11 @@ class CommentForm(forms.ModelForm):
             'is_reply': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'image': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # 'is_reply' 필드의 레이블을 '대댓글 허용'으로 변경
+        self.fields['is_reply'].label = '대댓글 허용'
 
 
 class CommentReplyForm(forms.ModelForm):
