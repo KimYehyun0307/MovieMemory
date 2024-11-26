@@ -356,40 +356,6 @@ def bamboo_post_edit(request, post_num):
     }
     return render(request, 'communities/bamboo_post_edit.html', context)
 
-@login_required
-def bamboo_post_delete(request, post_num):
-    bamboo_post = get_object_or_404(BambooPost, pk=post_num)
-    # 삭제 권한 체크 (작성자 본인 또는 슈퍼유저만 삭제 가능)
-    if bamboo_post.user != request.user and not request.user.is_superuser:
-        return HttpResponseForbidden("권한이 없습니다.")
-    
-    bamboo_post.delete()
-    return redirect('communities:bamboo')
-
-
-# 대나무숲 게시물 수정
-@login_required
-def bamboo_post_edit(request, post_num):
-    bamboo_post = get_object_or_404(BambooPost, pk=post_num)
-
-    # 작성자 또는 관리자만 수정 가능
-    if bamboo_post.user != request.user and not request.user.is_superuser:
-        return HttpResponseForbidden("수정 권한이 없습니다.")
-    
-    if request.method == "POST":
-        form = BambooPostForm(request.POST, request.FILES, instance=bamboo_post)
-        if form.is_valid():
-            form.save()
-            return redirect('communities:bamboo')
-    else:
-        form = BambooPostForm(instance=bamboo_post)
-
-    context = {
-        'form': form,
-        'bamboo_post': bamboo_post,
-    }
-    return render(request, 'communities/bamboo_post_edit.html', context)
-
 
 # 대나무숲 게시물 삭제
 @login_required
@@ -416,18 +382,19 @@ def like_post_bamboo(request, post_num):
 
     if not created:
         like.delete()  # 좋아요 취소
+        bamboo_post.liked_users.remove(user)  # 좋아요 취소 시 유저 목록에서 제거
         liked = False
     else:
+        bamboo_post.liked_users.add(user)  # 좋아요 추가 시 유저 목록에 추가
         liked = True
 
-    # 좋아요 수는 Like 모델을 통해 세기
-    likes_count = Like.objects.filter(post=bamboo_post).count()
-
+    # 변경된 좋아요 수를 반환
     return JsonResponse({
         "bamboo_post_id": bamboo_post.id,
-        "likes_count": likes_count,
+        "likes_count": bamboo_post.liked_users.count(),
         "liked": liked,
     })
+
 
 
 

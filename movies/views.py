@@ -6,9 +6,10 @@ from allauth.socialaccount.models import SocialAccount
 import urllib.parse
 from django.conf import settings
 from reviews.models import Review
+from reviews.models import Comment as ReviewComment
 from accounts.forms import UserCreationForm  
 from accounts.models import User
-from communities.models import MovieReview, Comment, CommentReply
+from communities.models import MovieReview, Comment, CommentReply, BambooPost
 from django.core.files.storage import default_storage
 from .models import Movie, Scrap
 from .models import Genres
@@ -155,10 +156,6 @@ def detail(request, movie_id):
     return render(request, 'movies/detail.html', {'movie': movie_data, 'reviews': reviews, 'trailer': trailer, 'genres': genres})
 
 
-
-
-
-
 def search(request):
     query = request.GET.get('query', '').strip()  # 검색어 받기
     print(f"입력된 검색어: {query}")  # query 값 확인용
@@ -244,19 +241,26 @@ def profile(request, user_nickname):
         SocialAccount.objects.get(user=user, provider='kakao').get_avatar_url()
         if has_kakao_account else None
     )
-    user_reviews = Review.objects.filter(user=user).order_by('-created_at')
-    
+
     # 영화 리뷰에 대한 댓글만 필터링
-    user_comments = Comment.objects.filter(user=user, review__isnull=False).order_by('-created_at')
+    user_reviews = ReviewComment.objects.filter(user=user).order_by('-created_at')
+
+    # 해당 유저가 작성한 대나무 글/댓글 모아보기
+    user_bamboo_posts = BambooPost.objects.filter(user=user)
     
-    # 대댓글도 가져오기
+    # 대나무숲 댓글은 anonymous_name이 존재하는 경우
+    user_bamboo_comments = Comment.objects.filter(user=user, anonymous_name__isnull=False).order_by('-created_at')
+    
+    # 일반 댓글은 anonymous_name이 없는 경우
+    user_comments = Comment.objects.filter(user=user, anonymous_name__isnull=True).order_by('-created_at')
+
+    # 대댓글 가져오기
     user_comment_replies = CommentReply.objects.filter(comment__in=user_comments).order_by('-created_at')
-    
+
     user_posts = MovieReview.objects.filter(user=user).order_by('-created_at')
-    user_comments = Comment.objects.filter(user=user)
-    
+
     is_self = request.user == user  # 자신이 프로필을 보고 있는지 확인
-    show_id = is_self or request.user.is_superuser # 프로필을 보는 사람이 자기 자신이거나 관리자일때만 id 공개
+    show_id = is_self or request.user.is_superuser  # 프로필을 보는 사람이 자기 자신이거나 관리자일 때만 id 공개
     show_birthdate = is_self or request.user.is_superuser or user.is_birthdate_public
     show_genre = is_self or request.user.is_superuser or user.is_genre_public
     show_reviews = is_self or request.user.is_superuser or user.is_reviews_public
@@ -269,7 +273,7 @@ def profile(request, user_nickname):
     if not show_posts:
         user_posts = []
     if not show_comments:
-        user_comments = []
+        user_comments = []  # 비공개일 경우 일반 댓글도 비우기
 
     context = {
         'user': user,
@@ -286,10 +290,11 @@ def profile(request, user_nickname):
         'show_reviews': show_reviews,
         'show_posts': show_posts,
         'show_comments': show_comments,  # 댓글 공개 여부를 템플릿에서 사용할 수 있도록 추가
+        'user_bamboo_posts': user_bamboo_posts,  # 대나무숲 게시글 추가
+        'user_bamboo_comments': user_bamboo_comments,  # 대나무숲 댓글 추가
     }
 
     return render(request, 'movies/profile.html', context)
-
 
 @login_required
 def profile_edit(request, user_nickname):
