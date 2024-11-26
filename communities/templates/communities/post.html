@@ -10,7 +10,7 @@
     <p class="review-content">{{ review.content }}</p>
 
     {% if review.image %}
-    <div class="review-image">
+    <div class="post-image">
         <img src="{{ review.image.url }}" alt="Review Image">
     </div>
     {% endif %}
@@ -58,11 +58,6 @@
                         {% csrf_token %}
                         <input type="hidden" name="comment_id" value="{{ comment.id }}">
                         {{ reply_form.as_p }}
-                        <!-- 대댓글 이미지 업로드 -->
-                        <div class="form-group">
-                            <label for="id_image">이미지 업로드</label>
-                            {{ reply_form.image }}  <!-- 대댓글 이미지 파일 업로드 필드 -->
-                        </div>
                         <button type="submit" name="reply_submit" class="btn-submit">대댓글 작성</button>
                     </form>
                 </div>

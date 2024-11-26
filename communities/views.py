@@ -1,11 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseForbidden
-from .models import Movie, MovieReview, Comment, CommentReply, BambooPost, Event, Like
-from .forms import MovieReviewForm, CommentForm, CommentReplyForm, BambooPostForm, EventParticipationForm
+from .models import Movie, MovieReview, Comment, CommentReply, BambooPost, Like, ScreeningSchedule
+from .forms import MovieReviewForm, CommentForm, CommentReplyForm, BambooPostForm
 from django.contrib.auth.decorators import login_required
 from accounts.models import User
 from movies.models import Movie
-from .models import ScreeningSchedule, Event, MovieReview, BambooPost
 from collections import defaultdict
 from django.db.models import Count
 from datetime import datetime
@@ -47,8 +46,6 @@ def main_community(request):
                 formatted_day = day.strftime('%Y-%m-%d')
                 week_info[formatted_day] = week_index
 
-    # 진행 중인 이벤트 가져오기
-    active_events = Event.objects.filter(is_active=True)
 
     # 인기 영화 리뷰
     popular_reviews = MovieReview.objects.annotate(like_count=Count('liked_users')).order_by('-like_count')[:5]
@@ -64,7 +61,6 @@ def main_community(request):
         'current_month': current_month,
         'current_day': current_day,
         'weeks_in_month': weeks_in_month,  # 주별로 나누어진 날짜들
-        'active_events': active_events,
         'popular_reviews': popular_reviews,
         'popular_bamboo_posts': popular_bamboo_posts,
         'movies': movies,
@@ -410,110 +406,61 @@ def like_post_bamboo(request, post_num):
     })
 
 
-
-
-# 이벤트 페이지
-def event(request):
-    events = Event.objects.filter(is_active=True)
-    context = {
-        'events': events,
-    }
-    return render(request, 'communities/event.html', context)
-
-# 이벤트 섹션 페이지
-def event_section(request, eventname):
-    event = get_object_or_404(Event, name=eventname)
-    # 이벤트 참여 폼
-    participation_form = EventParticipationForm()
-    context = {
-        'event': event,
-        'participation_form': participation_form
-    }
-    return render(request, 'communities/event_section.html', context)
-
-# 이벤트 글 작성 (관리자만 가능)
 @login_required
-def event_create(request):
-    if not request.user.is_superuser:  # 관리자 권한 체크
-        return HttpResponseForbidden("이벤트 생성 권한이 없습니다.")
-    
-    if request.method == "POST":
-        form = EventParticipationForm(request.POST, request.FILES)
-        if form.is_valid():
-            event = form.save(commit=False)
-            event.creator = request.user  # 이벤트 생성자 설정
-            event.save()
-            return redirect('communities:event')
-    else:
-        form = EventParticipationForm()
-
-    context = {
-        'form': form,
-    }
-    return render(request, 'communities/event_create.html', context)
-
-
-# 이벤트 참여 처리
-@login_required
-def event_participation(request, eventname):
-    event = get_object_or_404(Event, name=eventname)
-    if request.method == 'POST':
-        form = EventParticipationForm(request.POST)
-        if form.is_valid():
-            participation = form.save(commit=False)
-            participation.event = event
-            participation.user = request.user  # 로그인한 사용자로 설정
-            participation.save()
-            return redirect('communities:event_section', eventname=event.name)
-    else:
-        form = EventParticipationForm()
-    context = {
-        'event': event,
-        'participation_form': form,
-    }
-    return render(request, 'communities/event_section.html', context)
-
-# 댓글 삭제
-@login_required
-def comment_delete(request, post_num, comment_id):
+def comment_delete(request, movie_title, post_num, comment_id):
     comment = get_object_or_404(Comment, pk=comment_id)
     
     # 댓글 삭제 권한 체크 (작성자 본인 또는 관리자만 삭제 가능)
     if comment.user != request.user and not request.user.is_superuser:
         return HttpResponseForbidden("삭제 권한이 없습니다.")
     
-    # 해당 게시물 가져오기
-    bamboo_post = get_object_or_404(BambooPost, pk=post_num)
-    
-    # 댓글 삭제
+    # 영화 리뷰 게시물에 속하는 댓글 삭제
+    movie_review = get_object_or_404(MovieReview, pk=post_num)
     comment.delete()
     
-    # bamboo_post에 anonymous_name이 있으면 대나무숲으로 리다이렉트
-    if bamboo_post.anonymous_name:
-        return redirect('communities:bamboo_post', post_num=bamboo_post.id)
-    else:
-        # 아니면 기존 게시물로 리다이렉트
-        return redirect('communities:post', movie_title=bamboo_post.title, post_num=bamboo_post.id)
+    return redirect('communities:post', movie_title=movie_title, post_num=movie_review.id)
+
+    
+@login_required
+def bamboo_comment_delete(request, post_num, comment_id):
+    comment = get_object_or_404(Comment, pk=comment_id)
+    
+    # 댓글 삭제 권한 체크 (작성자 본인 또는 관리자만 삭제 가능)
+    if comment.user != request.user and not request.user.is_superuser:
+        return HttpResponseForbidden("삭제 권한이 없습니다.")
+    
+    # 대나무숲 게시물에 속하는 댓글 삭제
+    bamboo_post = get_object_or_404(BambooPost, pk=post_num)
+    comment.delete()
+    
+    return redirect('communities:bamboo_post', post_num=bamboo_post.id)
 
 
 # 대댓글 삭제
 @login_required
-def reply_delete(request, post_num, comment_id, reply_id):
+def reply_delete(request, movie_title, post_num, comment_id, reply_id):
     reply = get_object_or_404(CommentReply, pk=reply_id)
     
     # 대댓글 삭제 권한 체크 (작성자 본인 또는 관리자만 삭제 가능)
     if reply.user != request.user and not request.user.is_superuser:
         return HttpResponseForbidden("삭제 권한이 없습니다.")
     
-    # 해당 게시물 가져오기
-    bamboo_post = get_object_or_404(BambooPost, pk=post_num)
-    
-    # 대댓글 삭제
+    # 영화 리뷰에 속하는 대댓글 삭제
+    movie_review = get_object_or_404(MovieReview, pk=post_num)
     reply.delete()
     
-    # bamboo_post에 anonymous_name이 있으면 대나무숲으로 리다이렉트
-    if bamboo_post.anonymous_name:
-        return redirect('communities:bamboo_post', post_num=bamboo_post.id)
-    else:
-        # 아니면 기존 게시물로 리다이렉트
-        return redirect('communities:post', movie_title=bamboo_post.title, post_num=bamboo_post.id)
+    return redirect('communities:post', movie_title=movie_title, post_num=post_num)
+
+@login_required
+def bamboo_reply_delete(request, post_num, comment_id, reply_id):
+    reply = get_object_or_404(CommentReply, pk=reply_id)
+    
+    # 대댓글 삭제 권한 체크 (작성자 본인 또는 관리자만 삭제 가능)
+    if reply.user != request.user and not request.user.is_superuser:
+        return HttpResponseForbidden("삭제 권한이 없습니다.")
+    
+    # 대나무숲에 속하는 대댓글 삭제
+    bamboo_post = get_object_or_404(BambooPost, pk=post_num)
+    reply.delete()
+    
+    return redirect('communities:bamboo_post', post_num=bamboo_post.id)

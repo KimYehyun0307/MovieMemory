@@ -15,7 +15,7 @@
     <p class="review-content">{{ bamboo_post.content }}</p>
 
     {% if bamboo_post.image %}
-    <div class="bamboo-image">
+    <div class="post-image">
         <img src="{{ bamboo_post.image.url }}" alt="Bamboo Image">
     </div>
     {% endif %}
@@ -55,7 +55,7 @@
                 <!-- 댓글 수정/삭제 버튼 -->
                 {% if comment.user.nickname == user_nickname or request.user.is_superuser %}
                 <div class="comment-actions">
-                    <a href="{% url 'communities:comment_delete' post_num=bamboo_post.id comment_id=comment.id %}" class="delete-btn">삭제</a>
+                    <a href="{% url 'communities:bamboo_comment_delete' post_num=bamboo_post.id comment_id=comment.id %}" class="delete-btn">삭제</a>
                 </div>
                 {% endif %}
     
@@ -101,7 +101,7 @@
     
                         {% if reply.user == request.user or request.user.is_superuser %}
                         <div class="reply-actions">
-                            <a href="{% url 'communities:reply_delete' post_num=bamboo_post.id comment_id=comment.id reply_id=reply.id %}" class="delete-btn">삭제</a>
+                            <a href="{% url 'communities:bamboo_reply_delete' post_num=bamboo_post.id comment_id=comment.id reply_id=reply.id %}" class="delete-btn">삭제</a>
                         </div>
                         {% endif %}
                     </li>

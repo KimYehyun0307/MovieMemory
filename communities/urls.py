@@ -20,10 +20,6 @@ urlpatterns = [
     path('bamboo/<int:post_num>/like/', views.like_post_bamboo, name='like_post_bamboo'),
     path('bamboo/<int:post_num>/edit/', views.bamboo_post_edit, name='bamboo_post_edit'),
     path('bamboo/<int:post_num>/delete/', views.bamboo_post_delete, name='bamboo_post_delete'),
-    path('bamboo/<int:post_num>/comment/<int:comment_id>/delete/', views.comment_delete, name='comment_delete'),
-    path('bamboo/<int:post_num>/comment/<int:comment_id>/reply/<int:reply_id>/delete/', views.reply_delete, name='reply_delete'),
-    path('events/', views.event, name='event'),
-    path('events/<str:eventname>/', views.event_section, name='event_section'),
-    path('events/<str:eventname>/create/', views.event_create, name='event_create'), 
-    path('events/<str:eventname>/participate/', views.event_participation, name='event_participation'), 
+    path('bamboo/<int:post_num>/comment/<int:comment_id>/delete/', views.bamboo_comment_delete, name='bamboo_comment_delete'),
+    path('bamboo/<int:post_num>/comment/<int:comment_id>/reply/<int:reply_id>/delete/', views.bamboo_reply_delete, name='bamboo_reply_delete'),
 ]

@@ -35,15 +35,13 @@
 
         <!-- 좋아하는 장르 공개 여부 -->
         <p><strong>좋아하는 장르:</strong></p>
-        <ul>
-            {% if show_genre %}
-                <li>1순위: {{ user.genre_1.name|default:"선택된 장르가 없습니다." }}</li>
-                <li>2순위: {{ user.genre_2.name|default:"선택된 장르가 없습니다." }}</li>
-                <li>3순위: {{ user.genre_3.name|default:"선택된 장르가 없습니다." }}</li>
-            {% else %}
-                <p>비공개</p>
-            {% endif %}
-        </ul>
+        {% if show_genre %}
+            <p>1순위: {{ user.genre_1.name|default:"선택된 장르가 없습니다." }}</p>
+            <p>2순위: {{ user.genre_2.name|default:"선택된 장르가 없습니다." }}</p>
+            <p>3순위: {{ user.genre_3.name|default:"선택된 장르가 없습니다." }}</p>
+        {% else %}
+            <p>비공개</p>
+        {% endif %}
 
         <!-- 수정하기 버튼 -->
         {% if user == request.user %}
@@ -74,6 +72,7 @@
     
         {% if show_reviews %}
             {% if user_reviews %}
+            <div class="profile-box user-reviews">
                 <ul>
                     {% for review in user_reviews %}
                         <li class="review-item">
@@ -87,11 +86,16 @@
                         </li>
                     {% endfor %}
                 </ul>
+            </div>
             {% else %}
+            <div class="profile-box user-reviews">
                 <p>아직 댓글을 단 글이 없습니다. 재미있게 본 영화의 댓글을 달아보시는 건 어떨까요?</p>
+            </div>  
             {% endif %}
         {% else %}
+        <div class="profile-box user-reviews">
             <p>댓글 목록은 비공개입니다.</p>
+        </div>
         {% endif %}
     </div>
 
@@ -100,8 +104,11 @@
         <h3><strong>영화 게시판 작성글</strong></h3>
         {% if show_posts %}
             {% if user_posts %}
+            <div class="profile-box user-reviews">
                 <ul>
                     {% for post in user_posts %}
+                    <div class="profile-box user-reviews">
+                    </div>
                         <li class="review-item">                           
                             <a href="{% url 'communities:post' movie_title=post.movie.title post_num=post.id %}" class="review-link">
                                 <div class="review-box">
@@ -112,75 +119,73 @@
                         </li>
                     {% endfor %}
                 </ul>
+            </div>
             {% else %}
+            <div class="profile-box user-reviews">
                 <p>아직 작성한 글이 없습니다.</p>
+            </div>
             {% endif %}
         {% else %}
+        <div class="profile-box user-reviews">
             <p>영화 게시판 글 목록은 비공개입니다.</p>
+        </div>     
         {% endif %}
     </div>
 
     <!-- 댓글 단 글의 목록 -->
-    <div class="profile-box user-comments">
+    <div class="profile-box user-reviews">
         <h3><strong>댓글 및 대댓글</strong></h3>
         {% if show_comments %}
             {% if user_comments %}
-                <ul>
-                    {% for comment in user_comments %}
-                        {% if comment.review %}
-                            <!-- 댓글 내용과 링크 (영화 게시판 댓글만 링크로 처리) -->
-                            <li>
-                                <a href="{% url 'communities:post' movie_title=comment.review.movie.title post_num=comment.review.id %}">
-                                    {{ comment.review.movie.title }} - {{ comment.content }} ({{ comment.created_at|date:"Y-m-d H:i" }})
-                                </a>
-                            </li>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
+                {% for comment in user_comments %}
+                    {% if comment.review %}
+                    <div class="profile-box user-reviews">
+                    <a href="{% url 'communities:post' movie_title=comment.review.movie.title post_num=comment.review.id %}">
+                        {{ comment.review.movie.title }} - {{ comment.content }} ({{ comment.created_at|date:"Y-m-d H:i" }})
+                    </a>
+                    </div>  
+                    {% endif %}
+                {% endfor %}
             {% else %}
+            <div class="profile-box user-reviews">
                 <p>댓글을 단 글이 없습니다.</p>
+            </div>
             {% endif %}
         {% else %}
-            <p>댓글 목록은 비공개입니다.</p>
+            <div class="profile-box user-reviews">
+                <p>댓글 목록은 비공개입니다.</p>
+            </div>
         {% endif %}
     </div>
 
     <!-- 로그인한 유저만 볼 수 있는 대나무숲 관련 컨테이너 -->
     {% if user == request.user %}
-    <div class="profile-box bamboo-posts-container">
+    <div class="profile-box user-reviews">
         <h3><strong>대나무숲 게시글 및 댓글</strong></h3>
 
         <!-- 대나무숲 작성글 목록 -->
-        <div class="bamboo-posts">
-            <h4>내가 작성한 대나무숲 글</h4>
+        <div class="profile-box user-reviews">
+            <h5>내가 작성한 대나무숲 글</h5>
             {% if user_bamboo_posts %}
-                <ul>
-                    {% for post in user_bamboo_posts %}
-                        <li>
-                            <a href="{% url 'communities:bamboo_post' post_num=post.id %}">
-                                <strong>{{ post.title }}</strong> - {{ post.created_at|date:"Y-m-d" }}
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
+                {% for post in user_bamboo_posts %}
+                    <a href="{% url 'communities:bamboo_post' post_num=post.id %}">
+                        <strong>{{ post.title }}</strong> - {{ post.created_at|date:"Y-m-d" }}
+                    </a>
+                {% endfor %}
             {% else %}
                 <p>대나무숲에 작성한 글이 없습니다.</p>
             {% endif %}
         </div>
 
         <!-- 대나무숲 댓글 목록 -->
-        <div class="bamboo-comments">
-            <h4>내가 작성한 대나무숲 댓글</h4>
+        <div class="profile-box user-reviews">
+            <h5>내가 작성한 대나무숲 댓글</h5>
             {% if user_bamboo_comments %}
-                <ul>
-                    {% for comment in user_bamboo_comments %}
-                        <li>
-                            <a href="{% url 'communities:bamboo_post' post_num=comment.post.id %}">
-                                {{ comment.content }} - {{ comment.created_at|date:"Y-m-d H:i" }}
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
+                {% for comment in user_bamboo_comments %}
+                    <a href="{% url 'communities:bamboo_post' post_num=comment.post.id %}">
+                        {{ comment.content }} - {{ comment.created_at|date:"Y-m-d H:i" }}
+                    </a>
+                {% endfor %}
             {% else %}
                 <p>대나무숲에 댓글을 남긴 글이 없습니다.</p>
             {% endif %}

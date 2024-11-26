@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     alert(data.error);
                 } else {
                     // 좋아요 수 업데이트
-                    const likeCountElement = document.getElementById(`like-count-${data.review_id}`);
+                    const likeCountElement = document.getElementById(`like-count-${data.post_id}`);
                     if (likeCountElement) {
                         likeCountElement.textContent = data.likes_count;
                     }

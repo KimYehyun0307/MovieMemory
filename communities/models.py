@@ -101,15 +101,15 @@ class CommentReply(models.Model):
     image = models.ImageField(upload_to='replies/', blank=True, null=True)  # 대댓글 이미지
 
     def save(self, *args, **kwargs):
-        # 대댓글 작성자가 익명으로 작성하는 경우, 익명 이름을 랜덤으로 생성
-        if not self.nickname:  # 닉네임이 없으면 익명 이름을 생성
+        # 대댓글이 연결된 댓글이 대나무숲 게시물인 경우
+        if self.comment.post and not self.nickname:
+            # 대나무숲 대댓글에는 anonymous_name을 랜덤으로 생성
             self.anonymous_name = ''.join(random.choices(string.ascii_letters + string.digits, k=6))  # 랜덤 이름 생성
-        else:
-            self.anonymous_name = ''  # 닉네임이 있으면 익명 이름을 비워둠
-
-        # 대댓글 작성자가 있다면 해당 사용자의 nickname으로 설정
-        if not self.nickname and self.user:
-            self.nickname = self.user.nickname
+        elif self.comment.review and not self.nickname:
+            # 영화 리뷰 대댓글에는 nickname을 설정
+            if self.user:
+                self.nickname = self.user.nickname  # 댓글 작성자가 있다면 해당 사용자의 nickname으로 설정
+            self.anonymous_name = ''  # 대댓글이 영화 리뷰에 속하면 익명 이름을 비워둠
 
         super().save(*args, **kwargs)
 
@@ -117,7 +117,6 @@ class CommentReply(models.Model):
         if self.anonymous_name:
             return f"Reply by Anonymous ({self.anonymous_name})"
         return f"Reply by {self.nickname}"
-
 
 
 # 영화 게시판에서 좋아요 모델
@@ -131,30 +130,6 @@ class Like(models.Model):
 
     class Meta:
         unique_together = ('user', 'review', 'post')
-
-# 이벤트 모델
-class Event(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField()
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
-    is_active = models.BooleanField(default=True)
-    image = models.ImageField(upload_to='events/', blank=True, null=True)  # 이벤트 이미지
-
-    def __str__(self):
-        return self.name
-
-
-# 이벤트 참여 모델
-class EventParticipation(models.Model):
-    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="participations")
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="event_participations")
-    score = models.PositiveIntegerField(default=0)  # 퀴즈 등 점수 기록
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.user} in {self.event.name}"
-
 
 class ScreeningSchedule(models.Model):
     movie_title = models.CharField(max_length=255)  # 영화 제목을 저장할 컬럼

@@ -418,18 +418,6 @@ h1, h2 {
   margin: 2px 0;
 }
 
-/* 진행 중인 이벤트 섹션 */
-.event-list {
-  list-style-type: none;
-  padding: 0;
-  margin: 10px 0;
-}
-
-.event-list li {
-  font-size: 14px;
-  margin-bottom: 5px;
-}
-
 /* 인기 영화 리뷰 섹션 */
 .review-container {
   max-width: 800px; /* 모든 리뷰의 너비를 통일 */
@@ -485,6 +473,13 @@ h1, h2 {
 .review-list li a:hover {
   text-decoration: underline;
   color: #0056b3;
+}
+
+.review-container img {
+  max-width: 100%; /* 이미지 너비를 컨테이너에 맞춤 */
+  max-height: 400px; /* 최대 높이를 400px로 제한 */
+  object-fit: cover; /* 이미지가 영역을 가득 채우되 비율을 유지 */
+  border-radius: 8px; /* 이미지 모서리 둥글게 */
 }
 
 /* 인기 대나무숲 게시물 섹션 */
@@ -756,3 +751,4 @@ h1, h2 {
   margin-top: 10px;
   margin-bottom: 10px;
 }
+

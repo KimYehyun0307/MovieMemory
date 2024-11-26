@@ -1,5 +1,5 @@
 from django import forms
-from .models import MovieReview, Comment, CommentReply, BambooPost, EventParticipation
+from .models import MovieReview, Comment, CommentReply, BambooPost
 
 
 class MovieReviewForm(forms.ModelForm):
@@ -53,13 +53,4 @@ class BambooPostForm(forms.ModelForm):
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '대나무숲 제목'}),
             'content': forms.Textarea(attrs={'class': 'form-control', 'placeholder': '내용을 입력하세요', 'rows': 4}),
             'image': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
-        }
-
-
-class EventParticipationForm(forms.ModelForm):
-    class Meta:
-        model = EventParticipation
-        fields = ['event']
-        widgets = {
-            'event': forms.Select(attrs={'class': 'form-control'}),
         }

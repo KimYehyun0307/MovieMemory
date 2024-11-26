@@ -3,15 +3,6 @@
 {% load customfilter %}
 
 {% block content %}
-<!-- 메시지 출력 -->
-{% if messages %}
-<div class="alert-messages section-container">
-    {% for message in messages %}
-        <div class="alert alert-danger">{{ message }}</div> <!-- 오류 메시지 -->
-    {% endfor %}
-</div>
-{% endif %}
-
 <div class="section-container">
     <h1>{{ current_year }}년 {{ current_month }}월 개봉 예정작 일정</h1>
 
@@ -54,15 +45,6 @@
             </tbody>
         </table>
     </div>
-</div>
-
-<div class="section-container">
-    <h2>진행 중인 이벤트</h2>
-    <ul class="event-list">
-        {% for event in active_events %}
-        <li>{{ event.title }}</li>
-        {% endfor %}
-    </ul>
 </div>
 
 <div class="section-container">
