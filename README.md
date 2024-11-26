@@ -1,4 +1,4 @@
-![generated (1)](https://github.com/user-attachments/assets/b4bca1cc-9e75-419b-9858-e2c9ec6578ef)# project1
+MovieMemory README
 ---
 
 관통 영화 프로젝트
@@ -58,7 +58,7 @@
 
   
 데이터베이스 모델링 (ERD)
-
+![generated (1)](https://github.com/user-attachments/assets/b4bca1cc-9e75-419b-9858-e2c9ec6578ef)# project1
 
 영화 추천 알고리즘에 대한 기술적 설명
 - 사용자 나이 및 선호 장르 기반으로 추천 알고리즘 구현
