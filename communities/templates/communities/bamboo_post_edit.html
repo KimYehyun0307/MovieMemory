@@ -2,10 +2,9 @@
 {% load static %}
 
 {% block content %}
-<div class="profile_container">
-    <h1 class="page-title">{{ bamboo_post.id|yesno:"글 수정하기,새 글 작성하기"}}</h1>
+<div class="profile-container">
     <div class="profile-box">
-        <h2 class="form-title">{{ bamboo_post.id|yesno:"글 수정하기,새 글 작성하기"}}</h2>
+        <h2 class="form-title"><strong>{{ bamboo_post.id|yesno:"게시글 수정하기,새 글 작성하기"}}</strong></h2>
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group">
@@ -24,6 +23,7 @@
         </form>
     </div>
 
-    <a href="{% url 'communities:bamboo_post' post_num=bamboo_post.id %}" class="btn-back">돌아가기</a>
+    <a href="{% url 'communities:bamboo_post' post_num=bamboo_post.id %}" class="btn btn-primary btn-back">돌아가기</a>
+
 </div>
 {% endblock content %}
