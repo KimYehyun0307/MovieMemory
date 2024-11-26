@@ -12,6 +12,7 @@ MovieMemory README
 ![008](https://github.com/user-attachments/assets/78e3a48c-cd9f-4a98-96b0-5084285620b8)
 ![009](https://github.com/user-attachments/assets/f9ac5f92-d899-4873-b597-d358d74239d0)
 ![010](https://github.com/user-attachments/assets/85ceb89f-ef8a-496f-bc0f-4efd351f15c7)
+[시연영상](https://drive.google.com/file/d/1Zhg-8byNA31KEbq9-rBT3jUDQzNEPr-R/view?usp=sharing)
 ![011](https://github.com/user-attachments/assets/e812e683-8413-4778-9d52-45625ad3316c)
 ![012](https://github.com/user-attachments/assets/39d7056e-83b7-4f80-937e-9106dcd06ee3)
 ![013](https://github.com/user-attachments/assets/c55ad965-d9bf-436d-85e2-1377de5ca7f7)
