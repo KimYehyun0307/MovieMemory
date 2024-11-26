@@ -71,21 +71,27 @@
         {% for review in popular_reviews %}
         <li>
             <a href="{% url 'communities:post' movie_title=review.movie.title post_num=review.id %}">
-                {{ review.movie.title }}: {{ review.title }} - 작성자: {{ review.user.nickname }} - 좋아요: {{ review.like_count }}
-            </a>
+                {{ review.movie.title }}: {{ review.title }}
+            </a> - 작성자: {{ review.user.nickname }} - 좋아요: {{ review.like_count }}
         </li>
         {% endfor %}
     </ul>
 </div>
 
+
 <div class="section-container">
     <h2>인기 대나무숲 게시물</h2>
     <ul class="bamboo-post-list">
         {% for post in popular_bamboo_posts %}
-        <li>{{ post.title }} - {{ post.comment_count }} 댓글</li>
+        <li>
+            <a href="{% url 'communities:bamboo_post' post_num=post.id %}">
+                {{ post.title }}
+            </a> - 좋아요: {{ post.liked_users.count }}
+        </li>
         {% endfor %}
     </ul>
 </div>
+
 
 <div class="section-container navigation-buttons">
     <!-- 영화 게시판으로 이동 -->

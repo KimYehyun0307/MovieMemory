@@ -38,6 +38,7 @@ class BambooPost(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     image = models.ImageField(upload_to='media/bamboo_posts/', blank=True, null=True)  # 대나무숲 이미지
+    liked_users = models.ManyToManyField(User, related_name="liked_bamboo_posts", blank=True)  # 좋아요 사용자
 
     def __str__(self):
         return f"Anonymous ({self.anonymous_name}) - {self.title}"  # 제목도 반환하도록 수정
@@ -100,11 +101,13 @@ class CommentReply(models.Model):
     image = models.ImageField(upload_to='media/replies/', blank=True, null=True)  # 대댓글 이미지
 
     def save(self, *args, **kwargs):
-        # 대나무숲 대댓글에는 익명 이름을 랜덤으로 생성
-        if self.anonymous_name == '':
+        # 대댓글 작성자가 익명으로 작성하는 경우, 익명 이름을 랜덤으로 생성
+        if not self.nickname:  # 닉네임이 없으면 익명 이름을 생성
             self.anonymous_name = ''.join(random.choices(string.ascii_letters + string.digits, k=6))  # 랜덤 이름 생성
+        else:
+            self.anonymous_name = ''  # 닉네임이 있으면 익명 이름을 비워둠
 
-        # 댓글 작성자가 있다면 해당 사용자의 nickname으로 설정
+        # 대댓글 작성자가 있다면 해당 사용자의 nickname으로 설정
         if not self.nickname and self.user:
             self.nickname = self.user.nickname
 
@@ -114,6 +117,7 @@ class CommentReply(models.Model):
         if self.anonymous_name:
             return f"Reply by Anonymous ({self.anonymous_name})"
         return f"Reply by {self.nickname}"
+
 
 
 # 영화 게시판에서 좋아요 모델

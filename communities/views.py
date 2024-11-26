@@ -54,7 +54,7 @@ def main_community(request):
     popular_reviews = MovieReview.objects.annotate(like_count=Count('liked_users')).order_by('-like_count')[:5]
 
     # 인기 대나무숲 게시물
-    popular_bamboo_posts = BambooPost.objects.annotate(comment_count=Count('comments')).order_by('-comment_count')[:5]
+    popular_bamboo_posts = BambooPost.objects.annotate(comment_count=Count('liked_users')).order_by('-liked_users')[:5]
 
     # Context에 데이터 추가
     context = {
@@ -420,11 +420,15 @@ def like_post_bamboo(request, post_num):
     else:
         liked = True
 
+    # 좋아요 수는 Like 모델을 통해 세기
+    likes_count = Like.objects.filter(post=bamboo_post).count()
+
     return JsonResponse({
         "bamboo_post_id": bamboo_post.id,
-        "likes_count": bamboo_post.liked_users.count(),
+        "likes_count": likes_count,
         "liked": liked,
     })
+
 
 
 # 이벤트 페이지

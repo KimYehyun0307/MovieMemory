@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 <div class="section-container">
@@ -9,9 +10,21 @@
         {% if request.user == bamboo_post.user or request.user.is_superuser %}
             {{ bamboo_post.user.nickname }}  <!-- 본인이거나 superuser일 경우 nickname 표시 -->
         {% else %}
-            {{ bamboo_post.display_name }}  <!-- 그렇지 않으면 display_name (익명) 표시 -->
+            {{ bamboo_post.anonymous_name }}  <!-- 그렇지 않으면 anonymous_name (익명) 표시 -->
         {% endif %}
     </p>
+
+    <!-- 좋아요 버튼 -->
+    <div class="like-container">
+        <button 
+        id="like-button-bamboo" 
+        class="btn-like {% if request.user in bamboo_post.like_set.all %}liked{% endif %}" 
+        data-url="{% url 'communities:like_post_bamboo' post_num=bamboo_post.id %}"
+        data-post-id="{{ bamboo_post.id }}">
+        좋아요 ❤️ {{ bamboo_post.like_set.count }}
+    </button>
+
+    </div>
 
     <!-- 댓글 작성 섹션 -->
     <div class="comment-form-container">
@@ -30,7 +43,7 @@
         <li class="comment-item">
             <strong>
                 {% if request.user == comment.user or request.user.is_superuser %}
-                    {{ comment.nickname }}  <!-- 본인이거나 superuser일 경우 nickname 표시 -->
+                    {{ comment.user.nickname }}  <!-- 본인이거나 superuser일 경우 nickname 표시 -->
                 {% else %}
                     {{ comment.anonymous_name }}  <!-- 그렇지 않으면 anonymous_name (익명) 표시 -->
                 {% endif %}
@@ -79,4 +92,6 @@
         <a href="{% url 'communities:bamboo' %}" class="btn-primary">대나무숲 목록으로 돌아가기</a>
     </div>
 </div>
+
+<script src="{% static 'communities/js/likeHandler.js' %}"></script>
 {% endblock %}

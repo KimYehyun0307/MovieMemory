@@ -18,10 +18,11 @@
     <!-- 좋아요 버튼 -->
     <div class="like-container">
         <button 
-            id="like-button" 
-            class="btn-like {% if user in review.liked_users.all %}liked{% endif %}" 
-            data-url="{% url 'communities:like_post' movie_title=review.movie.title post_num=review.id %}">
-            좋아요 ❤️ {{ review.liked_users.count }}
+        id="like-button" 
+        class="btn-like {% if request.user in review.like_set.all %}liked{% endif %}" 
+        data-url="{% url 'communities:like_post' movie_title=review.movie.title post_num=review.id %}"
+        data-post-id="{{ review.id }}">  <!-- data-post-id 추가 -->
+        좋아요 ❤️ {{ review.like_set.count }}
         </button>
         <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
     </div>
