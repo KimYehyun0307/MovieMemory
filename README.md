@@ -19,16 +19,16 @@ MovieMemory README
 
 ---
 
-# 작업 log
+# README with Text
 
 ### 3조
 팀원 정보 및 업무 분담 내역
 
 **팀장: 김동철**
-담당한 작업: movies, reviews모델 구현, 추천 알고리즘 구현
+- 담당한 작업: movies, reviews모델 구현, 추천 알고리즘 구현
 
 **팀원: 김예현**
-담당한 작업: accounts, communities 앱, movies의 프로필 관리
+- 담당한 작업: accounts, communities 앱, movies의 프로필 관리
 
 목표 서비스 구현 및 실제 구현 정도
 - 영화 사이트 + 추천 알고리즘, 커뮤니티(대나무 숲)
