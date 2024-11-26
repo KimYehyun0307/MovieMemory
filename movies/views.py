@@ -145,8 +145,7 @@ def detail(request, movie_id):
     # 스크랩 상태를 movie_data에 추가
     movie_data['is_scrapped'] = movie.is_scrapped
 
-    # movie 인스턴스에 연결된 장르들을 가져오기
-    genres = movie.genres.all()  # ManyToMany 관계로 연결된 장르들 가져오기
+    genres = Genres.objects.all()  # 모든 장르 데이터 로드
 
     # 영화에 대한 리뷰 가져오기
     reviews = Review.objects.filter(movie=movie).order_by('-created_at')
@@ -174,7 +173,6 @@ def search(request):
     movies = data.get('results', [])
 
     return render(request, 'movies/search.html', {'movies': movies})
-
 import random
 
 def get_recommendations(user):
@@ -201,7 +199,7 @@ def get_recommendations(user):
                 f"&sort_by=vote_average.desc&vote_count.gte=100"
                 f"&primary_release_date.gte={start_year}-01-01"
                 f"&primary_release_date.lte={end_year}-12-31"
-                f"&vote_average.gte=7"
+                f"&vote_average.gte=8"
                 f"&with_genres={genre_id}"
             )
             response = requests.get(url).json()
@@ -212,6 +210,8 @@ def get_recommendations(user):
                 recommendations[genre_name] = random.sample(movies, min(len(movies), 20))
 
     return recommendations
+
+
 
 @login_required
 def memory(request):
@@ -230,6 +230,7 @@ def memory(request):
         'grouped_recommendations': grouped_recommendations,
         'genres': genres
     })
+
 
 def profile(request, user_nickname):
     user_nickname = urllib.parse.unquote(user_nickname)
@@ -273,7 +274,7 @@ def profile(request, user_nickname):
         user_posts = []
     if not show_comments:
         user_comments = []  # 비공개일 경우 일반 댓글도 비우기
-
+    genres = Genres.objects.all()  # 모든 장르 데이터 로드
     context = {
         'user': user,
         'has_kakao_account': has_kakao_account,
@@ -291,6 +292,7 @@ def profile(request, user_nickname):
         'show_comments': show_comments,  # 댓글 공개 여부를 템플릿에서 사용할 수 있도록 추가
         'user_bamboo_posts': user_bamboo_posts,  # 대나무숲 게시글 추가
         'user_bamboo_comments': user_bamboo_comments,  # 대나무숲 댓글 추가
+        'genres': genres
     }
 
     return render(request, 'movies/profile.html', context)
