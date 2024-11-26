@@ -1,37 +1,40 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<h1>{{ movie.title }} 게시판</h1>
+<div class="section-container">
+    <h1 class="board-title">{{ movie.title }} 게시판</h1>
 
-<!-- 인기 리뷰 -->
-<h2>인기 리뷰</h2>
-<ul>
-    {% for review in popular_reviews %}
-    <li>
-        <a href="{% url 'communities:post' movie.title review.id %}">{{ review.title }}</a> (좋아요: {{ review.likes }})
-    </li>
-    {% endfor %}
-</ul>
+    <!-- 인기 리뷰 -->
+    <h2 class="section-title">인기 리뷰</h2>
+    <ul class="review-list">
+        {% for review in popular_reviews %}
+        <li class="review-item">
+            <a href="{% url 'communities:post' movie.title review.id %}">{{ review.title }}</a> (좋아요: {{ review.likes }})
+        </li>
+        {% endfor %}
+    </ul>
 
-<!-- 리뷰 목록 -->
-<h2>리뷰 목록</h2>
-<ul>
-    {% for review in reviews %}
-    <li>
-        <a href="{% url 'communities:post' movie.title review.id %}">{{ review.title }}</a> (작성자: {{ review.nickname }})
-    </li>
-    {% endfor %}
-</ul>
+    <!-- 리뷰 목록 -->
+    <h2 class="section-title">리뷰 목록</h2>
+    <ul class="review-list">
+        {% for review in reviews %}
+        <li class="review-item">
+            <a href="{% url 'communities:post' movie.title review.id %}">{{ review.title }}</a> (작성자: {{ review.nickname }})
+        </li>
+        {% endfor %}
+    </ul>
 
-<!-- 페이지네이션 -->
-<div class="pagination">
-    {% if reviews.has_previous %}
-    <a href="?page={{ reviews.previous_page_number }}">이전</a>
-    {% endif %}
-    <span>페이지 {{ reviews.number }} / {{ reviews.paginator.num_pages }}</span>
-    {% if reviews.has_next %}
-    <a href="?page={{ reviews.next_page_number }}">다음</a>
-    {% endif %}
+    <!-- 페이지네이션 -->
+    <div class="pagination">
+        {% if reviews.has_previous %}
+        <a href="?page={{ reviews.previous_page_number }}" class="pagination-btn">이전</a>
+        {% endif %}
+        <span class="pagination-info">페이지 {{ reviews.number }} / {{ reviews.paginator.num_pages }}</span>
+        {% if reviews.has_next %}
+        <a href="?page={{ reviews.next_page_number }}" class="pagination-btn">다음</a>
+        {% endif %}
+    </div>
+
+    <a href="{% url 'communities:post_create' movie.title %}" class="btn-primary">새 글 작성하기</a>
 </div>
-
-<a href="{% url 'communities:post_create' movie.title %}">새 글 작성하기</a>
 {% endblock %}

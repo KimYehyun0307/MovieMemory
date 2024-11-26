@@ -1,68 +1,75 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>{{ bamboo_post.title }}</h1>
-<h3>{{ bamboo_post.content }}</h3>
-<p>작성자: {{ bamboo_post.display_name }}</p>
+<div class="section-container">
+    <h1 class="post-title">{{ bamboo_post.title }}</h1>
+    <h3 class="post-content">{{ bamboo_post.content }}</h3>
+    <p class="post-author">작성자: {{ bamboo_post.display_name }}</p>
 
-<!-- 댓글 작성 폼 -->
-<h3>댓글 작성</h3>
-<form method="POST">
-    {% csrf_token %}
-    {{ comment_form.as_p }}
-    <button type="submit" name="comment_submit">댓글 작성</button>
-</form>
-
-<!-- 댓글 목록 -->
-<h3>댓글</h3>
-<ul>
-    {% for comment in comments %}
-    <li>
-        {% if comment.nickname %}
-            <strong>{{ comment.nickname }}:</strong>
-        {% else %}
-            <strong>{{ comment.anonymous_name }}:</strong>
-        {% endif %}
-        <p>{{ comment.content }}</p>
-
-        <!-- 대댓글 작성 폼 -->
-        <h4>대댓글 작성</h4>
-        <form method="POST" enctype="multipart/form-data">
+    <!-- 댓글 작성 섹션 -->
+    <div class="comment-form-container">
+        <h3>댓글 작성</h3>
+        <form method="POST" class="comment-form">
             {% csrf_token %}
-            <!-- 대댓글 내용 -->
-            <div class="form-group">
-                <label for="id_content">대댓글 내용</label>
-                <textarea name="content" id="id_content" rows="4" required></textarea>
-            </div>
-
-            <!-- 대댓글 이미지 -->
-            <div class="form-group">
-                <label for="id_image">대댓글 이미지</label>
-                <input type="file" name="image" id="id_image">
-            </div>
-
-            <!-- 댓글 ID를 숨겨서 보내기 -->
-            <input type="hidden" name="comment_id" value="{{ comment.id }}">
-
-            <button type="submit" name="reply_submit" class="btn-submit">대댓글 작성</button>
+            {{ comment_form.as_p }}
+            <button type="submit" name="comment_submit" class="btn-submit">댓글 작성</button>
         </form>
+    </div>
 
-        <!-- 대댓글 목록 -->
-        <ul>
-            {% for reply in comment.replies.all %}
-            <li>
-                {% if reply.nickname %}
-                    {{ reply.nickname }}: 
+    <!-- 댓글 목록 -->
+    <h3>댓글</h3>
+    <ul class="comment-box">
+        {% for comment in comments %}
+        <li class="comment-item">
+            <strong>
+                {% if comment.nickname %}
+                    {{ comment.nickname }}
                 {% else %}
-                    {{ reply.anonymous_name }}: 
+                    {{ comment.anonymous_name }}
                 {% endif %}
-                {{ reply.content }}
-            </li>
-            {% endfor %}
-        </ul>
-    </li>
-    {% endfor %}
-</ul>
+            </strong>
+            <p>{{ comment.content }}</p>
 
-<a href="{% url 'communities:bamboo' %}">대나무숲 목록으로 돌아가기</a>
+            <!-- 대댓글 작성 섹션 -->
+            <div class="reply-form-container">
+                <h4>대댓글 작성</h4>
+                <form method="POST" enctype="multipart/form-data" class="reply-form">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="id_content">대댓글 내용</label>
+                        <textarea name="content" id="id_content" rows="4" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_image">대댓글 이미지</label>
+                        <input type="file" name="image" id="id_image">
+                    </div>
+                    <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                    <button type="submit" name="reply_submit" class="btn-submit">대댓글 작성</button>
+                </form>
+            </div>
+
+            <!-- 대댓글 목록 -->
+            <ul class="reply-list">
+                {% for reply in comment.replies.all %}
+                <li class="reply-item">
+                    <strong>
+                        {% if reply.nickname %}
+                            {{ reply.nickname }}
+                        {% else %}
+                            {{ reply.anonymous_name }}
+                        {% endif %}
+                    </strong>
+                    <p>{{ reply.content }}</p>
+                </li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <!-- 목록으로 돌아가기 -->
+    <div class="navigation-buttons">
+        <a href="{% url 'communities:bamboo' %}" class="btn-primary">대나무숲 목록으로 돌아가기</a>
+    </div>
+</div>
 {% endblock %}

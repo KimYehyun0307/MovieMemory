@@ -244,8 +244,8 @@ def profile(request, user_nickname):
         SocialAccount.objects.get(user=user, provider='kakao').get_avatar_url()
         if has_kakao_account else None
     )
-
-    user_reviews = MovieReview.objects.filter(user=user).order_by('-created_at')
+    user_reviews = Review.objects.filter(user=user).order_by('-created_at')
+    user_posts = MovieReview.objects.filter(user=user).order_by('-created_at')
     user_comments = Comment.objects.filter(user=user)
 
     is_self = request.user == user  # 자신이 프로필을 보고 있는지 확인
@@ -253,11 +253,14 @@ def profile(request, user_nickname):
     show_birthdate = is_self or request.user.is_superuser or user.is_birthdate_public
     show_genre = is_self or request.user.is_superuser or user.is_genre_public
     show_reviews = is_self or request.user.is_superuser or user.is_reviews_public
+    show_posts = is_self or request.user.is_superuser or user.is_post_public
     show_comments = is_self or request.user.is_superuser or user.is_comments_public
 
     # 비공개일 경우, 해당 목록을 비우기
     if not show_reviews:
         user_reviews = []
+    if not show_posts:
+        user_posts = []
     if not show_comments:
         user_comments = []
 
@@ -266,12 +269,14 @@ def profile(request, user_nickname):
         'has_kakao_account': has_kakao_account,
         'kakao_profile_image': kakao_profile_image,
         'user_reviews': user_reviews,
+        'user_posts': user_posts,
         'user_comments': user_comments,
         'scrapped_movies': scrapped_movies,
         'show_id': show_id, 
         'show_birthdate': show_birthdate,
         'show_genre': show_genre,
         'show_reviews': show_reviews,
+        'show_posts': show_posts,
         'show_comments': show_comments,  # 댓글 공개 여부를 템플릿에서 사용할 수 있도록 추가
     }
 

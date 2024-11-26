@@ -5,84 +5,89 @@
 {% block content %}
 <!-- 메시지 출력 -->
 {% if messages %}
-<div class="alert-messages">
+<div class="alert-messages section-container">
     {% for message in messages %}
-        <div class="alert alert-danger">{{ message }}</div>  <!-- 오류 메시지 -->
+        <div class="alert alert-danger">{{ message }}</div> <!-- 오류 메시지 -->
     {% endfor %}
 </div>
 {% endif %}
 
-<h1>{{ current_year }}년 {{ current_month }}월 개봉 예정작 일정</h1>
+<div class="section-container">
+    <h1>{{ current_year }}년 {{ current_month }}월 개봉 예정작 일정</h1>
 
-<table class="calendar">
-    <thead>
-        <tr>
-            <th>일</th>
-            <th>월</th>
-            <th>화</th>
-            <th>수</th>
-            <th>목</th>
-            <th>금</th>
-            <th>토</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for week in weeks_in_month %}
-        <tr>
-            {% for day in week %}
-                {% if day.month == current_month and day.year == current_year %}
-                    <td>
-                        <div class="day-number">{{ day.day }}</div>
-                        {% with formatted_day=day|date:"Y-m-d" %}
-                            {% if grouped_schedules|get_item:formatted_day %}
-                                <ul class="movie-list">
-                                    {% for movie in grouped_schedules|get_item:formatted_day %}
-                                        <li class="movie-title">{{ movie }}</li>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
-                        {% endwith %}
-                    </td>
-                {% else %}
-                    <td></td>  <!-- 다른 달의 날짜는 빈 칸으로 처리 -->
-                {% endif %}
-            {% endfor %}
-        </tr>
+    <div class="calendar-container">
+        <table class="calendar">
+            <thead>
+                <tr>
+                    <th>일</th>
+                    <th>월</th>
+                    <th>화</th>
+                    <th>수</th>
+                    <th>목</th>
+                    <th>금</th>
+                    <th>토</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for week in weeks_in_month %}
+                <tr>
+                    {% for day in week %}
+                        {% if day.month == current_month and day.year == current_year %}
+                            <td>
+                                <div class="day-number">{{ day.day }}</div>
+                                {% with formatted_day=day|date:"Y-m-d" %}
+                                    {% if grouped_schedules|get_item:formatted_day %}
+                                        <ul class="movie-list">
+                                            {% for movie in grouped_schedules|get_item:formatted_day %}
+                                                <li class="movie-title">{{ movie }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                {% endwith %}
+                            </td>
+                        {% else %}
+                            <td></td> <!-- 다른 달의 날짜는 빈 칸으로 처리 -->
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="section-container">
+    <h2>진행 중인 이벤트</h2>
+    <ul class="event-list">
+        {% for event in active_events %}
+        <li>{{ event.title }}</li>
         {% endfor %}
-    </tbody>
-</table>
+    </ul>
+</div>
 
+<div class="section-container">
+    <h2>인기 영화 리뷰</h2>
+    <ul class="review-list">
+        {% for review in popular_reviews %}
+        <li>
+            <a href="{% url 'communities:post' movie_title=review.movie.title post_num=review.id %}">
+                {{ review.movie.title }}: {{ review.title }} - 작성자: {{ review.user.nickname }} - 좋아요: {{ review.like_count }}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
 
-<!-- 진행 중인 이벤트 -->
-<h2>진행 중인 이벤트</h2>
-<ul class="event-list">
-    {% for event in active_events %}
-    <li>{{ event.title }}</li>
-    {% endfor %}
-</ul>
+<div class="section-container">
+    <h2>인기 대나무숲 게시물</h2>
+    <ul class="bamboo-post-list">
+        {% for post in popular_bamboo_posts %}
+        <li>{{ post.title }} - {{ post.comment_count }} 댓글</li>
+        {% endfor %}
+    </ul>
+</div>
 
-<!-- 인기 영화 리뷰 -->
-<h2>인기 영화 리뷰</h2>
-<ul class="review-list">
-    {% for review in popular_reviews %}
-    <li>
-        <a href="{% url 'communities:post' movie_title=review.movie.title post_num=review.id %}">
-            {{ review.movie.title }}: {{ review.title }} - 작성자: {{ review.user.nickname }} - 좋아요: {{ review.like_count }}
-        </a>
-    </li>
-    {% endfor %}
-</ul>
-
-<!-- 인기 대나무숲 게시물 -->
-<h2>인기 대나무숲 게시물</h2>
-<ul class="bamboo-post-list">
-    {% for post in popular_bamboo_posts %}
-    <li>{{ post.title }} - {{ post.comment_count }} 댓글</li>
-    {% endfor %}
-</ul>
-
-<!-- 이동 버튼들 -->
-<div class="navigation-buttons">
+<div class="section-container navigation-buttons">
     <!-- 영화 게시판으로 이동 -->
     <form action="{% url 'communities:search_movie' %}" method="GET">
         {% csrf_token %}
@@ -94,4 +99,3 @@
     <a href="{% url 'communities:bamboo' %}" class="btn btn-primary">대나무숲으로 이동</a>
 </div>
 {% endblock content %}
-
