@@ -169,33 +169,16 @@
     },
     {
         "model": "movies.movie",
-        "pk": 1034541,
+        "pk": 1100782,
         "fields": {
-            "tmdb_id": 1034541,
-            "title": "테리파이어 3",
-            "overview": "\"아트 더 클라운\"이 크리스마스 이브에 평화롭게 잠든 \"마일스 카운티\"의 주민들을 향해 혼돈을 일으키려 한다",
-            "release_date": "2024-10-09",
-            "poster_path": "/l1175hgL5DoXnqeZQCcU3eZIdhX.jpg",
+            "tmdb_id": 1100782,
+            "title": "스마일 2",
+            "overview": "월드투어를 앞두고 자신의 눈 앞에서 기괴한 미소와 함께 끔찍한 죽음을 맞은 친구를 목격한 팝스타 ‘스카이’. 그 날 이후 공연 리허설과 팬 미팅 행사 등 그녀의 삶 곳곳에서 끔찍한 일들이 잇따라 발생한다. 화려한 스타의 삶을 뒤덮은 공포에서 벗어나기 위해 몸부림치던 ‘스카이’는 자신이 죽어야만 전염처럼 번지는 저주가 끝난다는 사실을 듣게 되는데…",
+            "release_date": "2024-10-16",
+            "poster_path": "/4nQk1OgbtdnKYMEQiOwwMB4yGxn.jpg",
             "genres": [
                 27,
-                53,
                 9648
-            ]
-        }
-    },
-    {
-        "model": "movies.movie",
-        "pk": 558449,
-        "fields": {
-            "tmdb_id": 558449,
-            "title": "글래디에이터 II",
-            "overview": "로마의 영웅이자 최고의 검투사였던 막시무스가 콜로세움에서 죽음을 맞이한 뒤 20여 년이 흐른 후. 쌍둥이 황제 게타와 카라칼라의 폭압 아래 시민을 위한 자유로운 나라 로마의 꿈은 잊힌 지 오래다. 한편 아카시우스 장군이 이끄는 로마군에 대패한 후 모든 것을 잃고 노예로 전락한 루시우스는 강한 권력욕을 지닌 마크리누스의 눈에 띄어 검투사로 발탁된다. 로마를 향한 걷잡을 수 없는 분노, 타고난 투사의 기질로 콜로세움에 입성하게 된 루시우스는 결투를 거듭하며 자신이 진짜 누구인지 알게 되고 마침내 로마의 운명을 건 결전을 준비하게 되는데...!",
-            "release_date": "2024-11-13",
-            "poster_path": "/b5UXjzW5cLZhprMnlAmsVAA3G4t.jpg",
-            "genres": [
-                28,
-                12,
-                18
             ]
         }
     },
@@ -217,6 +200,36 @@
     },
     {
         "model": "movies.movie",
+        "pk": 558449,
+        "fields": {
+            "tmdb_id": 558449,
+            "title": "글래디에이터 II",
+            "overview": "로마의 영웅이자 최고의 검투사였던 막시무스가 콜로세움에서 죽음을 맞이한 뒤 20여 년이 흐른 후. 쌍둥이 황제 게타와 카라칼라의 폭압 아래 시민을 위한 자유로운 나라 로마의 꿈은 잊힌 지 오래다. 한편 아카시우스 장군이 이끄는 로마군에 대패한 후 모든 것을 잃고 노예로 전락한 루시우스는 강한 권력욕을 지닌 마크리누스의 눈에 띄어 검투사로 발탁된다. 로마를 향한 걷잡을 수 없는 분노, 타고난 투사의 기질로 콜로세움에 입성하게 된 루시우스는 결투를 거듭하며 자신이 진짜 누구인지 알게 되고 마침내 로마의 운명을 건 결전을 준비하게 되는데...!",
+            "release_date": "2024-11-13",
+            "poster_path": "/b5UXjzW5cLZhprMnlAmsVAA3G4t.jpg",
+            "genres": [
+                28,
+                12
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 1034541,
+        "fields": {
+            "tmdb_id": 1034541,
+            "title": "테리파이어 3",
+            "overview": "\"아트 더 클라운\"이 크리스마스 이브에 평화롭게 잠든 \"마일스 카운티\"의 주민들을 향해 혼돈을 일으키려 한다",
+            "release_date": "2024-10-09",
+            "poster_path": "/chvYRyJI1fnBdf9Gt6RerJNEAav.jpg",
+            "genres": [
+                27,
+                53
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
         "pk": 1118031,
         "fields": {
             "tmdb_id": 1118031,
@@ -228,6 +241,38 @@
                 18,
                 28,
                 27
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 791042,
+        "fields": {
+            "tmdb_id": 791042,
+            "title": "레벨스",
+            "overview": "",
+            "release_date": "2024-11-01",
+            "poster_path": "/yq39ChrCDlqrurYuaC8WM0vC1cx.jpg",
+            "genres": [
+                28,
+                878,
+                53
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 402431,
+        "fields": {
+            "tmdb_id": 402431,
+            "title": "위키드",
+            "overview": "자신의 진정한 힘을 아직 발견하지 못한 엘파바와 자신의 진정한 본성을 발견하지 못한 글린다, 전혀 다른 두 인물이 우정을 쌓아가며 맞닥뜨리는 예상치 못한 위기와 모험을 그린 이야기",
+            "release_date": "2024-11-20",
+            "poster_path": "/4FKnORrMQZtvk96YM4zdJLDwC9E.jpg",
+            "genres": [
+                18,
+                14,
+                10749
             ]
         }
     },
@@ -265,21 +310,6 @@
     },
     {
         "model": "movies.movie",
-        "pk": 1124641,
-        "fields": {
-            "tmdb_id": 1124641,
-            "title": "Classified",
-            "overview": "",
-            "release_date": "2024-09-19",
-            "poster_path": "/3k8jv1kSAAc0rCfFGtWDDQL4dfK.jpg",
-            "genres": [
-                28,
-                53
-            ]
-        }
-    },
-    {
-        "model": "movies.movie",
         "pk": 698687,
         "fields": {
             "tmdb_id": 698687,
@@ -292,6 +322,68 @@
                 878,
                 12,
                 10751
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 1241982,
+        "fields": {
+            "tmdb_id": 1241982,
+            "title": "모아나 2",
+            "overview": "바다를 누볐던 선조들에게서 예기치 못한 부름을 받은 모아나가 마우이와 다시 만나 새로운 선원들과 함께 오랫동안 잊혀진 멀고 위험한 바다 너머로 떠나는 특별한 모험을 담은 이야기",
+            "release_date": "2024-11-27",
+            "poster_path": "/2WVvPcVRqfjyVzIUVIcszGb6zT4.jpg",
+            "genres": [
+                16,
+                12,
+                10751,
+                35
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 945961,
+        "fields": {
+            "tmdb_id": 945961,
+            "title": "에이리언: 로물루스",
+            "overview": "2142년, 부모 세대가 맞닥뜨렸던 암울한 미래를 피하려는 청년들이 더 나은 삶을 찾기 위해 식민지를 떠날 계획을 세운다. 하지만 버려진 우주 기지 로물루스에 도착한 이들은 악몽과도 같은 에이리언의 무자비한 공격에 쫓기기 시작한다. 그 누구도 그들의 절규를 들을 수 없는 우주 한가운데, 생존을 위한 치열한 사투를 벌여야 하는데...",
+            "release_date": "2024-08-13",
+            "poster_path": "/AmWTYg3RCMv7fbQxwCqrxiaUhkc.jpg",
+            "genres": [
+                27,
+                878
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 179387,
+        "fields": {
+            "tmdb_id": 179387,
+            "title": "Heavenly Touch",
+            "overview": "",
+            "release_date": "2009-05-12",
+            "poster_path": "/ory8WuAqznTE7lfopTSymHpop2t.jpg",
+            "genres": [
+                18,
+                10749
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 1124641,
+        "fields": {
+            "tmdb_id": 1124641,
+            "title": "Classified",
+            "overview": "",
+            "release_date": "2024-09-19",
+            "poster_path": "/3k8jv1kSAAc0rCfFGtWDDQL4dfK.jpg",
+            "genres": [
+                28,
+                53
             ]
         }
     },
@@ -313,52 +405,6 @@
     },
     {
         "model": "movies.movie",
-        "pk": 791042,
-        "fields": {
-            "tmdb_id": 791042,
-            "title": "레벨스",
-            "overview": "",
-            "release_date": "2024-11-01",
-            "poster_path": "/y1xm0jMIlx9Oo2a3jWNyLGm43sJ.jpg",
-            "genres": [
-                28,
-                878,
-                53
-            ]
-        }
-    },
-    {
-        "model": "movies.movie",
-        "pk": 945961,
-        "fields": {
-            "tmdb_id": 945961,
-            "title": "에이리언: 로물루스",
-            "overview": "2142년, 부모 세대가 맞닥뜨렸던 암울한 미래를 피하려는 청년들이 더 나은 삶을 찾기 위해 식민지를 떠날 계획을 세운다. 하지만 버려진 우주 기지 로물루스에 도착한 이들은 악몽과도 같은 에이리언의 무자비한 공격에 쫓기기 시작한다. 그 누구도 그들의 절규를 들을 수 없는 우주 한가운데, 생존을 위한 치열한 사투를 벌여야 하는데...",
-            "release_date": "2024-08-13",
-            "poster_path": "/AmWTYg3RCMv7fbQxwCqrxiaUhkc.jpg",
-            "genres": [
-                878,
-                27
-            ]
-        }
-    },
-    {
-        "model": "movies.movie",
-        "pk": 179387,
-        "fields": {
-            "tmdb_id": 179387,
-            "title": "Heavenly Touch",
-            "overview": "",
-            "release_date": "2009-05-12",
-            "poster_path": "/ory8WuAqznTE7lfopTSymHpop2t.jpg",
-            "genres": [
-                18,
-                10749
-            ]
-        }
-    },
-    {
-        "model": "movies.movie",
         "pk": 519182,
         "fields": {
             "tmdb_id": 519182,
@@ -370,6 +416,22 @@
                 16,
                 10751,
                 35,
+                28
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 972614,
+        "fields": {
+            "tmdb_id": 972614,
+            "title": "녹스 고즈 어웨이",
+            "overview": "빠르게 진행되는 치매 진단을 받은 청부 살인범에게 소원해진 성인 아들의 생명을 구함으로써 자신을 구원할 수 있는 기회가 주어지지만 이를 위해 자신을 쫓는 경찰과 빠르게 악화되는 정신 상태와 맞서 싸워야 한다.",
+            "release_date": "2024-03-15",
+            "poster_path": "/w39qKYjltCix18BwtoZ1e45usdb.jpg",
+            "genres": [
+                80,
+                53,
                 28
             ]
         }
@@ -393,33 +455,49 @@
     },
     {
         "model": "movies.movie",
-        "pk": 1142518,
+        "pk": 1233327,
         "fields": {
-            "tmdb_id": 1142518,
-            "title": "자유",
-            "overview": "1980년대 프랑스에서 가장 악명 높았던 비폭력 강도 브루노 술락의 실화를 바탕으로 한 이야기다. 그는 여러 번 강도질을 하고, 경찰에 잡혀도 대담하게 탈출해 대중의 관심을 끌었다. 그가 매번 탈출한 이유는 사랑하는 연인이자 공범인 애니와 다시 만나기 위해서였고, 결국 그는 프랑스의 공공의 적 1호이자 자유의 아이콘이 되었다.",
-            "release_date": "2024-11-01",
-            "poster_path": "/trN0zFcrtcCPLWyqqQEVoToztNk.jpg",
+            "tmdb_id": 1233327,
+            "title": "మట్కా",
+            "overview": "",
+            "release_date": "2024-11-14",
+            "poster_path": "/jrHIKDq9xvKJhYBDvYwmAfs8qvr.jpg",
             "genres": [
                 28,
-                10749,
-                18
+                80
             ]
         }
     },
     {
         "model": "movies.movie",
-        "pk": 402431,
+        "pk": 1022789,
         "fields": {
-            "tmdb_id": 402431,
-            "title": "위키드",
-            "overview": "자신의 진정한 힘을 아직 발견하지 못한 엘파바와 자신의 진정한 본성을 발견하지 못한 글린다, 전혀 다른 두 인물이 우정을 쌓아가며 맞닥뜨리는 예상치 못한 위기와 모험을 그린 이야기",
-            "release_date": "2024-11-20",
-            "poster_path": "/4FKnORrMQZtvk96YM4zdJLDwC9E.jpg",
+            "tmdb_id": 1022789,
+            "title": "인사이드 아웃 2",
+            "overview": "13살이 된 라일리의 행복을 위해 매일 바쁘게 머릿속 감정 컨트롤 본부를 운영하는 ‘기쁨’, ‘슬픔’, ‘버럭’, ‘까칠’, ‘소심’. 그러던 어느 날, 낯선 감정인 ‘불안’, ‘당황’, ‘따분’, ‘부럽’이가 본부에 등장하고, 언제나 최악의 상황을 대비하며 제멋대로인 ‘불안’이와 기존 감정들은 계속 충돌한다. 결국 새로운 감정들에 의해 본부에서 쫓겨나게 된 기존 감정들은 다시 본부로 돌아가기 위해 위험천만한 모험을 시작하는데…",
+            "release_date": "2024-06-11",
+            "poster_path": "/x2BHx02jMbvpKjMvbf8XxJkYwHJ.jpg",
             "genres": [
+                16
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 1084736,
+        "fields": {
+            "tmdb_id": 1084736,
+            "title": "몬테크리스토 백작",
+            "overview": "에드먼드 단테스는  음모에 빠져 결혼식 날 자신이 저지르지도 않은 범죄로 체포된다. 샤토 디프에서 14년 동안의 수감 생활을 끝으로 탈옥에 성공하고  꿈에 그리던 부자가 된다. 단테스는 몬테크리스토 백작으로 신분을 위장하고 세 남자에게 복수를 실행에 옮긴다.",
+            "release_date": "2024-06-28",
+            "poster_path": "/4MlHj9EWOFIDoa4uXwcQhnf66w5.jpg",
+            "genres": [
+                28,
+                12,
                 18,
-                14,
-                10749
+                36,
+                10749,
+                53
             ]
         }
     },
@@ -440,6 +518,54 @@
     },
     {
         "model": "movies.movie",
+        "pk": 335983,
+        "fields": {
+            "tmdb_id": 335983,
+            "title": "베놈",
+            "overview": "진실을 위해서라면 몸을 사리지 않고 사회의 부조리를 취재하는 정의로운 열혈 기자 에디 브록. 거대 기업 라이프 파운데이션의 생체실험에 의혹을 품고 뒤를 쫓던 그는 이들의 사무실에 잠입했다가 실험실에서 외계 생물체 심비오트의 기습 공격을 받게 된다. 심비오트가 숙주의 몸과 정신을 지배할 때 능력을 발휘하는 베놈은 에디의 몸에 기생하며 갖가지 소동을 일으킨다. 한편 비밀리에 인간과 심비오트를 결합해 새로운 생명체를 만들려는 시도를 계속하던 라이프 파운데이션의 회장 드레이크 또한 심비오트의 숙주가 된다.",
+            "release_date": "2018-09-28",
+            "poster_path": "/x4ojC59pYfPlAP4mmy2LSkCCuK2.jpg",
+            "genres": [
+                878,
+                28
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 1014505,
+        "fields": {
+            "tmdb_id": 1014505,
+            "title": "극장판 오버로드 성왕국편",
+            "overview": "성왕녀 칼카가 통치하는 로블 성왕국은 길고 거대한 성벽을 쌓고 그 안에서 평화로운 시대를 구가해 왔다. 하지만, 갑자기 나타난 마황 얄다바오트와 아인 연합군의 침공으로 평화는 너무나도 쉽게 붕괴되고 말았다. 성기사 단장 레메디오스, 신관 단장 케랄트를 시작으로 성왕국은 전력을 모아 맞섰지만 얄다바오트와의 압도적인 힘의 차이에 손쓸 도리 없이 국가는 붕괴 위기에 직면하게 됐다. 레메디오스는 얄다바오트에게 대항할 힘을 얻기 위해 직접 성기사단과 종자 네이아를 이끌고 어떤 나라에 도움을 요청하러 갔다. 그 나라의 이름은 아인즈 울 고운 마도국. 성왕국의 사람들이 꺼림칙하게 여기는 언데드가 통치하는 이형의 국가였는데.",
+            "release_date": "2024-09-20",
+            "poster_path": "/9tQfPUNd1KA2u55zA81BNXrXuZu.jpg",
+            "genres": [
+                28,
+                12,
+                16,
+                14
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 580489,
+        "fields": {
+            "tmdb_id": 580489,
+            "title": "베놈 2: 렛 데어 비 카니지",
+            "overview": "‘베놈'과 완벽한 파트너가 된 ‘에디 브록' 앞에 ‘클리터스 캐서디'가 ‘카니지'로 등장, 앞으로 닥칠 대혼돈의 세상을 예고한다. 대혼돈의 시대가 시작되고, 악을 악으로 처단할 것인가?",
+            "release_date": "2021-09-30",
+            "poster_path": "/fHnKlSp28U648O4vm95z86Jw5tT.jpg",
+            "genres": [
+                878,
+                28,
+                12
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
         "pk": 1041317,
         "fields": {
             "tmdb_id": 1041317,
@@ -454,19 +580,362 @@
     },
     {
         "model": "movies.movie",
-        "pk": 1022789,
+        "pk": 1029235,
         "fields": {
-            "tmdb_id": 1022789,
-            "title": "인사이드 아웃 2",
-            "overview": "13살이 된 라일리의 행복을 위해 매일 바쁘게 머릿속 감정 컨트롤 본부를 운영하는 ‘기쁨’, ‘슬픔’, ‘버럭’, ‘까칠’, ‘소심’. 그러던 어느 날, 낯선 감정인 ‘불안’, ‘당황’, ‘따분’, ‘부럽’이가 본부에 등장하고, 언제나 최악의 상황을 대비하며 제멋대로인 ‘불안’이와 기존 감정들은 계속 충돌한다. 결국 새로운 감정들에 의해 본부에서 쫓겨나게 된 기존 감정들은 다시 본부로 돌아가기 위해 위험천만한 모험을 시작하는데…",
-            "release_date": "2024-06-11",
-            "poster_path": "/x2BHx02jMbvpKjMvbf8XxJkYwHJ.jpg",
+            "tmdb_id": 1029235,
+            "title": "아즈라엘",
+            "overview": "종말이 일어난 지 여러 해가 지난 후, 말을 못 하는 광신도들로 구성된 종교 단체에서 탈출한 젊은 여성 아즈라엘을 추적하는 이야기. 무자비한 지도자들에게 붙잡혀 감금당한 아즈라엘은 주변 황야 깊은 곳에 숨어있는 고대의 악마를 달래기 위한 제물로 바쳐질 예정이었다. 그러나 그녀는 살기 위해 어떤 것도 주저하지 않는다. 그녀의 불타는 복수와 탈출을 위한 맹렬한 질주는 극적으로 치닫는다.",
+            "release_date": "2024-09-27",
+            "poster_path": "/qpdFKDvJS7oLKTcBLXOaMwUESbs.jpg",
+            "genres": [
+                28,
+                27,
+                53
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 1196470,
+        "fields": {
+            "tmdb_id": 1196470,
+            "title": "Survivre",
+            "overview": "",
+            "release_date": "2024-06-19",
+            "poster_path": "/901kRttzfLScns7ss7RyKqG6d2A.jpg",
+            "genres": [
+                53,
+                12,
+                28,
+                878
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 98,
+        "fields": {
+            "tmdb_id": 98,
+            "title": "글래디에이터",
+            "overview": "죽을 날이 머지않은 황제 마르쿠스 아우렐리우스는 막시무스를 총애하여 아들이 아닌 그에게 권력을 넘겨주기로 한다. 황제의 아들 코모두스는 이에 질투와 분노를 느껴 황제를 살해한다. 왕좌를 이어받은 코모두스는 막시무스와 그의 가족을 죽이라고 명령한다. 가족을 모두 잃고 겨우 살아남은 막시무스는 노예로 전락하고, 투기장의 검투사가 된다. 그에게 남은 건 오직 황제 코모두스에 대한 복수 뿐. 검투사로서 매 경기마다 승리로 이끌면서 살아남자 그의 명성은 날로 높아 간다. 그러던 어느 날 오래 전 사랑했던 황제의 누이 루실라를 다시 만나게 되는데...",
+            "release_date": "2000-05-04",
+            "poster_path": "/yemF0xxGU56Pf3JXxVr4C6kuKng.jpg",
+            "genres": [
+                28,
+                18,
+                12
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 1100856,
+        "fields": {
+            "tmdb_id": 1100856,
+            "title": "Заклятье. Шепот ведьм",
+            "overview": "",
+            "release_date": "2024-06-13",
+            "poster_path": "/um3n8rQbr97uaGB2058TsktPtAy.jpg",
+            "genres": [
+                27,
+                53
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 1371727,
+        "fields": {
+            "tmdb_id": 1371727,
+            "title": "씽: Thriller",
+            "overview": "버스터 문이 마이클 잭슨의 'Thriller'에 맞춰 스타들이 총출동하는 화려한 무대를 꿈꾼다. 인기 영화 《씽》의 캐릭터들이 출연하는 단편 애니메이션.",
+            "release_date": "2024-10-16",
+            "poster_path": "/i77OInTKcrnRlAozFOaB6D5mk15.jpg",
             "genres": [
                 16,
                 10751,
-                12,
                 35,
+                27
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 976734,
+        "fields": {
+            "tmdb_id": 976734,
+            "title": "카나리 블랙",
+            "overview": "CIA 최고 요원 에이버리 그레이브스(케이트 베킨세일)는 납치된 남편을 구하기 위해 조국을 배신하라는 테러리스트의 협박을 받는다. 팀과 단절된 그녀는 납치범들이 원하는 정보를 찾기 위해 지하세계의 인맥에 도움을 청한다. 매번 배신을 당하는 에이버리는 글로벌 위기를 촉발할 수 있는 몸값을 전달하기 위해 치명적인 경쟁에 뛰어들게 되는데...",
+            "release_date": "2024-10-10",
+            "poster_path": "/hhiR6uUbTYYvKoACkdAIQPS5c6f.jpg",
+            "genres": [
+                28,
+                53,
+                80
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 889737,
+        "fields": {
+            "tmdb_id": 889737,
+            "title": "조커: 폴리 아 되",
+            "overview": "2년 전, 세상을 뒤흔들며 고담시 아이콘으로 자리한 아서 플렉은 아캄 수용소에 갇혀 최종 재판을 앞둔 무기력한 삶을 살아간다. 그러던 어느 날, 수용소에서 운명적으로 만난 리 퀸젤은 아서의 삶을 다시 뒤바꾸며 그의 마음 속에 잠들어 있던 조커를 깨우고 리 역시 각성하며 자신을 할리 퀸이라 지칭하며 서로에게 깊이 빠져든다. 무고한 시민을 죽인 죄로 재판에 오르게 된 아서. 그는 최후의 심판대에서 할리 퀸과 함께 자신, 조커의 이야기를 시작하는데…",
+            "release_date": "2024-10-01",
+            "poster_path": "/dA1TGJPTVjlqPc8PiEE2PfvFBUp.jpg",
+            "genres": [
+                18,
+                80,
+                53
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 1094974,
+        "fields": {
+            "tmdb_id": 1094974,
+            "title": "테이크 커버",
+            "overview": "호텔의 펜트하우스에 갇힌 2명의 사설 부대 용병이 외부의 저격수와 방으로 들어오는 킬러들과의 대결을 그린 이야기",
+            "release_date": "2024-10-04",
+            "poster_path": "/xNLiMNyFzKTL9PVIEulG55Hei8j.jpg",
+            "genres": [
+                28,
+                53
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 1142518,
+        "fields": {
+            "tmdb_id": 1142518,
+            "title": "자유",
+            "overview": "1980년대 프랑스에서 가장 악명 높았던 비폭력 강도 브루노 술락의 실화를 바탕으로 한 이야기다. 그는 여러 번 강도질을 하고, 경찰에 잡혀도 대담하게 탈출해 대중의 관심을 끌었다. 그가 매번 탈출한 이유는 사랑하는 연인이자 공범인 애니와 다시 만나기 위해서였고, 결국 그는 프랑스의 공공의 적 1호이자 자유의 아이콘이 되었다.",
+            "release_date": "2024-11-01",
+            "poster_path": "/trN0zFcrtcCPLWyqqQEVoToztNk.jpg",
+            "genres": [
+                28,
+                10749,
                 18
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 1329336,
+        "fields": {
+            "tmdb_id": 1329336,
+            "title": "배드 가이즈: 오싹한 핼러윈",
+            "overview": "훔치는 솜씨라면 알아주는 배드 가이즈 일당이 위험한 핼러윈 한탕에 나서기로 한다. 으스스한 저택에 들어가 값비싼 펜던트를 슬쩍할 계획인데. 뭐 잘못되기야 하겠어?",
+            "release_date": "2024-10-02",
+            "poster_path": "/oEJC05CqPugMxC4rFu9r6r6vg6m.jpg",
+            "genres": [
+                16,
+                35
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 573435,
+        "fields": {
+            "tmdb_id": 573435,
+            "title": "나쁜 녀석들: 라이드 오어 다이",
+            "overview": "마이애미 강력반 최고의 콤비 마이크와 마커스. 가족 같은 하워드 반장이 사망 전 마약 카르텔 조직의 비리에 연루되었다는 뉴스 속보를 접하게 된다. 하지만 아무도 믿지 말라는 하워드 반장의 비밀 메시지를 받은 마이크와 마커스 형사는 사건의 진실을 밝히기 위해 위험한 수사를 시작한다. 서서히 드러나는 거대한 음모와 마주하게 된 나쁜 녀석들. 그러나 이들 역시 함정에 빠져 사건의 용의자로 지목되며 동료 경찰들은 물론 마약 카르텔 조직에게도 쫓기는 신세가 되고 마는데…",
+            "release_date": "2024-06-05",
+            "poster_path": "/wIrhEUBWjRmZuL1Ix41cF2LhJrW.jpg",
+            "genres": [
+                28,
+                35
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 1125510,
+        "fields": {
+            "tmdb_id": 1125510,
+            "title": "더 플랫폼 2",
+            "overview": "수직 구조로 된 감방. 정체 모를 리더가 잔혹한 시스템에 자체적인 규범을 도입시키고, 이후 새로운 인물이 나타나 수상한 배급 방식에 대해 반기를 든다.",
+            "release_date": "2024-09-27",
+            "poster_path": "/poELZsrROLJW28gc1V9nB1kJigq.jpg",
+            "genres": [
+                878,
+                27
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 823219,
+        "fields": {
+            "tmdb_id": 823219,
+            "title": "플로우",
+            "overview": "대홍수가 세상을 덮친 뒤, 유일한 피난처가 된 배 한 척을 타고 다양한 동물 친구들과 항해를 시작한 ‘고양이’의 눈부신 모험담",
+            "release_date": "2024-08-29",
+            "poster_path": "/kX9gzHyfwXCkTszBcPekQZxPnzP.jpg",
+            "genres": [
+                16,
+                14,
+                12
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 928480,
+        "fields": {
+            "tmdb_id": 928480,
+            "title": "보이즈 오브 썸머",
+            "overview": "",
+            "release_date": "2024-10-04",
+            "poster_path": "/zD2UZkh0DwbDEMuOKIR7jgwgulZ.jpg",
+            "genres": [
+                12,
+                14,
+                9648,
+                27
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 1331375,
+        "fields": {
+            "tmdb_id": 1331375,
+            "title": "도미니크: 불사조",
+            "overview": "킬러의 삶을 버리지만 범죄의 땅에 추락한 천사. 마을은 경찰까지 카르텔에 장악된 무법지대이다. 친절을 보인 가족이 위험에 처하고 운명은 그녀에게 다시 총을 잡게한다. 경찰특공대와 일당백의 전쟁이 시작된다.",
+            "release_date": "2024-10-11",
+            "poster_path": "/5OTh8Xaoueck7g6qgJNJ6vtHcAP.jpg",
+            "genres": [
+                28,
+                53
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 1100099,
+        "fields": {
+            "tmdb_id": 1100099,
+            "title": "위 리브 인 타임",
+            "overview": "",
+            "release_date": "2024-10-10",
+            "poster_path": "/oeDNBgnlGF6rnyX1P1K8Vl2f3lW.jpg",
+            "genres": [
+                10749,
+                18,
+                35
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 957452,
+        "fields": {
+            "tmdb_id": 957452,
+            "title": "더 크로우",
+            "overview": "인생에서 가장 어둡고 외로웠던 순간, 자신과 비슷한 영혼을 가진 '셸리'를 만나 영원한 사랑을 약속한 '에릭'.  완벽한 행복을 만끽하던 그때, 두 사람은 의문의 괴한들에게 무참히 살해 당하고 '셸리'는 과거의 끔찍한 실수로 지옥에 끌려가게 된다.  지옥에서 '셸리'를 되찾기 위해 '에릭'은 까마귀의 저주를 받아 불사의 몸이 되고 죽여도 죽지 않는 복수의 화신으로 부활하게 되는데…",
+            "release_date": "2024-08-21",
+            "poster_path": "/iQ6IgOGpx7Fzd52PD2tbRx9NMnl.jpg",
+            "genres": [
+                28,
+                14,
+                27
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 1287717,
+        "fields": {
+            "tmdb_id": 1287717,
+            "title": "출입금지",
+            "overview": "노동자 계급 출신인 두 명의 유튜버가 콘텐츠를 만들던 중 자신들의 농구공 가방을 되찾기 위해서 버려진 저택에 들어가 장난을 치다 길을 잃고 만다. 그들은 핸드폰으로 이 깜짝 어드벤처를 찍기 시작하고, 유튜브 채널의 구독자 수를 늘리려는 욕심에 유령이 나오는 것처럼 동영상을 조작한다. 동영상은 입소문을 타고 이들은 챌린지를 시작한다. 영상 조회수가 일정 수에 도달하면 그 집에 다시 들어가기로 한 것. 밤에, 혼자, 완전히 무방비 상태로 말이다. 팬들이 호응하자 그들은 약속한 대로 다시 그 집에 간다. 그리고 그곳에 사는 이들의 진짜 정체와 함께, 자신들 역시 더 이상 산 사람이 아닐 수 있다는 사실을 깨닫는다.",
+            "release_date": "2024-08-06",
+            "poster_path": "/pi2pkIUeVk0z3iy67YKTxDjeAGr.jpg",
+            "genres": [
+                27
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 978796,
+        "fields": {
+            "tmdb_id": 978796,
+            "title": "백맨",
+            "overview": "",
+            "release_date": "2024-09-20",
+            "poster_path": "/hzrvol8K2VWm2BsDTwb8YvRMzIH.jpg",
+            "genres": [
+                27,
+                53
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 1144962,
+        "fields": {
+            "tmdb_id": 1144962,
+            "title": "Transmorphers: Mech Beasts",
+            "overview": "",
+            "release_date": "2023-06-09",
+            "poster_path": "/oqhaffnQqSzdLrYAQA5W4IdAoCX.jpg",
+            "genres": [
+                28,
+                878
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 1288998,
+        "fields": {
+            "tmdb_id": 1288998,
+            "title": "1978",
+            "overview": "",
+            "release_date": "2024-10-16",
+            "poster_path": "/zn7oyy7KTlC01XD3pUn82V9Od0P.jpg",
+            "genres": [
+                27,
+                53,
+                18
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 1063877,
+        "fields": {
+            "tmdb_id": 1063877,
+            "title": "돈 무브",
+            "overview": "사랑하는 이를 잃은 슬픔을 달래려 외딴 숲을 찾은 여자. 우연히 마주친 살인마에게 마비성 약물을 주입당하는데. 온몸이 점점 마비되어 가는 가운데, 그녀의 생존을 건 싸움이 시작된다.",
+            "release_date": "2024-10-24",
+            "poster_path": "/oYWAVAhvpB9CmlJuZD3n23vEgiU.jpg",
+            "genres": [
+                53,
+                27
+            ]
+        }
+    },
+    {
+        "model": "movies.movie",
+        "pk": 726139,
+        "fields": {
+            "tmdb_id": 726139,
+            "title": "탈출: 프로젝트 사일런스",
+            "overview": "한치 앞도 구분할 수 없는 짙은 안개 속 붕괴 직전의 공항대교에 고립된 사람들이 그 안에 도사리고 있는 예기치 못한 위협으로부터 살아남기 위해 고군분투하는 이야기.",
+            "release_date": "2024-07-11",
+            "poster_path": "/rXuSca6qEb4xPrSRT7XRzYCFbZB.jpg",
+            "genres": [
+                28,
+                53,
+                27,
+                878
             ]
         }
     }
