@@ -9,7 +9,7 @@
     <ul class="bamboo-post-list">
         {% for post in popular_bamboo_posts %}
         <li>
-            <a href="{% url 'communities:bamboo_post' post.id %}">{{ post.title }}</a> (작성자: {{ post.display_name }}) - 좋아요: {{ post.liked_users.count }}
+            <a href="{% url 'communities:bamboo_post' post.id %}">{{ post.title }}</a> - 좋아요: {{ post.liked_users.count }}
         </li>
         {% endfor %}
     </ul>
@@ -19,7 +19,7 @@
     <ul class="bamboo-post-list">
         {% for post in bamboo_posts %}
         <li>
-            <a href="{% url 'communities:bamboo_post' post.id %}">{{ post.title }}</a> (작성자: {{ post.display_name }}) - 좋아요: {{ post.liked_users.count }}
+            <a href="{% url 'communities:bamboo_post' post.id %}">{{ post.title }}</a> - 좋아요: {{ post.liked_users.count }}
         </li>
         {% endfor %}
     </ul>

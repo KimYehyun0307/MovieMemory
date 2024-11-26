@@ -596,12 +596,61 @@ h1, h2 {
   font-weight: bold;
 }
 
+/* 댓글 액션 버튼과 이미지 사이에 마진 추가 */
+.comment-image {
+  margin-bottom: 10px;  /* 이미지 아래쪽에 마진 추가 */
+}
+
+/* 댓글 액션 버튼 */
+.comment-actions {
+  margin-top: 10px;  /* 댓글 액션 버튼과 다른 요소들 사이에 마진 추가 */
+}
+
+/* 댓글 이미지 스타일 */
+.comment-image img,
+.reply-image img {
+  max-width: 200px;  /* 최대 너비를 200px로 제한 */
+  max-height: 200px; /* 최대 높이를 200px로 제한 */
+  width: auto;       /* 비율을 유지하면서 너비가 200px을 넘지 않도록 */
+  height: auto;      /* 비율을 유지하면서 높이가 200px을 넘지 않도록 */
+  object-fit: cover; /* 이미지 비율을 맞추기 위해 영역을 잘라낼 수도 있음 */
+  margin-top: 10px;
+}
+
+/* 댓글 내용 폼과 버튼 */
+.comment-form-container form {
+  margin-top: 20px;
+}
+
+.comment-submit-btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.comment-submit-btn:hover {
+  background-color: #45a049;
+}
+
 /* 대댓글 섹션 */
 .reply-form-container {
   margin-top: 10px;
   padding: 10px;
   background-color: #f4f4f4;
   border-radius: 5px;
+}
+
+/* 대댓글 액션 버튼과 이미지 사이에 마진 추가 */
+.reply-image {
+  margin-bottom: 10px;  /* 이미지 아래쪽에 마진 추가 */
+}
+
+/* 대댓글 액션 버튼 */
+.reply-actions {
+  margin-top: 10px;  /* 대댓글 액션 버튼과 다른 요소들 사이에 마진 추가 */
 }
 
 .reply-list {
@@ -616,6 +665,16 @@ h1, h2 {
   padding: 10px;
   border-radius: 5px;
   margin-bottom: 5px;
+}
+
+/* 대댓글 이미지 스타일 */
+.reply-image img {
+  max-width: 150px;  /* 대댓글 이미지의 최대 크기를 다르게 설정 */
+  max-height: 150px;
+  width: auto;
+  height: auto;
+  object-fit: cover;
+  margin-top: 10px;
 }
 
 /* 버튼 스타일 */

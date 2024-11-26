@@ -18,7 +18,7 @@ class MovieReview(models.Model):
     is_comment_enabled = models.BooleanField(default=True)  # 댓글 허용 여부
     rating = models.PositiveSmallIntegerField(choices=[(i, i) for i in range(1, 6)], default=5)  # 1~5점 평가
     liked_users = models.ManyToManyField(User, related_name="liked_reviews", blank=True)
-    image = models.ImageField(upload_to='media/movie_reviews/', blank=True, null=True)  # 영화 후기 이미지
+    image = models.ImageField(upload_to='movie_reviews/', blank=True, null=True)  # 영화 후기 이미지
 
     def __str__(self):
         return f"{self.title} ({self.nickname})"
@@ -37,7 +37,7 @@ class BambooPost(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    image = models.ImageField(upload_to='media/bamboo_posts/', blank=True, null=True)  # 대나무숲 이미지
+    image = models.ImageField(upload_to='bamboo_posts/', blank=True, null=True)  # 대나무숲 이미지
     liked_users = models.ManyToManyField(User, related_name="liked_bamboo_posts", blank=True)  # 좋아요 사용자
 
     def __str__(self):
@@ -65,7 +65,7 @@ class Comment(models.Model):
     updated_at = models.DateTimeField(auto_now=True)  # 댓글 수정일
 
     is_reply = models.BooleanField(default=False)  # 대댓글 여부
-    image = models.ImageField(upload_to='media/comments/', blank=True, null=True)  # 댓글 이미지
+    image = models.ImageField(upload_to='comments/', blank=True, null=True)  # 댓글 이미지
 
     def save(self, *args, **kwargs):
         # 대나무숲 댓글에는 anonymous_name을 랜덤으로 생성
@@ -98,7 +98,7 @@ class CommentReply(models.Model):
     content = models.TextField()  # 대댓글 내용
     created_at = models.DateTimeField(auto_now_add=True)  # 대댓글 작성일
     updated_at = models.DateTimeField(auto_now=True)  # 대댓글 수정일
-    image = models.ImageField(upload_to='media/replies/', blank=True, null=True)  # 대댓글 이미지
+    image = models.ImageField(upload_to='replies/', blank=True, null=True)  # 대댓글 이미지
 
     def save(self, *args, **kwargs):
         # 대댓글 작성자가 익명으로 작성하는 경우, 익명 이름을 랜덤으로 생성
@@ -139,7 +139,7 @@ class Event(models.Model):
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     is_active = models.BooleanField(default=True)
-    image = models.ImageField(upload_to='media/events/', blank=True, null=True)  # 이벤트 이미지
+    image = models.ImageField(upload_to='events/', blank=True, null=True)  # 이벤트 이미지
 
     def __str__(self):
         return self.name

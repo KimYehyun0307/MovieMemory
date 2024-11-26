@@ -16,17 +16,13 @@
     {% endif %}
 
     <!-- 좋아요 버튼 -->
-    <div class="like-container">
-        <button 
+    <button 
         id="like-button" 
         class="btn-like {% if request.user in review.like_set.all %}liked{% endif %}" 
         data-url="{% url 'communities:like_post' movie_title=review.movie.title post_num=review.id %}"
-        data-post-id="{{ review.id }}">  <!-- data-post-id 추가 -->
+        data-post-id="{{ review.id }}"> 
         좋아요 ❤️ {{ review.like_set.count }}
-        </button>
-        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-    </div>
-    
+    </button>
 
     <h3 class="comment-title">댓글</h3>
 
@@ -45,10 +41,9 @@
                 </div>
                 {% endif %}
 
-                <!-- 댓글 수정 및 삭제 버튼 -->
+                <!-- 댓글 삭제 버튼 -->
                 {% if comment.user == request.user or request.user.is_superuser %}
                 <div class="comment-actions">
-                    <a href="{% url 'communities:comment_edit' movie_title=review.movie.title post_num=review.id comment_id=comment.id %}" class="edit-btn">수정</a>
                     <a href="{% url 'communities:comment_delete' movie_title=review.movie.title post_num=review.id comment_id=comment.id %}" class="delete-btn">삭제</a>
                 </div>
                 {% endif %}
@@ -59,10 +54,15 @@
 
                 <!-- 대댓글 폼 (기본적으로 숨김) -->
                 <div class="reply-form hidden" id="reply-form-{{ comment.id }}">
-                    <form method="POST">
+                    <form method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         <input type="hidden" name="comment_id" value="{{ comment.id }}">
                         {{ reply_form.as_p }}
+                        <!-- 대댓글 이미지 업로드 -->
+                        <div class="form-group">
+                            <label for="id_image">이미지 업로드</label>
+                            {{ reply_form.image }}  <!-- 대댓글 이미지 파일 업로드 필드 -->
+                        </div>
                         <button type="submit" name="reply_submit" class="btn-submit">대댓글 작성</button>
                     </form>
                 </div>
@@ -83,7 +83,6 @@
 
                         {% if reply.user == request.user or request.user.is_superuser %}
                         <div class="reply-actions">
-                            <a href="{% url 'communities:reply_edit' movie_title=review.movie.title post_num=review.id comment_id=comment.id reply_id=reply.id %}" class="edit-btn">수정</a>
                             <a href="{% url 'communities:reply_delete' movie_title=review.movie.title post_num=review.id comment_id=comment.id reply_id=reply.id %}" class="delete-btn">삭제</a>
                         </div>
                         {% endif %}
@@ -122,14 +121,14 @@
 
         <!-- 댓글 이미지 업로드 -->
         <div class="form-group">
-            <label for="id_image" >이미지 업로드</label>
-            {{ comment_form.image }}  <!-- 파일 업로드 필드 -->
+            <label for="id_image">이미지 업로드</label>
+            {{ comment_form.image }}  <!-- 댓글 이미지 파일 업로드 필드 -->
         </div>
 
         <!-- 댓글 제출 버튼 -->
         <button type="submit" name="comment_submit" class="comment-submit-btn">댓글 작성</button>
     </form>
-</div>
+    </div>
 
     {% else %}
     <p>댓글이 비활성화된 게시글입니다.</p>
