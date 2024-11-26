@@ -221,9 +221,16 @@ def profile(request, user_nickname):
         if has_kakao_account else None
     )
     user_reviews = Review.objects.filter(user=user).order_by('-created_at')
+    
+    # 영화 리뷰에 대한 댓글만 필터링
+    user_comments = Comment.objects.filter(user=user, review__isnull=False).order_by('-created_at')
+    
+    # 대댓글도 가져오기
+    user_comment_replies = CommentReply.objects.filter(comment__in=user_comments).order_by('-created_at')
+    
     user_posts = MovieReview.objects.filter(user=user).order_by('-created_at')
     user_comments = Comment.objects.filter(user=user)
-
+    
     is_self = request.user == user  # 자신이 프로필을 보고 있는지 확인
     show_id = is_self or request.user.is_superuser # 프로필을 보는 사람이 자기 자신이거나 관리자일때만 id 공개
     show_birthdate = is_self or request.user.is_superuser or user.is_birthdate_public
@@ -247,6 +254,7 @@ def profile(request, user_nickname):
         'user_reviews': user_reviews,
         'user_posts': user_posts,
         'user_comments': user_comments,
+        'user_comment_replies': user_comment_replies,  # 대댓글도 컨텍스트에 추가
         'scrapped_movies': scrapped_movies,
         'show_id': show_id, 
         'show_birthdate': show_birthdate,
@@ -257,6 +265,7 @@ def profile(request, user_nickname):
     }
 
     return render(request, 'movies/profile.html', context)
+
 
 @login_required
 def profile_edit(request, user_nickname):

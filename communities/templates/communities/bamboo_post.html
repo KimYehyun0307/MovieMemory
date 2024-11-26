@@ -4,7 +4,14 @@
 <div class="section-container">
     <h1 class="post-title">{{ bamboo_post.title }}</h1>
     <h3 class="post-content">{{ bamboo_post.content }}</h3>
-    <p class="post-author">작성자: {{ bamboo_post.display_name }}</p>
+    <p class="post-author">
+        작성자: 
+        {% if request.user == bamboo_post.user or request.user.is_superuser %}
+            {{ bamboo_post.user.nickname }}  <!-- 본인이거나 superuser일 경우 nickname 표시 -->
+        {% else %}
+            {{ bamboo_post.display_name }}  <!-- 그렇지 않으면 display_name (익명) 표시 -->
+        {% endif %}
+    </p>
 
     <!-- 댓글 작성 섹션 -->
     <div class="comment-form-container">
@@ -22,10 +29,10 @@
         {% for comment in comments %}
         <li class="comment-item">
             <strong>
-                {% if comment.nickname %}
-                    {{ comment.nickname }}
+                {% if request.user == comment.user or request.user.is_superuser %}
+                    {{ comment.nickname }}  <!-- 본인이거나 superuser일 경우 nickname 표시 -->
                 {% else %}
-                    {{ comment.anonymous_name }}
+                    {{ comment.anonymous_name }}  <!-- 그렇지 않으면 anonymous_name (익명) 표시 -->
                 {% endif %}
             </strong>
             <p>{{ comment.content }}</p>
@@ -53,10 +60,10 @@
                 {% for reply in comment.replies.all %}
                 <li class="reply-item">
                     <strong>
-                        {% if reply.nickname %}
-                            {{ reply.nickname }}
+                        {% if request.user == reply.user or request.user.is_superuser %}
+                            {{ reply.nickname }}  <!-- 본인이거나 superuser일 경우 nickname 표시 -->
                         {% else %}
-                            {{ reply.anonymous_name }}
+                            {{ reply.anonymous_name }}  <!-- 그렇지 않으면 anonymous_name (익명) 표시 -->
                         {% endif %}
                     </strong>
                     <p>{{ reply.content }}</p>

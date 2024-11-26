@@ -98,16 +98,16 @@
     <p>{{ review.movie.title }} - {{ review.id }}</p>
 
     <!-- 영화 게시판 작성글 목록 -->
-    {% comment %} <div class="profile-box user-reviews">
+    <div class="profile-box user-reviews">
         <h3><strong>영화 게시판 작성글</strong></h3>
         {% if show_posts %}
             {% if user_posts %}
                 <ul>
                     {% for post in user_posts %}
                         <li class="review-item">                           
-                            <a href="{% url 'communities:post' review.movie.title review.id %}" class="review-link">
+                            <a href="{% url 'communities:post' movie_title=post.movie.title post_num=post.id %}" class="review-link">
                                 <div class="review-box">
-                                    <strong>{{ review.movie.title }}</strong> - 
+                                    <strong>{{ post.movie.title }}</strong> - {{ post.title }} ({{ post.created_at }})
                                     {{ review.content|slice:":30" }}{% if review.content|length > 30 %}...{% endif %}
                                 </div>
                             </a>
@@ -120,7 +120,7 @@
         {% else %}
             <p>영화 게시판 글 목록은 비공개입니다.</p>
         {% endif %}
-    </div> {% endcomment %}
+    </div>
 
     <!-- 댓글 단 글의 목록 -->
     <div class="profile-box user-comments">
@@ -129,34 +129,14 @@
             {% if user_comments %}
                 <ul>
                     {% for comment in user_comments %}
-                        <li>
-                            <strong>
-                                {% if comment.nickname %}
-                                    {{ comment.nickname }}
-                                {% else %}
-                                    {{ comment.anonymous_name }}
-                                {% endif %}
-                            :</strong>
-                            <p>{{ comment.content }}</p>
-
-                            <!-- 대댓글 목록 -->
-                            <ul>
-                                {% for reply in comment.replies.all %}
-                                <li>
-                                    <strong>
-                                        {% if reply.nickname %}
-                                            {{ reply.nickname }}
-                                        {% else %}
-                                            {{ reply.anonymous_name }}
-                                        {% endif %}
-                                    :</strong>                                    
-                                    <p>{{ reply.content }}</p>
-                                </li>
-                                {% empty %}
-                                <p>대댓글이 없습니다.</p>
-                                {% endfor %}
-                            </ul>
-                        </li>
+                        {% if comment.review %}
+                            <!-- 댓글 내용과 링크 (영화 게시판 댓글만 링크로 처리) -->
+                            <li>
+                                <a href="{% url 'communities:post' movie_title=comment.review.movie.title post_num=comment.review.id %}">
+                                    {{ comment.review.movie.title }} - {{ comment.content }} ({{ comment.created_at|date:"Y-m-d H:i" }})
+                                </a>
+                            </li>
+                        {% endif %}
                     {% endfor %}
                 </ul>
             {% else %}
@@ -166,6 +146,6 @@
             <p>댓글 목록은 비공개입니다.</p>
         {% endif %}
     </div>
-
+    
 </div>
 {% endblock %}
