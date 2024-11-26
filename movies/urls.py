@@ -11,5 +11,5 @@ urlpatterns = [
     path('memory/', views.memory, name='memory'),  # Memory 페이지 추가
     path('<str:user_nickname>/profile/', views.profile, name='profile'),
     path('<str:user_nickname>/profile/edit', views.profile_edit, name='profile_edit'),
-    path('scrap_movie/<int:movie_id>/', views.scrap_movie, name='scrap_movie'),
+    path('scrap_toggle/<int:movie_id>/', views.scrap_toggle, name='scrap_toggle'),
 ]

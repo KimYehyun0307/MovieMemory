@@ -16,6 +16,7 @@ class Movie(models.Model):
     release_date = models.DateField(blank=True, null=True)  # 개봉일
     poster_path = models.CharField(max_length=200, blank=True)  # 포스터 이미지 경로
     genres = models.ManyToManyField(Genres)  # 여러 장르와 연결된 관계
+    is_scrapped = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
