@@ -104,6 +104,7 @@ h1, h2 {
   border-radius: 5px;
   text-decoration: none;
   margin-right: 10px;
+  margin-top: 15px;
 }
 
 .edit-btn:hover, .delete-btn:hover {
@@ -250,6 +251,7 @@ h1, h2 {
   border-radius: 5px;
   font-size: 14px;
   transition: background-color 0.3s ease;
+  margin: 5px;
 }
 
 .btn-sky:hover {
@@ -264,6 +266,7 @@ h1, h2 {
   cursor: pointer;
   border-radius: 5px;
   font-size: 14px;
+  margin: 5px;
 }
 
 .btn-gold:hover {
@@ -278,6 +281,7 @@ h1, h2 {
   cursor: pointer;
   border-radius: 5px;
   font-size: 14px;
+  margin: 5px;
 }
 
 .btn-silver:hover {
@@ -292,6 +296,7 @@ h1, h2 {
   cursor: pointer;
   border-radius: 5px;
   font-size: 14px;
+  margin: 5px;
 }
 
 .btn-bronze:hover {
@@ -329,6 +334,10 @@ h1, h2 {
 
 .section-container h1, .section-container h2, .section-container h3, .section-container h4, .section-container h5, .section-container p{
   color: #000; /* 텍스트 색상을 검정으로 */
+}
+
+.section-container h3 {
+  text-align: center;
 }
 
 /* 메시지 출력 영역 */
@@ -682,4 +691,9 @@ h1, h2 {
   display: flex;
   align-items: center;  /* 체크박스와 레이블을 수직 중앙 정렬 */
   margin-left: 0;  /* 왼쪽 여백 제거 */
+}
+
+#like-button.btn-like {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }

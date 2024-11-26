@@ -4,15 +4,15 @@
 {% block content %}
 <div class="section-container">
     <h1 class="post-title">{{ bamboo_post.title }}</h1>
-    <h3 class="post-content">{{ bamboo_post.content }}</h3>
     <p class="post-author">
         작성자: 
         {% if request.user == bamboo_post.user or request.user.is_superuser %}
-            {{ bamboo_post.user.nickname }}  <!-- 본인이거나 superuser일 경우 nickname 표시 -->
+            {{ bamboo_post.user.nickname }}
         {% else %}
-            {{ bamboo_post.anonymous_name }}  <!-- 그렇지 않으면 anonymous_name (익명) 표시 -->
+            {{ bamboo_post.anonymous_name }}
         {% endif %}
     </p>
+    <h3 class="post-content">{{ bamboo_post.content }}</h3>
 
     <!-- 좋아요 버튼 -->
     <div class="like-container">
@@ -22,16 +22,22 @@
         data-url="{% url 'communities:like_post_bamboo' post_num=bamboo_post.id %}"
         data-post-id="{{ bamboo_post.id }}">
         좋아요 ❤️ {{ bamboo_post.like_set.count }}
-    </button>
-
+        </button>
     </div>
 
     <!-- 댓글 작성 섹션 -->
+    <h3>댓글 작성</h3>
     <div class="comment-form-container">
-        <h3>댓글 작성</h3>
-        <form method="POST" class="comment-form">
+        <form method="POST" class="comment-form" enctype="multipart/form-data">
             {% csrf_token %}
-            {{ comment_form.as_p }}
+            <div class="form-group">
+                <label for="{{ comment_form.content.id_for_label }}">댓글 내용</label>
+                {{ comment_form.content }}
+            </div>
+            <div class="form-group">
+                <label for="{{ comment_form.image.id_for_label }}">첨부 이미지</label>
+                {{ comment_form.image }}
+            </div>
             <button type="submit" name="comment_submit" class="btn-submit">댓글 작성</button>
         </form>
     </div>
@@ -43,16 +49,26 @@
         <li class="comment-item">
             <strong>
                 {% if request.user == comment.user or request.user.is_superuser %}
-                    {{ comment.user.nickname }}  <!-- 본인이거나 superuser일 경우 nickname 표시 -->
+                    {{ comment.user.nickname }}
                 {% else %}
-                    {{ comment.anonymous_name }}  <!-- 그렇지 않으면 anonymous_name (익명) 표시 -->
+                    {{ comment.anonymous_name }}
                 {% endif %}
             </strong>
             <p>{{ comment.content }}</p>
 
-            <!-- 대댓글 작성 섹션 -->
-            <div class="reply-form-container">
-                <h4>대댓글 작성</h4>
+            <!-- 댓글 수정/삭제 버튼 -->
+            {% if comment.user.nickname == user_nickname or request.user.is_superuser %}
+            <div class="comment-actions">
+                <a href="{% url 'communities:comment_edit' post_num=bamboo_post.id comment_id=comment.id %}" class="edit-btn">수정</a>
+                <a href="{% url 'communities:comment_delete' post_num=bamboo_post.id comment_id=comment.id %}" class="delete-btn">삭제</a>
+            </div>
+            {% endif %}
+
+            <!-- 대댓글 작성 버튼 -->
+            <button type="button" class="btn-reply" onclick="toggleReplyForm({{ comment.id }})">대댓글 작성</button>
+
+            <!-- 대댓글 폼 -->
+            <div class="reply-form-container hidden" id="reply-form-{{ comment.id }}">
                 <form method="POST" enctype="multipart/form-data" class="reply-form">
                     {% csrf_token %}
                     <div class="form-group">
@@ -74,9 +90,9 @@
                 <li class="reply-item">
                     <strong>
                         {% if request.user == reply.user or request.user.is_superuser %}
-                            {{ reply.nickname }}  <!-- 본인이거나 superuser일 경우 nickname 표시 -->
+                            {{ reply.user.nickname }}
                         {% else %}
-                            {{ reply.anonymous_name }}  <!-- 그렇지 않으면 anonymous_name (익명) 표시 -->
+                            {{ reply.anonymous_name }}
                         {% endif %}
                     </strong>
                     <p>{{ reply.content }}</p>
@@ -87,11 +103,20 @@
         {% endfor %}
     </ul>
 
+    <!-- 게시글 수정/삭제 버튼 -->
+    {% if bamboo_post.user.nickname == user_nickname or request.user.is_superuser %}
+    <div class="edit-delete-container">
+        <a href="{% url 'communities:bamboo_post_edit' post_num=bamboo_post.id %}" class="edit-btn">수정</a>
+        <a href="{% url 'communities:bamboo_post_delete' post_num=bamboo_post.id %}" class="delete-btn">삭제</a>
+    </div>
+    {% endif %}
+
     <!-- 목록으로 돌아가기 -->
     <div class="navigation-buttons">
         <a href="{% url 'communities:bamboo' %}" class="btn-primary">대나무숲 목록으로 돌아가기</a>
     </div>
 </div>
 
+<script src="{% static 'communities/js/buttontoggle.js' %}"></script>
 <script src="{% static 'communities/js/likeHandler.js' %}"></script>
 {% endblock %}

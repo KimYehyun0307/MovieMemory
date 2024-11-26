@@ -5,21 +5,21 @@
     <h1>{{ movie.title }} 대나무숲</h1>
 
     <!-- 인기 대나무숲 게시물 -->
-    <h2>인기 게시물</h2>
+    <h3>인기 게시물</h3>
     <ul class="bamboo-post-list">
         {% for post in popular_bamboo_posts %}
         <li>
-            <a href="{% url 'communities:bamboo_post' post.id %}">{{ post.title }}</a> (작성자: {{ post.display_name }}) - 댓글: {{ post.comment_count }}
+            <a href="{% url 'communities:bamboo_post' post.id %}">{{ post.title }}</a> (작성자: {{ post.display_name }}) - 좋아요: {{ post.liked_users.count }}
         </li>
         {% endfor %}
     </ul>
 
     <!-- 대나무숲 게시물 목록 -->
-    <h2>게시물 목록</h2>
+    <h3>게시물 목록</h3>
     <ul class="bamboo-post-list">
         {% for post in bamboo_posts %}
         <li>
-            <a href="{% url 'communities:bamboo_post' post.id %}">{{ post.title }}</a> (작성자: {{ post.display_name }}) - 댓글: {{ post.comment_count }}
+            <a href="{% url 'communities:bamboo_post' post.id %}">{{ post.title }}</a> (작성자: {{ post.display_name }}) - 좋아요: {{ post.liked_users.count }}
         </li>
         {% endfor %}
     </ul>

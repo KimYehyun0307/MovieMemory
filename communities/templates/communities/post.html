@@ -97,40 +97,40 @@
 
     <!-- 댓글 작성 폼 -->
     <div class="comment-form-container">
-        <form method="POST">
-            {% csrf_token %}
-            
-            <!-- 댓글 내용 입력 필드 -->
-            <div class="form-group">
-                <label for="id_content">댓글 내용</label>
-                {{ comment_form.content }}  <!-- 텍스트 입력 필드 -->
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <!-- 댓글 내용 입력 필드 -->
+        <div class="form-group">
+            <label for="id_content">댓글 내용</label>
+            {{ comment_form.content }}  <!-- 텍스트 입력 필드 -->
+        </div>
+
+        <!-- 대댓글 허용 체크박스 -->
+        <div class="form-group">
+            <div class="form-check form-check-inline">
+                <input 
+                    type="checkbox" 
+                    class="form-check-input" 
+                    id="id_is_reply" 
+                    name="is_reply"
+                    {% if comment_form.is_reply.value %} checked {% endif %}
+                >
+                <label class="form-check-label" for="id_is_reply">대댓글 허용</label>
             </div>
-    
-            <!-- 대댓글 허용 체크박스 -->
-            <div class="form-group">
-                <div class="form-check form-check-inline">
-                    <input 
-                        type="checkbox" 
-                        class="form-check-input" 
-                        id="id_is_reply" 
-                        name="is_reply"
-                        {% if comment_form.is_reply.value %} checked {% endif %}
-                    >
-                    <label class="form-check-label" for="id_is_reply">대댓글 허용</label>
-                </div>
-            </div>
-    
-            <!-- 댓글 이미지 업로드 -->
-            <div class="form-group">
-                <label for="id_image">이미지 업로드</label>
-                {{ comment_form.image }}  <!-- 파일 업로드 필드 -->
-            </div>
-    
-            <!-- 댓글 제출 버튼 -->
-            <button type="submit" name="comment_submit" class="comment-submit-btn">댓글 작성</button>
-        </form>
-    </div>
-    
+        </div>
+
+        <!-- 댓글 이미지 업로드 -->
+        <div class="form-group">
+            <label for="id_image" >이미지 업로드</label>
+            {{ comment_form.image }}  <!-- 파일 업로드 필드 -->
+        </div>
+
+        <!-- 댓글 제출 버튼 -->
+        <button type="submit" name="comment_submit" class="comment-submit-btn">댓글 작성</button>
+    </form>
+</div>
+
     {% else %}
     <p>댓글이 비활성화된 게시글입니다.</p>
     {% endif %}
@@ -143,7 +143,7 @@
     </div>
     {% endif %}
 
-    <a href="{% url 'communities:movieboard' movie_title=review.movie.title %}" class="btn btn-info">Back</a>
+    <a href="{% url 'communities:movieboard' movie_title=review.movie.title %}" class="btn btn-info" style="margin-top: 20px;">Back</a>
 </div>
 
 <script src="{% static 'communities/js/buttontoggle.js' %}"></script>

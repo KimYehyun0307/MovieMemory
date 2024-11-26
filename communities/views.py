@@ -258,20 +258,29 @@ def post_delete(request, movie_title, post_num):
     return redirect('communities:movieboard', movie_title=movie_title)
 
 
-# 대나무숲 게시판
 def bamboo(request):
     bamboo_posts = BambooPost.objects.all()
 
+    # 인기 대나무숲 게시물 (좋아요 수가 많은 게시물)
+    popular_bamboo_posts = bamboo_posts.annotate(like_count=Count('liked_users')).order_by('-like_count')[:5]  # 좋아요가 많은 게시물 상위 5개
+
+    # 페이지네이션 처리 (페이지당 5개 게시글)
+    paginator = Paginator(bamboo_posts, 5)  # 한 페이지에 5개 게시글
+    page_number = request.GET.get('page')  # 페이지 번호
+    paginated_posts = paginator.get_page(page_number)
+
     # 게시물마다 권한에 따라 이름 표시
-    for post in bamboo_posts:
+    for post in paginated_posts:
         if request.user == post.user or request.user.is_superuser:
             post.display_name = post.user.nickname  # 작성자 닉네임 표시
         else:
             post.display_name = post.anonymous_name  # 익명 이름 표시
 
     context = {
-        'bamboo_posts': bamboo_posts,
+        'bamboo_posts': paginated_posts,  # 페이지네이션된 게시글 목록
+        'popular_bamboo_posts': popular_bamboo_posts,  # 인기 게시물 목록
     }
+
     return render(request, 'communities/bamboo.html', context)
 
 @login_required
@@ -304,15 +313,18 @@ def bamboo_post(request, post_num):
     # 댓글 가져오기
     comments = bamboo_post.comments.all()
 
+    # 현재 로그인한 사용자의 닉네임 가져오기
+    user_nickname = request.user.nickname if request.user.is_authenticated else None
+
     context = {
         'bamboo_post': bamboo_post,
         'comments': comments,
         'comment_form': comment_form,
         'reply_form': reply_form,
+        'user_nickname': user_nickname,  # 닉네임 추가
     }
 
     return render(request, 'communities/bamboo_post.html', context)
-
 
 
 @login_required
