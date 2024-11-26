@@ -55,18 +55,16 @@
 
                 <!-- 대댓글 작성 폼 -->
                 {% if comment.is_reply == True %}
-                <div class="reply-form-container">
-                    <button type="button" class="btn-reply" onclick="toggleReplyForm({{ comment.id }})">대댓글 작성</button>
+                <button type="button" class="btn-reply" onclick="toggleReplyForm({{ comment.id }})">대댓글 작성</button>
 
-                    <!-- 대댓글 폼 (기본적으로 숨김) -->
-                    <div class="reply-form hidden" id="reply-form-{{ comment.id }}">
-                        <form method="POST">
-                            {% csrf_token %}
-                            <input type="hidden" name="comment_id" value="{{ comment.id }}">
-                            {{ reply_form.as_p }}
-                            <button type="submit" name="reply_submit" class="btn-submit">대댓글 작성</button>
-                        </form>
-                    </div>
+                <!-- 대댓글 폼 (기본적으로 숨김) -->
+                <div class="reply-form hidden" id="reply-form-{{ comment.id }}">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                        {{ reply_form.as_p }}
+                        <button type="submit" name="reply_submit" class="btn-submit">대댓글 작성</button>
+                    </form>
                 </div>
                 {% endif %}
 

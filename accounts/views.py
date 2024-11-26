@@ -16,7 +16,6 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            messages.success(request, "로그인 성공!")
             return redirect('movies:index')  # 메인 페이지로 리다이렉트
         else:
             messages.error(request, "아이디 또는 비밀번호가 일치하지 않습니다.")
@@ -34,7 +33,6 @@ def signup_view(request):
             user = form.save()
             # 기본 로그인 처리시 backend 명시
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')  # 기본 인증 백엔드
-            messages.success(request, "회원가입 성공!")
             return redirect('movies:index')
         else:
             messages.error(request, "회원가입 중 오류가 발생했습니다.")
@@ -47,7 +45,6 @@ def delete_account(request):
     if request.method == 'POST':
         request.user.delete()
         logout(request)
-        messages.success(request, "회원탈퇴가 완료되었습니다.")
         return redirect('accounts:login')
     return render(request, 'accounts/delete_account.html')
 
@@ -146,5 +143,4 @@ def kakao_callback(request):
 
     # 사용자 로그인 처리 (backend 명시)
     login(request, user, backend='social_core.backends.kakao.KakaoOAuth2')
-    messages.success(request, "카카오 로그인 성공!")
     return redirect('movies:index')

@@ -16,7 +16,7 @@ class MovieReview(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_comment_enabled = models.BooleanField(default=True)  # 댓글 허용 여부
-    rating = models.PositiveSmallIntegerField(default=5)  # 1~5점 평가
+    rating = models.PositiveSmallIntegerField(choices=[(i, i) for i in range(1, 6)], default=5)  # 1~5점 평가
     liked_users = models.ManyToManyField(User, related_name="liked_reviews", blank=True)
     image = models.ImageField(upload_to='media/movie_reviews/', blank=True, null=True)  # 영화 후기 이미지
 

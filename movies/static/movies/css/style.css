@@ -327,6 +327,10 @@ h1, h2 {
   color: #000; /* 텍스트 색상을 검정으로 */
 }
 
+.section-container h1, .section-container h2, .section-container h3, .section-container h4, .section-container h5, .section-container p{
+  color: #000; /* 텍스트 색상을 검정으로 */
+}
+
 /* 메시지 출력 영역 */
 .alert-messages {
   max-width: 800px; /* 달력 크기와 동일 */
@@ -418,6 +422,41 @@ h1, h2 {
 }
 
 /* 인기 영화 리뷰 섹션 */
+.review-container {
+  max-width: 800px; /* 모든 리뷰의 너비를 통일 */
+  margin: 20px auto; /* 중앙 정렬 */
+  background-color: rgba(255, 255, 255, 0.8); /* 투명한 하얀색 배경 */
+  border-radius: 10px; /* 모서리를 둥글게 */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* 박스 그림자 */
+  padding: 20px;
+  color: #000; /* 텍스트 색상 검정으로 */
+}
+
+.review-title {
+  font-size: 1.5em; /* 제목 크기 */
+  font-weight: bold; /* 제목을 굵게 */
+  margin-bottom: 10px; /* 제목과 내용 사이 간격 */
+  color: #000; /* 텍스트 색상 검정으로 */
+}
+
+.review-author {
+  font-size: 1em; /* 작성자 크기 */
+  color: #000; /* 작성자 색상 */
+  margin-bottom: 10px; /* 작성자와 내용 사이 간격 */
+}
+
+.review-date {
+  font-size: 0.9em; /* 날짜 크기 */
+  color: #000; /* 날짜 색상 */
+  margin-bottom: 20px; /* 날짜와 내용 사이 간격 */
+}
+
+.review-content {
+  font-size: 1em; /* 내용 크기 */
+  line-height: 1.6; /* 줄 간격 */
+  color: #000; /* 내용 색상 */
+}
+
 .review-list {
   list-style-type: none;
   padding: 0;
@@ -614,4 +653,21 @@ h1, h2 {
   width: 100%;
   height: auto;
   border-radius: 5px;
+}
+
+/* 폼 필드들 사이의 여백을 추가 */
+.form-group {
+  margin-bottom: 15px;
+}
+
+/* 체크박스와 레이블을 한 줄로 정렬 */
+.form-check {
+  display: flex;
+  align-items: center; /* 체크박스와 레이블을 수직으로 정렬 */
+  justify-content: flex-start;
+}
+
+/* 레이블과 체크박스 사이의 여백 */
+.form-check-label {
+  margin-left: 8px;
 }
